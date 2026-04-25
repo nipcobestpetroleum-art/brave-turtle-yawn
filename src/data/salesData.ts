@@ -653,5 +653,16 @@ export const salesData: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-11-23",
+    shifts: {
+      morning: [
+        { attendant: "Miracle", pumpId: "PMP-002-A", product: "PMS", openingReading: 2246797.00, closingReading: 2246862.99, pricePerLiter: 940, cashCollected: 10000, posAmount: 0, shortageResolutions: [{ type: "debt", amount: 52029, liters: 55.35, debtor: "Chief Bestman", reason: "Debt" }] },
+        { attendant: "Miracle", pumpId: "PMP-002-B", product: "PMS", openingReading: 2496078.30, closingReading: 2497648.97, pricePerLiter: 940, cashCollected: 299100, posAmount: 895342, shortageResolutions: [{ type: "debt", amount: 282000, liters: 300, debtor: "First patriot", reason: "MD approved" }] },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
