@@ -16,6 +16,12 @@ const Index = () => {
     salesData.find(d => d.date === selectedDate) || salesData[0]
   , [selectedDate]);
 
+  const prevDate = useMemo(() => {
+    const sorted = [...salesData].sort((a, b) => a.date.localeCompare(b.date));
+    const idx = sorted.findIndex(d => d.date === selectedDate);
+    return idx > 0 ? sorted[idx - 1].date : undefined;
+  }, [selectedDate]);
+
   const intraDayResults = useMemo(() => 
     auditIntraDay(currentReport)
   , [currentReport]);
@@ -104,6 +110,8 @@ const Index = () => {
                     key={res.pumpId} 
                     {...res} 
                     type="crossdate"
+                    prevDate={prevDate}
+                    currDate={selectedDate}
                   />
                 ))}
               </div>

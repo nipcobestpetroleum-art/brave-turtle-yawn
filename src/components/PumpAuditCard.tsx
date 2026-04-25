@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, CheckCircle2, AlertCircle, Clock, ArrowRightLeft } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun } from "lucide-react";
 import { PumpReport } from "../types/sales";
 import { formatLiters } from "../utils/auditLogic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +13,16 @@ interface PumpAuditCardProps {
   isBalanced: boolean;
   diff: number;
   type: "intraday" | "crossdate";
+  prevDate?: string;
+  currDate?: string;
 }
 
-const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type }: PumpAuditCardProps) => {
+const formatDateLabel = (dateStr?: string) => {
+  if (!dateStr) return "";
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
+const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, prevDate, currDate }: PumpAuditCardProps) => {
   const soldMorning = morning ? morning.closingReading - morning.openingReading : 0;
   const soldAfternoon = afternoon ? afternoon.closingReading - afternoon.openingReading : 0;
 
@@ -51,12 +58,18 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type }: P
 
       <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch">
-          {/* Shift 1 (Morning / Prev Day) */}
+          {/* Shift 1 (Morning / Night Close) */}
           <div className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-0.5 rounded">
-                {type === "intraday" ? "Morning" : "Previous Day"}
-              </span>
+              <div className="flex items-center gap-2">
+                {type === "crossdate" ? <Moon size={14} className="text-slate-400" /> : <Sun size={14} className="text-amber-500" />}
+                <span className={cn(
+                  "text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded",
+                  type === "intraday" ? "text-amber-600 bg-amber-50" : "text-slate-600 bg-slate-100"
+                )}>
+                  {type === "intraday" ? "Morning" : `Night (${formatDateLabel(prevDate)})`}
+                </span>
+              </div>
               <span className="text-xs font-bold text-slate-400 italic">
                 {morning?.attendant || "---"}
               </span>
@@ -92,7 +105,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type }: P
           </div>
 
           {/* Handover Bridge */}
-          <div className="bg-slate-50/50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative">
+          <div className="bg-slate-50/50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[120px]">
             <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-slate-200 hidden md:block" />
             
             <div className={cn(
@@ -111,14 +124,23 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type }: P
                 {isBalanced ? "Match" : `Gap: ${formatLiters(diff)}`}
               </div>
             )}
+            
+            {type === "crossdate" && (
+              <div className="mt-2 text-[9px] font-bold text-slate-400 uppercase">
+                Carry Over
+              </div>
+            )}
           </div>
 
-          {/* Shift 2 (Afternoon / Curr Day) */}
+          {/* Shift 2 (Afternoon / Day Open) */}
           <div className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
-                {type === "intraday" ? "Afternoon" : "Current Day"}
-              </span>
+              <div className="flex items-center gap-2">
+                <Sun size={14} className={type === "crossdate" ? "text-indigo-500" : "text-indigo-500"} />
+                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
+                  {type === "intraday" ? "Afternoon" : `Day (${formatDateLabel(currDate)})`}
+                </span>
+              </div>
               <span className="text-xs font-bold text-slate-400 italic">
                 {afternoon?.attendant || "---"}
               </span>
