@@ -339,5 +339,28 @@ export const salesData: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-11-09",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Miracle", 
+          pumpId: "PMP-002-B", 
+          product: "PMS", 
+          openingReading: 2432390.54, 
+          closingReading: 2434174.78, 
+          pricePerLiter: 940, 
+          cashCollected: 333500, 
+          posAmount: 811549, 
+          shortageResolutions: [
+            { type: "debt", amount: 408900, liters: 435, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 123200, liters: 131.06, debtor: "Obinna", reason: "No idea" }
+          ] 
+        },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
