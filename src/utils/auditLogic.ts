@@ -8,6 +8,7 @@ export interface AuditResult {
   isBalanced: boolean;
   morning: PumpReport | null;
   afternoon: PumpReport | null;
+  prevDate?: string; // Added to track which date we found the predecessor on
 }
 
 /**
@@ -37,33 +38,55 @@ export const auditIntraDay = (report: DailyReport): AuditResult[] => {
 
 /**
  * Cross-Date Continuity Algorithm
+ * Refactored to scan history backwards until a predecessor is found
  */
 export const auditCrossDate = (allData: DailyReport[], targetDate: string): AuditResult[] => {
   const sortedData = [...allData].sort((a, b) => a.date.localeCompare(b.date));
   const targetIndex = sortedData.findIndex(d => d.date === targetDate);
   
-  if (targetIndex <= 0) return [];
+  if (targetIndex < 0) return [];
 
-  const prevDay = sortedData[targetIndex - 1];
   const currentDay = sortedData[targetIndex];
-
+  
+  // Find all pumps used on the current target day
   const pumpIds = new Set([
-    ...prevDay.shifts.morning.map(p => p.pumpId),
-    ...prevDay.shifts.afternoon.map(p => p.pumpId),
     ...currentDay.shifts.morning.map(p => p.pumpId),
     ...currentDay.shifts.afternoon.map(p => p.pumpId)
   ]);
 
   return Array.from(pumpIds).map(pumpId => {
-    // Find last reading of previous day
-    const prevAfternoon = prevDay.shifts.afternoon.find(p => p.pumpId === pumpId);
-    const prevMorning = prevDay.shifts.morning.find(p => p.pumpId === pumpId);
-    const lastReading = prevAfternoon ? prevAfternoon.closingReading : (prevMorning ? prevMorning.closingReading : null);
-
-    // Find first reading of current day
+    // Find the first reading of the target day
     const currMorning = currentDay.shifts.morning.find(p => p.pumpId === pumpId);
     const currAfternoon = currentDay.shifts.afternoon.find(p => p.pumpId === pumpId);
     const firstReading = currMorning ? currMorning.openingReading : (currAfternoon ? currAfternoon.openingReading : null);
+    const currentReport = currMorning || currAfternoon || null;
+
+    let lastReading = null;
+    let prevDateFound = undefined;
+    let prevReportFound = null;
+
+    // Scan backwards from the day before to find the last known closing reading for this pump
+    for (let i = targetIndex - 1; i >= 0; i--) {
+      const checkDay = sortedData[i];
+      
+      // Check Afternoon shift first (as it's the latest in that day)
+      const prevAfternoon = checkDay.shifts.afternoon.find(p => p.pumpId === pumpId);
+      if (prevAfternoon) {
+        lastReading = prevAfternoon.closingReading;
+        prevDateFound = checkDay.date;
+        prevReportFound = prevAfternoon;
+        break;
+      }
+
+      // Check Morning shift
+      const prevMorning = checkDay.shifts.morning.find(p => p.pumpId === pumpId);
+      if (prevMorning) {
+        lastReading = prevMorning.closingReading;
+        prevDateFound = checkDay.date;
+        prevReportFound = prevMorning;
+        break;
+      }
+    }
 
     let diff = 0;
     let isBalanced = false;
@@ -77,8 +100,9 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       pumpId, 
       diff, 
       isBalanced, 
-      morning: prevAfternoon || prevMorning || null, 
-      afternoon: currMorning || currAfternoon || null 
+      morning: prevReportFound, // For cross-date, 'morning' represents the previous record
+      afternoon: currentReport,  // and 'afternoon' represents the current record
+      prevDate: prevDateFound
     };
   });
 };

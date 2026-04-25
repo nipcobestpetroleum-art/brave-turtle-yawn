@@ -16,12 +16,6 @@ const Index = () => {
     salesData.find(d => d.date === selectedDate) || salesData[0]
   , [selectedDate]);
 
-  const prevDate = useMemo(() => {
-    const sorted = [...salesData].sort((a, b) => a.date.localeCompare(b.date));
-    const idx = sorted.findIndex(d => d.date === selectedDate);
-    return idx > 0 ? sorted[idx - 1].date : undefined;
-  }, [selectedDate]);
-
   const intraDayResults = useMemo(() => 
     auditIntraDay(currentReport)
   , [currentReport]);
@@ -103,14 +97,14 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="continuity" className="mt-0 outline-none">
-            {crossDateResults.length > 0 ? (
+            {crossDateResults.some(r => r.prevDate) ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {crossDateResults.map((res) => (
                   <PumpAuditCard 
                     key={res.pumpId} 
                     {...res} 
                     type="crossdate"
-                    prevDate={prevDate}
+                    prevDate={res.prevDate}
                     currDate={selectedDate}
                   />
                 ))}
@@ -118,8 +112,8 @@ const Index = () => {
             ) : (
               <div className="bg-white border-2 border-dashed rounded-3xl p-20 text-center flex flex-col items-center justify-center">
                 <History size={48} className="text-gray-200 mb-4" />
-                <h3 className="text-xl font-bold text-gray-400">No Previous Data</h3>
-                <p className="text-gray-400 max-w-sm">Select a date other than the earliest record to see continuity checks.</p>
+                <h3 className="text-xl font-bold text-gray-400">No Historical Records Found</h3>
+                <p className="text-gray-400 max-w-sm">There are no previous usage records for the pumps active on this day.</p>
               </div>
             )}
           </TabsContent>
