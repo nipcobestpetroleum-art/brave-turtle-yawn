@@ -183,5 +183,16 @@ export const salesData: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-11-02",
+    shifts: {
+      morning: [
+        { attendant: "Donald", pumpId: "PMP-002-A", product: "PMS", openingReading: 2194528.57, closingReading: 2194765.62, pricePerLiter: 940, cashCollected: 0, posAmount: 222827 },
+        { attendant: "Donald", pumpId: "PMP-002-B", product: "PMS", openingReading: 2404088.63, closingReading: 2409979.35, pricePerLiter: 940, cashCollected: 1217600, posAmount: 3133970, shortageResolutions: [{ type: "debt", amount: 385400, liters: 410, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 790446, liters: 840.90, debtor: "Maco oil", reason: "MD approved" }, { type: "official use", amount: 10001.60, liters: 10.64, purpose: "Hired truck feeding" }] },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
