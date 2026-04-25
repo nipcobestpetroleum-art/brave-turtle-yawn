@@ -5,9 +5,10 @@ import PumpAuditCard from "../components/PumpAuditCard";
 import FinancialSummary from "../components/FinancialSummary";
 import IssueStaffList from "../components/IssueStaffList";
 import GeneratorUsageCard from "../components/GeneratorUsageCard";
+import StaffLog from "../components/StaffLog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, LayoutDashboard, RefreshCcw, History, Users } from "lucide-react";
+import { Calendar, LayoutDashboard, RefreshCcw, History, Users, ClipboardList } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
@@ -94,7 +95,11 @@ const Index = () => {
               </TabsTrigger>
               <TabsTrigger value="staff" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
                 <Users size={16} />
-                Staff Accountability
+                Accountability Log
+              </TabsTrigger>
+              <TabsTrigger value="history" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                <ClipboardList size={16} />
+                Staff History
               </TabsTrigger>
             </TabsList>
           </div>
@@ -138,6 +143,10 @@ const Index = () => {
               results={crossDateResults} 
               selectedDate={selectedDate} 
             />
+          </TabsContent>
+
+          <TabsContent value="history" className="mt-0 outline-none">
+            <StaffLog allData={salesData} />
           </TabsContent>
         </Tabs>
       </div>
