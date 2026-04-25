@@ -34,6 +34,7 @@ const PumpAuditCard = ({
   const soldMorning = morning ? morning.closingReading - morning.openingReading : 0;
   const soldAfternoon = afternoon ? afternoon.closingReading - afternoon.openingReading : 0;
   const isNightSide = type === "crossdate";
+  const isLongIdle = timeGap && timeGap.days >= 1;
 
   return (
     <Card className="overflow-hidden border-2 transition-all hover:shadow-md bg-white">
@@ -151,9 +152,15 @@ const PumpAuditCard = ({
 
             {timeGap && (timeGap.days > 0 || timeGap.hours > 0) && (
               <div className="z-10 mt-3 flex flex-col items-center gap-1">
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border shadow-sm">
-                  <Hourglass size={10} className="text-amber-500 animate-pulse" />
-                  <span className="text-[9px] font-black text-slate-600 uppercase tracking-tight">
+                <div className={cn(
+                  "flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border shadow-sm transition-colors",
+                  isLongIdle ? "border-amber-200 bg-amber-50/30" : "border-slate-200"
+                )}>
+                  <Hourglass size={10} className={cn("animate-pulse", isLongIdle ? "text-amber-700" : "text-amber-500")} />
+                  <span className={cn(
+                    "text-[9px] font-black uppercase tracking-tight",
+                    isLongIdle ? "text-[#451a03]" : "text-slate-600"
+                  )}>
                     {timeGap.days > 0 ? `${timeGap.days}D ` : ""}{timeGap.hours}H Idle
                   </span>
                 </div>
