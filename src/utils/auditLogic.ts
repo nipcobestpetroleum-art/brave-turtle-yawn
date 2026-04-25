@@ -6,9 +6,11 @@ export interface AuditResult {
   pumpId: string;
   diff: number;
   isBalanced: boolean;
-  morning: PumpReport | null;
-  afternoon: PumpReport | null;
+  morning: PumpReport | null; // Used as 'previous' in cross-date
+  afternoon: PumpReport | null; // Used as 'current' in cross-date
   prevDate?: string;
+  currShift?: "Morning" | "Afternoon";
+  prevShift?: "Morning" | "Afternoon";
   timeGap?: {
     days: number;
     hours: number;
@@ -26,7 +28,6 @@ export const calculateGeneratorUsage = (allData: DailyReport[]) => {
     const allShifts = [...day.shifts.morning, ...day.shifts.afternoon];
     allShifts.forEach(pump => {
       pump.shortageResolutions?.forEach(res => {
-        // Look for official use specifically for generator
         const isGenerator = res.purpose?.toLowerCase().includes('generator') || 
                            res.reason?.toLowerCase().includes('generator');
         
@@ -42,7 +43,7 @@ export const calculateGeneratorUsage = (allData: DailyReport[]) => {
 };
 
 /**
- * Intra-Day Handover Logic
+ * Intra-Day Handover Logic (Same Day M -> A)
  */
 export const auditIntraDay = (report: DailyReport): AuditResult[] => {
   const pumpIds = new Set([
@@ -68,6 +69,7 @@ export const auditIntraDay = (report: DailyReport): AuditResult[] => {
 
 /**
  * Cross-Date Continuity Algorithm
+ * Compares the first usage of a pump on targetDate with its last known usage in history.
  */
 export const auditCrossDate = (allData: DailyReport[], targetDate: string): AuditResult[] => {
   const sortedData = [...allData].sort((a, b) => a.date.localeCompare(b.date));
@@ -85,32 +87,37 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
     const currMorning = currentDay.shifts.morning.find(p => p.pumpId === pumpId);
     const currAfternoon = currentDay.shifts.afternoon.find(p => p.pumpId === pumpId);
     
-    const isMorningStart = !!currMorning;
-    const firstReading = currMorning ? currMorning.openingReading : (currAfternoon ? currAfternoon.openingReading : null);
+    // The "Current" point for continuity is the earliest shift the pump was used today
     const currentReport = currMorning || currAfternoon || null;
+    const currShiftLabel = currMorning ? "Morning" : "Afternoon";
+    const firstReading = currentReport?.openingReading || null;
 
     let lastReading = null;
     let prevDateFound = undefined;
     let prevReportFound = null;
-    let wasNightShift = false;
+    let prevShiftLabel: "Morning" | "Afternoon" | undefined = undefined;
 
+    // Search backwards through days for the last time this pump was used
     for (let i = targetIndex - 1; i >= 0; i--) {
       const checkDay = sortedData[i];
+      
+      // Check afternoon shift first (most recent)
       const prevAfternoon = checkDay.shifts.afternoon.find(p => p.pumpId === pumpId);
       if (prevAfternoon) {
         lastReading = prevAfternoon.closingReading;
         prevDateFound = checkDay.date;
         prevReportFound = prevAfternoon;
-        wasNightShift = true;
+        prevShiftLabel = "Afternoon";
         break;
       }
 
+      // Then check morning shift
       const prevMorning = checkDay.shifts.morning.find(p => p.pumpId === pumpId);
       if (prevMorning) {
         lastReading = prevMorning.closingReading;
         prevDateFound = checkDay.date;
         prevReportFound = prevMorning;
-        wasNightShift = false;
+        prevShiftLabel = "Morning";
         break;
       }
     }
@@ -123,11 +130,12 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       diff = firstReading - lastReading;
       isBalanced = Math.abs(diff) < TOLERANCE;
 
+      // Calculate time gap for visibility
       const start = new Date(prevDateFound);
-      if (wasNightShift) start.setHours(22, 0, 0); else start.setHours(14, 0, 0);
+      if (prevShiftLabel === "Afternoon") start.setHours(22, 0, 0); else start.setHours(14, 0, 0);
 
       const end = new Date(targetDate);
-      if (isMorningStart) end.setHours(8, 0, 0); else end.setHours(14, 0, 0);
+      if (currShiftLabel === "Morning") end.setHours(8, 0, 0); else end.setHours(14, 0, 0);
 
       const msGap = Math.max(0, end.getTime() - start.getTime());
       timeGap = {
@@ -140,9 +148,11 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       pumpId, 
       diff, 
       isBalanced, 
-      morning: prevReportFound,
-      afternoon: currentReport,
+      morning: prevReportFound, // Mapping to Card component's Left side
+      afternoon: currentReport, // Mapping to Card component's Right side
       prevDate: prevDateFound,
+      currShift: currShiftLabel,
+      prevShift: prevShiftLabel,
       timeGap
     };
   });

@@ -10,13 +10,15 @@ import { cn } from "../lib/utils";
 
 interface PumpAuditCardProps {
   pumpId: string;
-  morning: PumpReport | null;
-  afternoon: PumpReport | null;
+  morning: PumpReport | null; // Prev Report
+  afternoon: PumpReport | null; // Curr Report
   isBalanced: boolean;
   diff: number;
   type: "intraday" | "crossdate";
   prevDate?: string;
   currDate?: string;
+  prevShift?: "Morning" | "Afternoon";
+  currShift?: "Morning" | "Afternoon";
   timeGap?: { days: number; hours: number };
 }
 
@@ -25,7 +27,10 @@ const formatDateLabel = (dateStr?: string) => {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
-const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, prevDate, currDate, timeGap }: PumpAuditCardProps) => {
+const PumpAuditCard = ({ 
+  pumpId, morning, afternoon, isBalanced, diff, type, 
+  prevDate, currDate, prevShift, currShift, timeGap 
+}: PumpAuditCardProps) => {
   const soldMorning = morning ? morning.closingReading - morning.openingReading : 0;
   const soldAfternoon = afternoon ? afternoon.closingReading - afternoon.openingReading : 0;
   const isNightSide = type === "crossdate";
@@ -38,7 +43,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
             {pumpId}
           </div>
           <CardTitle className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
-            {type === "intraday" ? "Shift Handover" : "Date Continuity"}
+            {type === "intraday" ? "Shift Handover" : "Continuity Audit"}
           </CardTitle>
         </div>
         
@@ -62,7 +67,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
 
       <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch">
-          {/* Shift 1 (Morning / Night Close) */}
+          {/* Shift 1 (Previous State) */}
           <div className={cn(
             "p-6 space-y-4 transition-colors duration-500",
             isNightSide ? "bg-slate-900 text-white" : "bg-white"
@@ -74,7 +79,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
                   "text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded",
                   isNightSide ? "text-indigo-200 bg-indigo-500/20" : "text-amber-600 bg-amber-50"
                 )}>
-                  {type === "intraday" ? "Morning" : `Last Used (${formatDateLabel(prevDate)})`}
+                  {type === "intraday" ? "Morning" : `${prevShift || 'Prev'} Shift (${formatDateLabel(prevDate)})`}
                 </span>
               </div>
               <span className={cn(
@@ -106,7 +111,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
                     "flex justify-between text-[10px] font-bold uppercase",
                     isNightSide ? "text-slate-500" : "text-slate-400"
                   )}>
-                    <span>Closing</span>
+                    <span>Closing Reading</span>
                   </div>
                   <div className={cn(
                     "font-mono text-xl font-black tabular-nums",
@@ -127,7 +132,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
                 "h-32 flex items-center justify-center italic text-xs border-2 border-dashed rounded-xl",
                 isNightSide ? "border-slate-800 text-slate-700" : "border-slate-100 text-slate-300"
               )}>
-                No Record Found
+                No Previous Record
               </div>
             )}
           </div>
@@ -152,7 +157,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
                     {timeGap.days > 0 ? `${timeGap.days}D ` : ""}{timeGap.hours}H Idle
                   </span>
                 </div>
-                <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Gap Duration</div>
+                <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Time Gap</div>
               </div>
             )}
 
@@ -166,13 +171,13 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
             )}
           </div>
 
-          {/* Shift 2 (Afternoon / Day Open) */}
+          {/* Shift 2 (Current State) */}
           <div className="p-6 space-y-4 bg-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sun size={14} className="text-indigo-500" />
                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
-                  {type === "intraday" ? "Afternoon" : `Current (${formatDateLabel(currDate)})`}
+                  {type === "intraday" ? "Afternoon" : `${currShift || 'Curr'} Shift (${formatDateLabel(currDate)})`}
                 </span>
               </div>
               <span className="text-xs font-bold text-slate-400 italic">
@@ -184,7 +189,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
               <div className="space-y-4">
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase">
-                    <span>Opening</span>
+                    <span>Opening Reading</span>
                   </div>
                   <div className={cn(
                     "font-mono text-xl font-black tabular-nums",
