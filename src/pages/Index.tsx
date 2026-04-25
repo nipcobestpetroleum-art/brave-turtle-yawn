@@ -3,9 +3,10 @@ import { salesData } from "../data/salesData";
 import { auditIntraDay, auditCrossDate } from "../utils/auditLogic";
 import PumpAuditCard from "../components/PumpAuditCard";
 import FinancialSummary from "../components/FinancialSummary";
+import IssueStaffList from "../components/IssueStaffList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, LayoutDashboard, RefreshCcw, History } from "lucide-react";
+import { Calendar, LayoutDashboard, RefreshCcw, History, Users } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
@@ -71,15 +72,19 @@ const Index = () => {
         <FinancialSummary report={currentReport} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center md:justify-start overflow-x-auto pb-2">
             <TabsList className="bg-white border-2 p-1 rounded-2xl h-auto gap-1">
-              <TabsTrigger value="handover" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2">
+              <TabsTrigger value="handover" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
                 <RefreshCcw size={16} />
                 Handover Audit
               </TabsTrigger>
-              <TabsTrigger value="continuity" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2">
+              <TabsTrigger value="continuity" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
                 <History size={16} />
                 Day-to-Day Continuity
+              </TabsTrigger>
+              <TabsTrigger value="staff" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                <Users size={16} />
+                Staff Accountability
               </TabsTrigger>
             </TabsList>
           </div>
@@ -116,6 +121,13 @@ const Index = () => {
                 <p className="text-gray-400 max-w-sm">There are no previous usage records for the pumps active on this day.</p>
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="staff" className="mt-0 outline-none">
+            <IssueStaffList 
+              results={crossDateResults} 
+              selectedDate={selectedDate} 
+            />
           </TabsContent>
         </Tabs>
       </div>
