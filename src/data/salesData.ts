@@ -111,5 +111,29 @@ export const salesData: DailyReport[] = [
     bankDeposits: [
       { amount: 14579020, reference: "27th and 28th Oct cash", date: "2025-10-29" }
     ]
+  },
+  {
+    date: "2025-10-30",
+    shifts: {
+      morning: [
+        { attendant: "Chidimma Okoro", pumpId: "PMP-002-A", product: "PMS", openingReading: 2187306.84, closingReading: 2188596.62, pricePerLiter: 940, cashCollected: 374400, posAmount: 837757 },
+        { attendant: "Ugochi", pumpId: "PMP-002-B", product: "PMS", openingReading: 2388935.02, closingReading: 2392062.46, pricePerLiter: 940, cashCollected: 1236000, posAmount: 1382285, shortageResolutions: [{ type: "debt", amount: 223000, liters: 237.23, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 94000, liters: 100, debtor: "Exodus", reason: "Debt" }, { type: "return to tank", amount: 4700, liters: 5, reason: "Priming" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-003-B", product: "PMS", openingReading: 53844.41, closingReading: 54908.51, pricePerLiter: 940, cashCollected: 647650, posAmount: 336600, shortageResolutions: [{ type: "debt", amount: 15040, liters: 16, debtor: "Multipro", reason: "MD approved" }] },
+        { attendant: "Amarachi", pumpId: "PMP-004-A", product: "PMS", openingReading: 813654.95, closingReading: 814601.20, pricePerLiter: 940, cashCollected: 288900, posAmount: 600240 },
+        { attendant: "Celestina", pumpId: "PMP-006-A", product: "PMS", openingReading: 661344.39, closingReading: 662844.99, pricePerLiter: 940, cashCollected: 691550, posAmount: 717850 },
+        { attendant: "Mary-cynthia", pumpId: "PMP-006-B", product: "PMS", openingReading: 537404.54, closingReading: 538455.11, pricePerLiter: 940, cashCollected: 727350, posAmount: 258420 },
+      ],
+      afternoon: [
+        { attendant: "Ogochukwu", pumpId: "PMP-002-B", product: "PMS", openingReading: 2392062.46, closingReading: 2393561.20, pricePerLiter: 940, cashCollected: 589420, posAmount: 819491 },
+        { attendant: "Mulakor", pumpId: "PMP-002-A", product: "PMS", openingReading: 2188596.62, closingReading: 2189275.74, pricePerLiter: 940, cashCollected: 228600, posAmount: 404300, shortageResolutions: [{ type: "debt", amount: 5000, liters: 5.32, debtor: "Debt", reason: "Precious 4000 and Rebecca 1000" }] },
+        { attendant: "Donald", pumpId: "PMP-003-A", product: "PMS", openingReading: 206280.49, closingReading: 207547.09, pricePerLiter: 940, cashCollected: 143600, posAmount: 685836, shortageResolutions: [{ type: "debt", amount: 45860, liters: 48.79, debtor: "Multipro company", reason: "MD approved" }, { type: "debt", amount: 314900, liters: 335, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Sarah chidiebere", pumpId: "PMP-003-B", product: "PMS", openingReading: 54908.51, closingReading: 55375.37, pricePerLiter: 940, cashCollected: 348500, posAmount: 89390 },
+        { attendant: "Miracle", pumpId: "PMP-004-A", product: "PMS", openingReading: 814601.20, closingReading: 815493.96, pricePerLiter: 940, cashCollected: 255700, posAmount: 529398, shortageResolutions: [{ type: "debt", amount: 34000, liters: 36.17, debtor: "Debt", reason: "No idea" }, { type: "debt", amount: 19740, liters: 21, debtor: "Multipro company", reason: "MD approved" }] },
+        { attendant: "Chisom", pumpId: "PMP-005-B", product: "PMS", openingReading: 702135.07, closingReading: 702875.66, pricePerLiter: 940, cashCollected: 528200, posAmount: 120000, shortageResolutions: [{ type: "debt", amount: 47000, liters: 50, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chidera", pumpId: "PMP-006-A", product: "PMS", openingReading: 662844.99, closingReading: 664131.15, pricePerLiter: 940, cashCollected: 357700, posAmount: 827296.20, shortageResolutions: [{ type: "debt", amount: 23500, liters: 25, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Miriam", pumpId: "PMP-006-B", product: "PMS", openingReading: 538455.10, closingReading: 539101.15, pricePerLiter: 940, cashCollected: 496500, posAmount: 106580 },
+      ]
+    },
+    bankDeposits: []
   }
 ];
