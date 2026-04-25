@@ -409,6 +409,8 @@ export const salesData: DailyReport[] = [
         { attendant: "Chidimma Cynthia", pumpId: "PMP-005-A", product: "PMS", openingReading: 1147954.27, closingReading: 1149610.55, pricePerLiter: 940, cashCollected: 569400, posAmount: 987225.20 },
         { attendant: "Mulakor", pumpId: "PMP-005-B", product: "PMS", openingReading: 712616.93, closingReading: 713531.20, pricePerLiter: 940, cashCollected: 318200, posAmount: 539516 },
         { attendant: "Sarah", pumpId: "PMP-006-A", product: "PMS", openingReading: 679278.58, closingReading: 680298.21, pricePerLiter: 940, cashCollected: 217500, posAmount: 740429 },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 185569.35, closingReading: 186280.78, pricePerLiter: 1050, cashCollected: 0, posAmount: 0, shortageResolutions: [{ type: "official use", amount: 747001.50, liters: 711.43, purpose: "For truck", reason: "Oga Emeka" }] },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 451682.78, closingReading: 452506.73, pricePerLiter: 1050, cashCollected: 82100, posAmount: 742500, shortageResolutions: [{ type: "official use", amount: 40498.50, liters: 38.57, purpose: "For truck", reason: "Oga Emeka" }] },
       ]
     },
     bankDeposits: []
