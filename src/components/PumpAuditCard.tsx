@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { ArrowRight, CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun } from "lucide-react";
+import { CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun } from "lucide-react";
 import { PumpReport } from "../types/sales";
 import { formatLiters } from "../utils/auditLogic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +27,7 @@ const formatDateLabel = (dateStr?: string) => {
 const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, prevDate, currDate }: PumpAuditCardProps) => {
   const soldMorning = morning ? morning.closingReading - morning.openingReading : 0;
   const soldAfternoon = afternoon ? afternoon.closingReading - afternoon.openingReading : 0;
+  const isNightSide = type === "crossdate";
 
   return (
     <Card className="overflow-hidden border-2 transition-all hover:shadow-md bg-white">
@@ -59,18 +62,24 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
       <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch">
           {/* Shift 1 (Morning / Night Close) */}
-          <div className="p-6 space-y-4">
+          <div className={cn(
+            "p-6 space-y-4 transition-colors duration-500",
+            isNightSide ? "bg-slate-900 text-white" : "bg-white"
+          )}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {type === "crossdate" ? <Moon size={14} className="text-slate-400" /> : <Sun size={14} className="text-amber-500" />}
+                {isNightSide ? <Moon size={14} className="text-indigo-400" /> : <Sun size={14} className="text-amber-500" />}
                 <span className={cn(
                   "text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded",
-                  type === "intraday" ? "text-amber-600 bg-amber-50" : "text-slate-600 bg-slate-100"
+                  isNightSide ? "text-indigo-200 bg-indigo-500/20" : "text-amber-600 bg-amber-50"
                 )}>
                   {type === "intraday" ? "Morning" : `Night (${formatDateLabel(prevDate)})`}
                 </span>
               </div>
-              <span className="text-xs font-bold text-slate-400 italic">
+              <span className={cn(
+                "text-xs font-bold italic",
+                isNightSide ? "text-slate-500" : "text-slate-400"
+              )}>
                 {morning?.attendant || "---"}
               </span>
             </div>
@@ -78,34 +87,52 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
             {morning ? (
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase">
+                  <div className={cn(
+                    "flex justify-between text-[10px] font-bold uppercase",
+                    isNightSide ? "text-slate-500" : "text-slate-400"
+                  )}>
                     <span>Opening</span>
                   </div>
-                  <div className="font-mono text-lg text-slate-500 tabular-nums">
+                  <div className={cn(
+                    "font-mono text-lg tabular-nums",
+                    isNightSide ? "text-slate-400" : "text-slate-500"
+                  )}>
                     {morning.openingReading.toFixed(2)}
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase">
+                  <div className={cn(
+                    "flex justify-between text-[10px] font-bold uppercase",
+                    isNightSide ? "text-slate-500" : "text-slate-400"
+                  )}>
                     <span>Closing</span>
                   </div>
-                  <div className="font-mono text-xl font-black text-slate-900 tabular-nums">
+                  <div className={cn(
+                    "font-mono text-xl font-black tabular-nums",
+                    isNightSide ? "text-white" : "text-slate-900"
+                  )}>
                     {morning.closingReading.toFixed(2)}
                   </div>
                 </div>
-                <div className="pt-2 border-t border-slate-100">
-                  <MetricPill label="Vol Sold" value={formatLiters(soldMorning)} variant="warning" />
+                <div className={cn(
+                  "pt-2 border-t",
+                  isNightSide ? "border-slate-800" : "border-slate-100"
+                )}>
+                  <MetricPill label="Vol Sold" value={formatLiters(soldMorning)} variant={isNightSide ? "default" : "warning"} />
                 </div>
               </div>
             ) : (
-              <div className="h-32 flex items-center justify-center text-slate-300 italic text-xs border-2 border-dashed rounded-xl">
+              <div className={cn(
+                "h-32 flex items-center justify-center italic text-xs border-2 border-dashed rounded-xl",
+                isNightSide ? "border-slate-800 text-slate-700" : "border-slate-100 text-slate-300"
+              )}>
                 No Record Found
               </div>
             )}
           </div>
 
           {/* Handover Bridge */}
-          <div className="bg-slate-50/50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[120px]">
+          <div className="bg-slate-50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[120px]">
             <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-slate-200 hidden md:block" />
             
             <div className={cn(
@@ -133,10 +160,10 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
           </div>
 
           {/* Shift 2 (Afternoon / Day Open) */}
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-4 bg-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sun size={14} className={type === "crossdate" ? "text-indigo-500" : "text-indigo-500"} />
+                <Sun size={14} className="text-indigo-500" />
                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
                   {type === "intraday" ? "Afternoon" : `Day (${formatDateLabel(currDate)})`}
                 </span>
