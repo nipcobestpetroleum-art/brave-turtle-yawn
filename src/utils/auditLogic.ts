@@ -16,6 +16,32 @@ export interface AuditResult {
 }
 
 /**
+ * Aggregates total generator usage across all reports
+ */
+export const calculateGeneratorUsage = (allData: DailyReport[]) => {
+  let totalLiters = 0;
+  let totalValue = 0;
+
+  allData.forEach(day => {
+    const allShifts = [...day.shifts.morning, ...day.shifts.afternoon];
+    allShifts.forEach(pump => {
+      pump.shortageResolutions?.forEach(res => {
+        // Look for official use specifically for generator
+        const isGenerator = res.purpose?.toLowerCase().includes('generator') || 
+                           res.reason?.toLowerCase().includes('generator');
+        
+        if (res.type === 'official use' && isGenerator) {
+          totalLiters += res.liters;
+          totalValue += res.amount;
+        }
+      });
+    });
+  });
+
+  return { totalLiters, totalValue };
+};
+
+/**
  * Intra-Day Handover Logic
  */
 export const auditIntraDay = (report: DailyReport): AuditResult[] => {
@@ -59,7 +85,6 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
     const currMorning = currentDay.shifts.morning.find(p => p.pumpId === pumpId);
     const currAfternoon = currentDay.shifts.afternoon.find(p => p.pumpId === pumpId);
     
-    // Determine which shift started the day for this pump
     const isMorningStart = !!currMorning;
     const firstReading = currMorning ? currMorning.openingReading : (currAfternoon ? currAfternoon.openingReading : null);
     const currentReport = currMorning || currAfternoon || null;
@@ -98,9 +123,7 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       diff = firstReading - lastReading;
       isBalanced = Math.abs(diff) < TOLERANCE;
 
-      // Calculate time gap
       const start = new Date(prevDateFound);
-      // Assume Morning shift starts at 8:00 AM, Afternoon shift ends at 10:00 PM
       if (wasNightShift) start.setHours(22, 0, 0); else start.setHours(14, 0, 0);
 
       const end = new Date(targetDate);

@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { salesData } from "../data/salesData";
-import { auditIntraDay, auditCrossDate } from "../utils/auditLogic";
+import { auditIntraDay, auditCrossDate, calculateGeneratorUsage } from "../utils/auditLogic";
 import PumpAuditCard from "../components/PumpAuditCard";
 import FinancialSummary from "../components/FinancialSummary";
 import IssueStaffList from "../components/IssueStaffList";
+import GeneratorUsageCard from "../components/GeneratorUsageCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, LayoutDashboard, RefreshCcw, History, Users } from "lucide-react";
@@ -24,6 +25,10 @@ const Index = () => {
   const crossDateResults = useMemo(() => 
     auditCrossDate(salesData, selectedDate)
   , [selectedDate]);
+
+  const generatorStats = useMemo(() => 
+    calculateGeneratorUsage(salesData)
+  , []);
 
   return (
     <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 pb-20">
@@ -69,6 +74,11 @@ const Index = () => {
       </div>
 
       <div className="max-w-7xl mx-auto">
+        <GeneratorUsageCard 
+          totalLiters={generatorStats.totalLiters} 
+          totalValue={generatorStats.totalValue} 
+        />
+        
         <FinancialSummary report={currentReport} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
