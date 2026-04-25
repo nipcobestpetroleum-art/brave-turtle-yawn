@@ -6,6 +6,7 @@ import FinancialSummary from "../components/FinancialSummary";
 import IssueStaffList from "../components/IssueStaffList";
 import GeneratorUsageCard from "../components/GeneratorUsageCard";
 import StaffLog from "../components/StaffLog";
+import ContinuityExport from "../components/ContinuityExport";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, LayoutDashboard, RefreshCcw, History, Users, ClipboardList } from "lucide-react";
@@ -116,7 +117,9 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="continuity" className="mt-0 outline-none">
+          <TabsContent value="continuity" className="mt-0 outline-none space-y-6">
+            <ContinuityExport allData={salesData} />
+            
             {crossDateResults.some(r => r.prevDate) ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {crossDateResults.map((res) => (
