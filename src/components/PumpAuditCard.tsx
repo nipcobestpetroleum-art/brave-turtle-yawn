@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun } from "lucide-react";
+import { CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun, Hourglass } from "lucide-react";
 import { PumpReport } from "../types/sales";
 import { formatLiters } from "../utils/auditLogic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,7 @@ interface PumpAuditCardProps {
   type: "intraday" | "crossdate";
   prevDate?: string;
   currDate?: string;
+  timeGap?: { days: number; hours: number };
 }
 
 const formatDateLabel = (dateStr?: string) => {
@@ -24,7 +25,7 @@ const formatDateLabel = (dateStr?: string) => {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
-const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, prevDate, currDate }: PumpAuditCardProps) => {
+const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, prevDate, currDate, timeGap }: PumpAuditCardProps) => {
   const soldMorning = morning ? morning.closingReading - morning.openingReading : 0;
   const soldAfternoon = afternoon ? afternoon.closingReading - afternoon.openingReading : 0;
   const isNightSide = type === "crossdate";
@@ -73,7 +74,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
                   "text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded",
                   isNightSide ? "text-indigo-200 bg-indigo-500/20" : "text-amber-600 bg-amber-50"
                 )}>
-                  {type === "intraday" ? "Morning" : `Night (${formatDateLabel(prevDate)})`}
+                  {type === "intraday" ? "Morning" : `Last Used (${formatDateLabel(prevDate)})`}
                 </span>
               </div>
               <span className={cn(
@@ -132,7 +133,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
           </div>
 
           {/* Handover Bridge */}
-          <div className="bg-slate-50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[120px]">
+          <div className="bg-slate-50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[140px]">
             <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-slate-200 hidden md:block" />
             
             <div className={cn(
@@ -143,18 +144,24 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
               {isBalanced ? <ArrowRightLeft size={20} /> : <AlertCircle size={20} />}
             </div>
 
-            {morning && afternoon && (
+            {timeGap && (timeGap.days > 0 || timeGap.hours > 0) && (
+              <div className="z-10 mt-3 flex flex-col items-center gap-1">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border shadow-sm">
+                  <Hourglass size={10} className="text-amber-500 animate-pulse" />
+                  <span className="text-[9px] font-black text-slate-600 uppercase tracking-tight">
+                    {timeGap.days > 0 ? `${timeGap.days}D ` : ""}{timeGap.hours}H Idle
+                  </span>
+                </div>
+                <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Gap Duration</div>
+              </div>
+            )}
+
+            {morning && afternoon && !timeGap && (
               <div className={cn(
                 "mt-4 text-[10px] font-black uppercase text-center px-2 py-1 rounded",
                 isBalanced ? "text-emerald-600 bg-emerald-50" : "text-rose-600 bg-rose-50"
               )}>
                 {isBalanced ? "Match" : `Gap: ${formatLiters(diff)}`}
-              </div>
-            )}
-            
-            {type === "crossdate" && (
-              <div className="mt-2 text-[9px] font-bold text-slate-400 uppercase">
-                Carry Over
               </div>
             )}
           </div>
@@ -165,7 +172,7 @@ const PumpAuditCard = ({ pumpId, morning, afternoon, isBalanced, diff, type, pre
               <div className="flex items-center gap-2">
                 <Sun size={14} className="text-indigo-500" />
                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
-                  {type === "intraday" ? "Afternoon" : `Day (${formatDateLabel(currDate)})`}
+                  {type === "intraday" ? "Afternoon" : `Current (${formatDateLabel(currDate)})`}
                 </span>
               </div>
               <span className="text-xs font-bold text-slate-400 italic">
