@@ -291,5 +291,31 @@ export const salesData: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-11-07",
+    shifts: {
+      morning: [
+        { attendant: "Test", pumpId: "PMP-001-A", product: "PMS", openingReading: 1000.00, closingReading: 3000.00, pricePerLiter: 940, cashCollected: 880000, posAmount: 950000, shortageResolutions: [{ type: "debt", amount: 50000, liters: 53.19, debtor: "Test", reason: "Test" }] },
+        { attendant: "Ugochi", pumpId: "PMP-002-A", product: "PMS", openingReading: 2206920.08, closingReading: 2208540.69, pricePerLiter: 940, cashCollected: 660700, posAmount: 862240 },
+        { attendant: "Chidimma", pumpId: "PMP-003-B", product: "PMS", openingReading: 66128.90, closingReading: 67071.00, pricePerLiter: 940, cashCollected: 738600, posAmount: 135500, shortageResolutions: [{ type: "debt", amount: 10340, liters: 11, debtor: "Multipro", reason: "MD approved" }] },
+        { attendant: "Chidera", pumpId: "PMP-004-A", product: "PMS", openingReading: 827079.38, closingReading: 828683.09, pricePerLiter: 940, cashCollected: 450310, posAmount: 1052020, shortageResolutions: [{ type: "debt", amount: 4700, liters: 5, debtor: "Debt", reason: "No idea" }] },
+        { attendant: "Miracle", pumpId: "PMP-006-A", product: "PMS", openingReading: 674806.88, closingReading: 675879.68, pricePerLiter: 940, cashCollected: 154500, posAmount: 409425, shortageResolutions: [{ type: "debt", amount: 376000, liters: 400, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 67600, liters: 71.91, debtor: "Chief Bestman", reason: "House" }] },
+        { attendant: "Sarah chidiebere", pumpId: "PMP-005-A", product: "PMS", openingReading: 1141995.90, closingReading: 1143836.56, pricePerLiter: 940, cashCollected: 358620, posAmount: 1248900, shortageResolutions: [{ type: "debt", amount: 122200, liters: 130, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Mulakor", pumpId: "PMP-005-B", product: "PMS", openingReading: 707978.89, closingReading: 708986.59, pricePerLiter: 940, cashCollected: 744350, posAmount: 200540 },
+        { attendant: "AGO Operator", pumpId: "AGO-001-B", product: "AGO", openingReading: 451397.78, closingReading: 451397.78, pricePerLiter: 1200, cashCollected: 0, posAmount: 0, shortageResolutions: [{ type: "official use", amount: 36000, liters: 30, purpose: "Generator", reason: "Daily usage" }] }
+      ],
+      afternoon: [
+        { attendant: "Ogochukwu", pumpId: "PMP-002-A", product: "PMS", openingReading: 2208540.69, closingReading: 2210321.70, pricePerLiter: 940, cashCollected: 581300, posAmount: 900300, shortageResolutions: [{ type: "debt", amount: 98700, liters: 105, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 93400, liters: 99.36, debtor: "Debt", reason: "Donald" }] },
+        { attendant: "Chisom", pumpId: "PMP-003-B", product: "PMS", openingReading: 67071.00, closingReading: 67976.50, pricePerLiter: 940, cashCollected: 440900, posAmount: 352891, shortageResolutions: [{ type: "debt", amount: 56400, liters: 60, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Miriam", pumpId: "PMP-004-A", product: "PMS", openingReading: 828683.09, closingReading: 829855.60, pricePerLiter: 940, cashCollected: 438700, posAmount: 642300, shortageResolutions: [{ type: "debt", amount: 20680, liters: 22, debtor: "Multipro", reason: "MD approved" }] },
+        { attendant: "Celestina", pumpId: "PMP-005-A", product: "PMS", openingReading: 1143836.56, closingReading: 1145808.48, pricePerLiter: 940, cashCollected: 793630, posAmount: 1060509 },
+        { attendant: "Amarachi", pumpId: "PMP-006-B", product: "PMS", openingReading: 708986.59, closingReading: 710192.54, pricePerLiter: 940, cashCollected: 366550, posAmount: 765712 },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 450828.87, closingReading: 451397.78, pricePerLiter: 1050, cashCollected: 0, posAmount: 555355, shortageResolutions: [{ type: "debt", amount: 42000, liters: 40, debtor: "Chief Bestman", reason: "House" }] }
+      ]
+    },
+    bankDeposits: [
+      { amount: 1830000, reference: "Daily Deposit", date: "2025-11-07" }
+    ]
   }
 ];
