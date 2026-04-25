@@ -317,5 +317,27 @@ export const salesData: DailyReport[] = [
     bankDeposits: [
       { amount: 1830000, reference: "Daily Deposit", date: "2025-11-07" }
     ]
+  },
+  {
+    date: "2025-11-08",
+    shifts: {
+      morning: [
+        { attendant: "Chisom", pumpId: "PMP-002-A", product: "PMS", openingReading: 2210321.71, closingReading: 2211678.89, pricePerLiter: 940, cashCollected: 489800, posAmount: 719161, shortageResolutions: [{ type: "debt", amount: 56400, liters: 60, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 10000, liters: 10.64, debtor: "Debt", reason: "No idea" }] },
+        { attendant: "Ugochi", pumpId: "PMP-002-B", product: "PMS", openingReading: 2426033.35, closingReading: 2429544.65, pricePerLiter: 940, cashCollected: 962400, posAmount: 1602511.40, shortageResolutions: [{ type: "debt", amount: 735033, liters: 781.95, debtor: "Maco oil", reason: "MD approved" }] },
+        { attendant: "Chidera", pumpId: "PMP-003-B", product: "PMS", openingReading: 67976.50, closingReading: 69010.74, pricePerLiter: 940, cashCollected: 698300, posAmount: 272900 },
+        { attendant: "Sarah chidiebere", pumpId: "PMP-004-A", product: "PMS", openingReading: 829855.63, closingReading: 831280.08, pricePerLiter: 940, cashCollected: 571110, posAmount: 678257, shortageResolutions: [{ type: "debt", amount: 31772, liters: 33.80, debtor: "Chief Bestman", reason: "Oga Peter" }, { type: "debt", amount: 37600, liters: 40.00, debtor: "Collins", reason: "For Enugu/MD order" }, { type: "debt", amount: 19740, liters: 21.00, debtor: "Multipro", reason: "MD approved" }] },
+        { attendant: "Miracle", pumpId: "PMP-005-B", product: "PMS", openingReading: 710192.54, closingReading: 711399.94, pricePerLiter: 940, cashCollected: 736500, posAmount: 222122, shortageResolutions: [{ type: "debt", amount: 141000, liters: 150.00, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 8460, liters: 9.00, debtor: "Multipro company", reason: "MD approved" }, { type: "debt", amount: 25000, liters: 26.60, debtor: "Debt", reason: "No idea" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-006-A", product: "PMS", openingReading: 675879.69, closingReading: 677360.90, pricePerLiter: 940, cashCollected: 440400, posAmount: 931736.40, shortageResolutions: [{ type: "debt", amount: 19740, liters: 21.00, debtor: "Multipro", reason: "MD approved" }] },
+      ],
+      afternoon: [
+        { attendant: "Amarachi", pumpId: "PMP-002-A", product: "PMS", openingReading: 2211678.89, closingReading: 2213408.98, pricePerLiter: 940, cashCollected: 256070, posAmount: 1303957.80, shortageResolutions: [{ type: "debt", amount: 65800, liters: 70, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Ogochukwu", pumpId: "PMP-002-B", product: "PMS", openingReading: 2429544.65, closingReading: 2432390.54, pricePerLiter: 940, cashCollected: 410650, posAmount: 2256476, shortageResolutions: [{ type: "debt", amount: 8000, liters: 8.51, debtor: "Debt", reason: "No idea" }] },
+        { attendant: "Miriam", pumpId: "PMP-003-B", product: "PMS", openingReading: 69010.74, closingReading: 69873.12, pricePerLiter: 940, cashCollected: 614900, posAmount: 194751 },
+        { attendant: "Celestina", pumpId: "PMP-005-B", product: "PMS", openingReading: 711399.94, closingReading: 712616.93, pricePerLiter: 940, cashCollected: 477520, posAmount: 618445, shortageResolutions: [{ type: "debt", amount: 47000, liters: 50, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Mulakor", pumpId: "PMP-006-A", product: "PMS", openingReading: 677360.90, closingReading: 678513.30, pricePerLiter: 940, cashCollected: 437900, posAmount: 644880 },
+        { attendant: "Donald", pumpId: "PMP-003-A", product: "PMS", openingReading: 214736.36, closingReading: 216331.40, pricePerLiter: 940, cashCollected: 289000, posAmount: 752274.60, shortageResolutions: [{ type: "debt", amount: 122200, liters: 130.00, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 15040, liters: 16.00, debtor: "Multipro company", reason: "MD approved" }, { type: "debt", amount: 320450, liters: 340.90, debtor: "Nwoke mgbo", reason: "MD approved" }] },
+      ]
+    },
+    bankDeposits: []
   }
 ];
