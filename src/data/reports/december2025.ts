@@ -975,6 +975,42 @@ export const december2025: DailyReport[] = [
             { type: "debt", amount: 42800, liters: 40.76, debtor: "Nwoke mgbo", reason: "Donald" }
           ] 
         },
+        { 
+          attendant: "Miriam", 
+          pumpId: "PMP-006-A", 
+          product: "PMS", 
+          openingReading: 714110.96, 
+          closingReading: 714385.06, 
+          pricePerLiter: 910, 
+          cashCollected: 0, 
+          posAmount: 50000, 
+          shortageResolutions: [
+            { type: "debt", amount: 200200, liters: 220, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Donald", 
+          pumpId: "PMP-006-A", 
+          product: "PMS", 
+          openingReading: 714385.06, 
+          closingReading: 715051.30, 
+          pricePerLiter: 910, 
+          cashCollected: 16500, 
+          posAmount: 0, 
+          shortageResolutions: [
+            { type: "debt", amount: 589771, liters: 648.10, debtor: "Maco", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Donald", 
+          pumpId: "AGO-001-A", 
+          product: "AGO", 
+          openingReading: 197755.76, 
+          closingReading: 197964.77, 
+          pricePerLiter: 1050, 
+          cashCollected: 0, 
+          posAmount: 219500 
+        },
       ]
     },
     bankDeposits: []
