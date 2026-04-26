@@ -1140,5 +1140,30 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-13",
+    shifts: {
+      morning: [
+        { attendant: "Miracle", pumpId: "PMP-002-A", product: "PMS", openingReading: 2306149.15, closingReading: 2307744.24, pricePerLiter: 910, cashCollected: 185700, posAmount: 867228, shortageResolutions: [{ type: "debt", amount: 354900, liters: 390, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 42770, liters: 47, debtor: "Multipro company", reason: "MD approved" }] },
+        { attendant: "Esther", pumpId: "PMP-002-B", product: "PMS", openingReading: 2578478.94, closingReading: 2581326.95, pricePerLiter: 910, cashCollected: 501910, posAmount: 2026286, shortageResolutions: [{ type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Celestina", pumpId: "PMP-003-A", product: "PMS", openingReading: 284927.24, closingReading: 286183.98, pricePerLiter: 910, cashCollected: 241460, posAmount: 901720 },
+        { attendant: "Celestina", pumpId: "PMP-003-B", product: "PMS", openingReading: 125486.13, closingReading: 125516.39, pricePerLiter: 910, cashCollected: 22500, posAmount: 5000 },
+        { attendant: "Amarachi", pumpId: "PMP-003-B", product: "PMS", openingReading: 125516.39, closingReading: 126681.64, pricePerLiter: 910, cashCollected: 605670, posAmount: 453800 },
+        { attendant: "Ogochukwu", pumpId: "PMP-006-A", product: "PMS", openingReading: 717363.78, closingReading: 718888.15, pricePerLiter: 910, cashCollected: 335550, posAmount: 1049127 },
+        { attendant: "Chidimma Okoro", pumpId: "PMP-006-B", product: "PMS", openingReading: 582536.60, closingReading: 583707.63, pricePerLiter: 910, cashCollected: 659110, posAmount: 405700 },
+      ],
+      afternoon: [
+        { attendant: "Chidera", pumpId: "PMP-002-A", product: "PMS", openingReading: 2307744.24, closingReading: 2309631.49, pricePerLiter: 910, cashCollected: 306650, posAmount: 1361234, shortageResolutions: [{ type: "official use", amount: 27300, liters: 30, purpose: "Bread bus", reason: "MD approved" }, { type: "return to tank", amount: 3503.50, liters: 3.85, reason: "MD approved" }, { type: "debt", amount: 18200, liters: 20, debtor: "Oga look man", reason: "MD approved" }] },
+        { attendant: "Miriam", pumpId: "PMP-002-B", product: "PMS", openingReading: 2581326.95, closingReading: 2583934.05, pricePerLiter: 910, cashCollected: 454150, posAmount: 1827364, shortageResolutions: [{ type: "debt", amount: 91000, liters: 100, debtor: "Solomon", reason: "MD approved" }] },
+        { attendant: "Chukwuka", pumpId: "PMP-003-A", product: "PMS", openingReading: 286183.98, closingReading: 287521.52, pricePerLiter: 910, cashCollected: 363100, posAmount: 853529 },
+        { attendant: "Chisom", pumpId: "PMP-003-B", product: "PMS", openingReading: 126681.64, closingReading: 127627.34, pricePerLiter: 910, cashCollected: 432620, posAmount: 338150, shortageResolutions: [{ type: "debt", amount: 91000, liters: 100, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-006-B", product: "PMS", openingReading: 583707.63, closingReading: 584900.72, pricePerLiter: 910, cashCollected: 352900, posAmount: 668135, shortageResolutions: [{ type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Donald", pumpId: "PMP-006-A", product: "PMS", openingReading: 718888.15, closingReading: 719002.82, pricePerLiter: 910, cashCollected: 44300, posAmount: 60000 },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 199107.51, closingReading: 199465.75, pricePerLiter: 1050, cashCollected: 94252, posAmount: 281900 },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 458578.93, closingReading: 458628.93, pricePerLiter: 1050, cashCollected: 10328, posAmount: 0, shortageResolutions: [{ type: "official use", amount: 42000, liters: 40, purpose: "House", reason: "MD approved" }] },
+      ]
+    },
+    bankDeposits: []
   }
 ];
