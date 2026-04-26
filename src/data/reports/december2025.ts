@@ -735,6 +735,29 @@ export const december2025: DailyReport[] = [
     bankDeposits: []
   },
   {
+    date: "2025-12-07",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Donald", 
+          pumpId: "PMP-002-B", 
+          product: "PMS", 
+          openingReading: 2562012.21, 
+          closingReading: 2563778.91, 
+          pricePerLiter: 910, 
+          cashCollected: 51350, 
+          posAmount: 720950, 
+          shortageResolutions: [
+            { type: "debt", amount: 154700, liters: 170, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 680716.40, liters: 748.04, debtor: "Maco oil", reason: "MD approved" }
+          ] 
+        },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
+  },
+  {
     date: "2025-12-08",
     shifts: {
       morning: [
