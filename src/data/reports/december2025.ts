@@ -102,5 +102,29 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-19",
+    shifts: {
+      morning: [
+        { attendant: "Miracle", pumpId: "PMP-002-A", product: "PMS", openingReading: 2324852.36, closingReading: 2327515.68, pricePerLiter: 830, cashCollected: 328100, posAmount: 1769962, shortageResolutions: [{ type: "debt", amount: 112050, liters: 135, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Miriam", pumpId: "PMP-002-B", product: "PMS", openingReading: 2603113.71, closingReading: 2606960.82, pricePerLiter: 830, cashCollected: 490400, posAmount: 2703189 },
+        { attendant: "Chukwuka", pumpId: "PMP-003-A", product: "PMS", openingReading: 301194.98, closingReading: 303209.42, pricePerLiter: 830, cashCollected: 422300, posAmount: 1249751 },
+        { attendant: "Chidera", pumpId: "PMP-003-B", product: "PMS", openingReading: 136187.62, closingReading: 137751.78, pricePerLiter: 830, cashCollected: 698550, posAmount: 593534, shortageResolutions: [{ type: "debt", amount: 5000, liters: 6.02, debtor: "No idea", reason: "No idea" }] },
+        { attendant: "Donald", pumpId: "PMP-005-A", product: "PMS", openingReading: 1187931.49, closingReading: 1188318.15, pricePerLiter: 830, cashCollected: 67200, posAmount: 193900, shortageResolutions: [{ type: "debt", amount: 9960, liters: 12, debtor: "Multipro", reason: "MD approved" }, { type: "debt", amount: 49800, liters: 60, debtor: "First patriot" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-006-B", product: "PMS", openingReading: 588844.08, closingReading: 590325.39, pricePerLiter: 830, cashCollected: 254250, posAmount: 965600, shortageResolutions: [{ type: "debt", amount: 7470, liters: 9, debtor: "Multipro" }] },
+      ],
+      afternoon: [
+        { attendant: "Ogochukwu", pumpId: "PMP-002-A", product: "PMS", openingReading: 2327515.68, closingReading: 2329607.76, pricePerLiter: 830, cashCollected: 636100, posAmount: 1049568, shortageResolutions: [{ type: "debt", amount: 49800, liters: 60, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Esther", pumpId: "PMP-002-B", product: "PMS", openingReading: 2606960.82, closingReading: 2609851.89, pricePerLiter: 830, cashCollected: 425390, posAmount: 1950670, shortageResolutions: [{ type: "debt", amount: 23240, liters: 28, debtor: "No idea", reason: "No idea" }] },
+        { attendant: "Celestina", pumpId: "PMP-003-A", product: "PMS", openingReading: 303209.42, closingReading: 304534.48, pricePerLiter: 830, cashCollected: 361200, posAmount: 680020, shortageResolutions: [{ type: "debt", amount: 58100, liters: 70, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Amarachi", pumpId: "PMP-003-B", product: "PMS", openingReading: 137751.78, closingReading: 138892.17, pricePerLiter: 830, cashCollected: 358750, posAmount: 586800 },
+        { attendant: "Chisom", pumpId: "PMP-005-A", product: "PMS", openingReading: 1188318.15, closingReading: 1189387.90, pricePerLiter: 830, cashCollected: 216750, posAmount: 529549, shortageResolutions: [{ type: "debt", amount: 141100, liters: 170, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chidimma Okoro", pumpId: "PMP-006-B", product: "PMS", openingReading: 590325.39, closingReading: 591531.88, pricePerLiter: 830, cashCollected: 621300, posAmount: 379232 },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 202794.21, closingReading: 203838.46, pricePerLiter: 1050, cashCollected: 702250, posAmount: 79800, shortageResolutions: [{ type: "debt", amount: 231000, liters: 220, debtor: "Governor's brother", reason: "MD approved" }, { type: "official use", amount: 84000, liters: 80, purpose: "House" }] },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 460443.79, closingReading: 460533.79, pricePerLiter: 1050, cashCollected: 0, posAmount: 16000, shortageResolutions: [{ type: "debt", amount: 10500, liters: 10, debtor: "No idea", reason: "No idea" }, { type: "official use", amount: 62496, liters: 59.52, purpose: "Generator" }] },
+      ]
+    },
+    bankDeposits: []
   }
 ];
