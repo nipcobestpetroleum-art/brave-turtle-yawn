@@ -3,7 +3,7 @@
 import React from "react";
 import { formatCurrency, formatLiters } from "../utils/auditLogic";
 import { Database, TrendingUp, Wallet, CreditCard, ShieldAlert } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface GrandStationSummaryProps {
   totalSales: number;
