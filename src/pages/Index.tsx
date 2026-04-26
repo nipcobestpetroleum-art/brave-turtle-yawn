@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { salesData } from "../data/salesData";
-import { auditIntraDay, auditCrossDate, calculateGeneratorUsage } from "../utils/auditLogic";
+import { auditIntraDay, auditCrossDate, calculateGeneratorUsage, calculateGrandTotals } from "../utils/auditLogic";
 import PumpAuditCard from "../components/PumpAuditCard";
 import FinancialSummary from "../components/FinancialSummary";
 import IssueStaffList from "../components/IssueStaffList";
 import GeneratorUsageCard from "../components/GeneratorUsageCard";
+import GrandStationSummary from "../components/GrandStationSummary";
 import StaffLog from "../components/StaffLog";
 import ContinuityExport from "../components/ContinuityExport";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +31,10 @@ const Index = () => {
 
   const generatorStats = useMemo(() => 
     calculateGeneratorUsage(salesData)
+  , []);
+
+  const grandTotals = useMemo(() => 
+    calculateGrandTotals(salesData)
   , []);
 
   return (
@@ -76,6 +81,8 @@ const Index = () => {
       </div>
 
       <div className="max-w-7xl mx-auto">
+        <GrandStationSummary {...grandTotals} />
+        
         <GeneratorUsageCard 
           totalLiters={generatorStats.totalLiters} 
           totalValue={generatorStats.totalValue} 
