@@ -638,5 +638,100 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-06",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Miracle", 
+          pumpId: "PMP-002-A", 
+          product: "PMS", 
+          openingReading: 2290478.36, 
+          closingReading: 2292949.31, 
+          pricePerLiter: 910, 
+          cashCollected: 440800, 
+          posAmount: 1656502, 
+          shortageResolutions: [
+            { type: "debt", amount: 145600, liters: 160, debtor: "First patriot", reason: "MD approved" },
+            { type: "return to tank", amount: 4550, liters: 5, reason: "Donald" }
+          ] 
+        },
+        { attendant: "Miriam", pumpId: "PMP-002-B", product: "PMS", openingReading: 2559189.41, closingReading: 2562012.21, pricePerLiter: 910, cashCollected: 623130, posAmount: 1945484 },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-003-B", product: "PMS", openingReading: 115904.67, closingReading: 117141.97, pricePerLiter: 910, cashCollected: 351400, posAmount: 773520 },
+        { attendant: "Chukwuka", pumpId: "PMP-006-A", product: "PMS", openingReading: 709593.58, closingReading: 711456.77, pricePerLiter: 910, cashCollected: 1045573, posAmount: 649350 },
+        { attendant: "Chidera", pumpId: "PMP-006-B", product: "PMS", openingReading: 571659.55, closingReading: 572944.28, pricePerLiter: 910, cashCollected: 410300, posAmount: 757720 },
+      ],
+      afternoon: [
+        { 
+          attendant: "Esther", 
+          pumpId: "PMP-002-A", 
+          product: "PMS", 
+          openingReading: 2292949.31, 
+          closingReading: 2294683.33, 
+          pricePerLiter: 910, 
+          cashCollected: 429300, 
+          posAmount: 1084620, 
+          shortageResolutions: [
+            { type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Celestina", 
+          pumpId: "PMP-003-A", 
+          product: "PMS", 
+          openingReading: 266445.87, 
+          closingReading: 269896.30, 
+          pricePerLiter: 910, 
+          cashCollected: 360000, 
+          posAmount: 2716200.50, 
+          shortageResolutions: [
+            { type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Amarachi", 
+          pumpId: "PMP-003-B", 
+          product: "PMS", 
+          openingReading: 117141.97, 
+          closingReading: 118332.18, 
+          pricePerLiter: 910, 
+          cashCollected: 501950, 
+          posAmount: 534679, 
+          shortageResolutions: [
+            { type: "debt", amount: 45500, liters: 50, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Donald", 
+          pumpId: "PMP-005-A", 
+          product: "PMS", 
+          openingReading: 1172205.23, 
+          closingReading: 1172781.50, 
+          pricePerLiter: 910, 
+          cashCollected: 190850, 
+          posAmount: 137600, 
+          shortageResolutions: [
+            { type: "debt", amount: 195650, liters: 215, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { attendant: "Ogochukwu", pumpId: "PMP-005-B", product: "PMS", openingReading: 741566.17, closingReading: 743183.56, pricePerLiter: 910, cashCollected: 426550, posAmount: 1043170 },
+        { 
+          attendant: "Donald", 
+          pumpId: "AGO-001-A", 
+          product: "AGO", 
+          openingReading: 196240.35, 
+          closingReading: 197031.21, 
+          pricePerLiter: 1050, 
+          cashCollected: 217000, 
+          posAmount: 246000, 
+          shortageResolutions: [
+            { type: "debt", amount: 262500, liters: 250, debtor: "Governor's brother", reason: "Donald" },
+            { type: "official use", amount: 105000, liters: 100, purpose: "Generator", reason: "Gen use" }
+          ] 
+        },
+      ]
+    },
+    bankDeposits: []
   }
 ];
