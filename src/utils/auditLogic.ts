@@ -13,6 +13,7 @@ export interface AuditResult {
   morning: PumpReport | null;
   afternoon: PumpReport | null;
   prevDate?: string;
+  currDate?: string;
   currShift?: "Morning" | "Afternoon";
   prevShift?: "Morning" | "Afternoon";
   timeGap?: {
@@ -25,38 +26,34 @@ export interface AuditResult {
  * Classifies the nature of a reading discrepancy based on volume thresholds
  */
 export const classifyGap = (diff: number): { category: GapCategory; label: string } => {
-  // 1. Balanced (within tolerance)
   if (Math.abs(diff) < TOLERANCE) {
     return { category: "balanced", label: "Verified Balanced" };
   }
   
-  // 2. Pump Resets or Errors (Negative gaps or gaps above 6000L)
   if (diff < -TOLERANCE || diff > 6000) {
     return { category: "reset", label: "Pump Reset (under enquiry)" };
   }
   
-  // 3. Theft or Unrecorded Sales (Significant positive gaps between 25L and 6000L)
   if (diff >= 25 && diff <= 6000) {
     return { category: "theft", label: "Unrecorded sales or theft" };
   }
   
-  // 4. Minor Discrepancies (0.05L to 25L)
   return { category: "minor", label: "Minor Discrepancy" };
 };
 
 /**
- * Aggregates grand totals from October 25th onwards
+ * Aggregates grand totals and extracts detailed theft records
  */
 export const calculateGrandTotals = (allData: DailyReport[]) => {
   let totalSales = 0;
   let totalCash = 0;
   let totalPos = 0;
   let totalLostLiters = 0;
+  const theftRecords: AuditResult[] = [];
 
   allData.forEach(day => {
     const allShifts = [...day.shifts.morning, ...day.shifts.afternoon];
     
-    // Financial Aggregation
     allShifts.forEach(pump => {
       const litersSold = Math.max(0, pump.closingReading - pump.openingReading);
       totalSales += (litersSold * pump.pricePerLiter);
@@ -64,20 +61,24 @@ export const calculateGrandTotals = (allData: DailyReport[]) => {
       totalPos += pump.posAmount;
     });
 
-    // Lost Liters Aggregation (Summing theft-category gaps from all transitions)
-    
-    // A. Intra-day transitions (Morning to Afternoon)
+    // Intra-day transitions
     auditIntraDay(day).forEach(res => {
-      if (res.category === "theft") totalLostLiters += res.diff;
+      if (res.category === "theft") {
+        totalLostLiters += res.diff;
+        theftRecords.push({ ...res, currDate: day.date });
+      }
     });
 
-    // B. Cross-date transitions (Overnight/Between days)
+    // Cross-date transitions
     auditCrossDate(allData, day.date).forEach(res => {
-      if (res.category === "theft") totalLostLiters += res.diff;
+      if (res.category === "theft") {
+        totalLostLiters += res.diff;
+        theftRecords.push({ ...res, currDate: day.date });
+      }
     });
   });
 
-  return { totalSales, totalCash, totalPos, totalLostLiters };
+  return { totalSales, totalCash, totalPos, totalLostLiters, theftRecords };
 };
 
 export const calculateGeneratorUsage = (allData: DailyReport[]) => {
@@ -197,6 +198,7 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       morning: prevReportFound, 
       afternoon: currentReport, 
       prevDate: prevDateFound,
+      currDate: targetDate,
       currShift: currShiftLabel,
       prevShift: prevShiftLabel,
       timeGap

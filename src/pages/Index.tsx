@@ -9,9 +9,10 @@ import GrandStationSummary from "../components/GrandStationSummary";
 import StaffLog from "../components/StaffLog";
 import ContinuityExport from "../components/ContinuityExport";
 import StationAnalytics from "../components/StationAnalytics";
+import UnrecordedSalesLog from "../components/UnrecordedSalesLog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, LayoutDashboard, RefreshCcw, History, Users, ClipboardList, BarChart3 } from "lucide-react";
+import { Calendar, LayoutDashboard, RefreshCcw, History, Users, ClipboardList, BarChart3, ShieldAlert } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
@@ -82,7 +83,10 @@ const Index = () => {
       </div>
 
       <div className="max-w-7xl mx-auto">
-        <GrandStationSummary {...grandTotals} />
+        <GrandStationSummary 
+          {...grandTotals} 
+          onLossClick={() => setActiveTab("unrecorded")}
+        />
         
         <GeneratorUsageCard 
           totalLiters={generatorStats.totalLiters} 
@@ -105,6 +109,10 @@ const Index = () => {
               <TabsTrigger value="analytics" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
                 <BarChart3 size={16} />
                 Analytics
+              </TabsTrigger>
+              <TabsTrigger value="unrecorded" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                <ShieldAlert size={16} />
+                Unrecorded Sales
               </TabsTrigger>
               <TabsTrigger value="staff" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
                 <Users size={16} />
@@ -155,6 +163,10 @@ const Index = () => {
 
           <TabsContent value="analytics" className="mt-0 outline-none">
             <StationAnalytics allData={salesData} />
+          </TabsContent>
+
+          <TabsContent value="unrecorded" className="mt-0 outline-none">
+            <UnrecordedSalesLog records={grandTotals.theftRecords} />
           </TabsContent>
 
           <TabsContent value="staff" className="mt-0 outline-none">
