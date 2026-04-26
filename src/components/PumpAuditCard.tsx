@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CheckCircle2, AlertCircle, Clock, ArrowRightLeft, Moon, Sun, Hourglass, HelpCircle, ShieldAlert } from "lucide-react";
-import { PumpReport } from "../types/sales";
+import { PumpReport, ShiftType } from "../types/sales";
 import { formatLiters, GapCategory } from "../utils/auditLogic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import MetricPill from "./MetricPill";
@@ -19,8 +19,8 @@ interface PumpAuditCardProps {
   type: "intraday" | "crossdate";
   prevDate?: string;
   currDate?: string;
-  prevShift?: "Morning" | "Afternoon";
-  currShift?: "Morning" | "Afternoon";
+  prevShift?: ShiftType;
+  currShift?: ShiftType;
   timeGap?: { days: number; hours: number };
 }
 
@@ -86,7 +86,7 @@ const PumpAuditCard = ({
               <div className="flex items-center gap-2">
                 {isNightSide ? <Moon size={14} className="text-indigo-400" /> : <Sun size={14} className="text-amber-500" />}
                 <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded", isNightSide ? "text-indigo-200 bg-indigo-500/20" : "text-amber-600 bg-amber-50")}>
-                  {type === "intraday" ? "Morning" : `${prevShift || 'Prev'} (${formatDateLabel(prevDate)})`}
+                  {prevShift || (type === "intraday" ? "Morning" : "Prev")} {prevDate && `(${formatDateLabel(prevDate)})`}
                 </span>
               </div>
               <span className={cn("text-xs font-bold italic", isNightSide ? "text-slate-500" : "text-slate-400")}>
@@ -147,7 +147,7 @@ const PumpAuditCard = ({
               <div className="flex items-center gap-2">
                 <Sun size={14} className="text-indigo-500" />
                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded">
-                  {type === "intraday" ? "Afternoon" : `Curr (${formatDateLabel(currDate)})`}
+                  {currShift || (type === "intraday" ? "Afternoon" : "Curr")} {currDate && `(${formatDateLabel(currDate)})`}
                 </span>
               </div>
               <span className="text-xs font-bold text-slate-400 italic">

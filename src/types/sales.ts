@@ -1,4 +1,4 @@
-export type ShiftType = "Morning" | "Afternoon";
+export type ShiftType = "Morning" | "Afternoon" | "Night";
 
 export interface ShortageResolution {
   type: "debt" | "return to tank" | "official use";
@@ -26,6 +26,7 @@ export interface DailyReport {
   shifts: {
     morning: PumpReport[];
     afternoon: PumpReport[];
+    night?: PumpReport[];
   };
   bankDeposits: {
     amount: number;

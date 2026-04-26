@@ -3,7 +3,7 @@ import { TOLERANCE } from "./auditLogic";
 
 export interface StaffLogEntry {
   date: string;
-  shift: "Morning" | "Afternoon";
+  shift: string;
   pumpId: string;
   attendant: string;
   openingReading: number;
@@ -15,55 +15,49 @@ export interface StaffLogEntry {
   timeGap?: { days: number; hours: number };
 }
 
-/**
- * Generates a complete history of shifts for a specific staff member
- */
 export const getStaffLog = (allData: DailyReport[], staffName: string): StaffLogEntry[] => {
   const log: StaffLogEntry[] = [];
   const sortedData = [...allData].sort((a, b) => a.date.localeCompare(b.date));
 
   sortedData.forEach((day, dayIdx) => {
     const shifts = [
-      { type: "morning" as const, data: day.shifts.morning },
-      { type: "afternoon" as const, data: day.shifts.afternoon }
+      { type: "Morning", data: day.shifts.morning },
+      { type: "Afternoon", data: day.shifts.afternoon },
+      { type: "Night", data: day.shifts.night || [] }
     ];
 
-    shifts.forEach((shiftType) => {
+    shifts.forEach((shiftType, shiftIdx) => {
       shiftType.data.forEach((pump) => {
         if (pump.attendant.toLowerCase() === staffName.toLowerCase()) {
-          // Found a shift for this staff. Now find the "Previous" record for this pump
           let prevReport: PumpReport | null = null;
           let prevDateFound: string | null = null;
-          let prevShiftType: "Morning" | "Afternoon" | null = null;
+          let prevShiftType: string | null = null;
 
-          // 1. Check same day morning if we are in afternoon
-          if (shiftType.type === "afternoon") {
-            const morningSameDay = day.shifts.morning.find(p => p.pumpId === pump.pumpId);
-            if (morningSameDay) {
-              prevReport = morningSameDay;
+          // 1. Check previous shifts in same day
+          for (let s = shiftIdx - 1; s >= 0; s--) {
+            const p = shifts[s].data.find(p => p.pumpId === pump.pumpId);
+            if (p) {
+              prevReport = p;
               prevDateFound = day.date;
-              prevShiftType = "Morning";
+              prevShiftType = shifts[s].type;
+              break;
             }
           }
 
-          // 2. If not found, search backwards through previous days
+          // 2. Search backwards through previous days
           if (!prevReport) {
             for (let i = dayIdx - 1; i >= 0; i--) {
               const checkDay = sortedData[i];
-              // Check afternoon then morning (reverse chronological)
+              const pNight = checkDay.shifts.night?.find(p => p.pumpId === pump.pumpId);
               const pAfternoon = checkDay.shifts.afternoon.find(p => p.pumpId === pump.pumpId);
-              if (pAfternoon) {
-                prevReport = pAfternoon;
-                prevDateFound = checkDay.date;
-                prevShiftType = "Afternoon";
-                break;
-              }
               const pMorning = checkDay.shifts.morning.find(p => p.pumpId === pump.pumpId);
-              if (pMorning) {
-                prevReport = pMorning;
-                prevDateFound = checkDay.date;
-                prevShiftType = "Morning";
-                break;
+
+              if (pNight) {
+                prevReport = pNight; prevDateFound = checkDay.date; prevShiftType = "Night"; break;
+              } else if (pAfternoon) {
+                prevReport = pAfternoon; prevDateFound = checkDay.date; prevShiftType = "Afternoon"; break;
+              } else if (pMorning) {
+                prevReport = pMorning; prevDateFound = checkDay.date; prevShiftType = "Morning"; break;
               }
             }
           }
@@ -76,11 +70,15 @@ export const getStaffLog = (allData: DailyReport[], staffName: string): StaffLog
             diff = pump.openingReading - prevReport.closingReading;
             isBalanced = Math.abs(diff) < TOLERANCE;
 
-            // Calculate Gap
             const start = new Date(prevDateFound);
-            if (prevShiftType === "Afternoon") start.setHours(22, 0, 0); else start.setHours(14, 0, 0);
+            if (prevShiftType === "Night") start.setHours(23, 59, 0);
+            else if (prevShiftType === "Afternoon") start.setHours(22, 0, 0);
+            else start.setHours(14, 0, 0);
+
             const end = new Date(day.date);
-            if (shiftType.type === "morning") end.setHours(8, 0, 0); else end.setHours(14, 0, 0);
+            if (shiftType.type === "Morning") end.setHours(8, 0, 0);
+            else if (shiftType.type === "Afternoon") end.setHours(14, 0, 0);
+            else end.setHours(22, 0, 0);
 
             const msGap = Math.max(0, end.getTime() - start.getTime());
             timeGap = {
@@ -90,30 +88,23 @@ export const getStaffLog = (allData: DailyReport[], staffName: string): StaffLog
           }
 
           log.push({
-            date: day.date,
-            shift: shiftType.type === "morning" ? "Morning" : "Afternoon",
-            pumpId: pump.pumpId,
-            attendant: pump.attendant,
-            openingReading: pump.openingReading,
-            closingReading: pump.closingReading,
-            prevAttendant: prevReport?.attendant || null,
-            prevClosing: prevReport?.closingReading || null,
-            diff,
-            isBalanced,
-            timeGap
+            date: day.date, shift: shiftType.type, pumpId: pump.pumpId, attendant: pump.attendant,
+            openingReading: pump.openingReading, closingReading: pump.closingReading,
+            prevAttendant: prevReport?.attendant || null, prevClosing: prevReport?.closingReading || null,
+            diff, isBalanced, timeGap
           });
         }
       });
     });
   });
 
-  return log.reverse(); // Newest first
+  return log.reverse();
 };
 
 export const getAllStaffNames = (allData: DailyReport[]): string[] => {
   const names = new Set<string>();
   allData.forEach(day => {
-    [...day.shifts.morning, ...day.shifts.afternoon].forEach(p => names.add(p.attendant));
+    [...day.shifts.morning, ...day.shifts.afternoon, ...(day.shifts.night || [])].forEach(p => names.add(p.attendant));
   });
   return Array.from(names).sort();
 };
