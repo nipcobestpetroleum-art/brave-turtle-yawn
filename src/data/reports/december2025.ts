@@ -1102,5 +1102,20 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-11",
+    shifts: {
+      morning: [
+        { attendant: "Chisom", pumpId: "PMP-002-A", product: "PMS", openingReading: 2300993.89, closingReading: 2302744.67, pricePerLiter: 910, cashCollected: 209300, posAmount: 1105889, shortageResolutions: [{ type: "debt", amount: 277550, liters: 305, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chidera", pumpId: "PMP-003-A", product: "PMS", openingReading: 280178.55, closingReading: 281578.34, pricePerLiter: 910, cashCollected: 166400, posAmount: 1043368, shortageResolutions: [{ type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-003-B", product: "PMS", openingReading: 121914.82, closingReading: 123004.49, pricePerLiter: 910, cashCollected: 175700, posAmount: 705729.60, shortageResolutions: [{ type: "debt", amount: 109200, liters: 120, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 197964.77, closingReading: 198365.96, pricePerLiter: 1050, cashCollected: 52400, posAmount: 211500, shortageResolutions: [{ type: "official use", amount: 52500, liters: 50, purpose: "House", reason: "MD approved" }, { type: "official use", amount: 105000, liters: 100, purpose: "Generator", reason: "MD approved" }] },
+        { attendant: "Miriam", pumpId: "PMP-006-B", product: "PMS", openingReading: 578712.98, closingReading: 579794.48, pricePerLiter: 910, cashCollected: 445100, posAmount: 538010 },
+        { attendant: "Chukwuka", pumpId: "PMP-002-B", product: "PMS", openingReading: 2569723.96, closingReading: 2572414.18, pricePerLiter: 910, cashCollected: 504100, posAmount: 1941857 },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
