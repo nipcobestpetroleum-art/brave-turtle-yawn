@@ -840,5 +840,143 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-09",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Amarachi", 
+          pumpId: "PMP-003-A", 
+          product: "PMS", 
+          openingReading: 275356.05, 
+          closingReading: 277470.92, 
+          pricePerLiter: 910, 
+          cashCollected: 316020, 
+          posAmount: 1527931.30, 
+          shortageResolutions: [
+            { type: "debt", amount: 45500, liters: 50, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 34580, liters: 38, debtor: "Fidelity Bank", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Ogochukwu", 
+          pumpId: "PMP-005-A", 
+          product: "PMS", 
+          openingReading: 1173836.11, 
+          closingReading: 1180576.58, 
+          pricePerLiter: 910, 
+          cashCollected: 4661015, 
+          posAmount: 478600, 
+          shortageResolutions: [
+            { type: "debt", amount: 54600, liters: 60, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 843642.80, liters: 927.08, debtor: "No idea", reason: "No idea" },
+            { type: "return to tank", amount: 4550, liters: 5, reason: "Donald" },
+            { type: "debt", amount: 91000, liters: 100, debtor: "Osinachi Solomon", reason: "MD approved" }
+          ] 
+        },
+        { attendant: "Celestina", pumpId: "PMP-005-B", product: "PMS", openingReading: 743183.58, closingReading: 744829.78, pricePerLiter: 910, cashCollected: 348370, posAmount: 1145760 },
+        { 
+          attendant: "Esther", 
+          pumpId: "PMP-006-A", 
+          product: "PMS", 
+          openingReading: 711456.84, 
+          closingReading: 712936.38, 
+          pricePerLiter: 910, 
+          cashCollected: 428760, 
+          posAmount: 774510, 
+          shortageResolutions: [
+            { type: "debt", amount: 54600, liters: 60, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 36400, liters: 40, debtor: "Chief Bestman", reason: "MD approved" },
+            { type: "debt", amount: 51324, liters: 56.40, debtor: "Donald", reason: "No idea" }
+          ] 
+        },
+        { 
+          attendant: "Miracle", 
+          pumpId: "PMP-006-B", 
+          product: "PMS", 
+          openingReading: 575297.24, 
+          closingReading: 576830.13, 
+          pricePerLiter: 910, 
+          cashCollected: 795870, 
+          posAmount: 465403, 
+          shortageResolutions: [
+            { type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 68250, liters: 75, debtor: "Multipro company", reason: "MD approved" }
+          ] 
+        },
+      ],
+      afternoon: [
+        { attendant: "Chukwuka", pumpId: "PMP-003-A", product: "PMS", openingReading: 277470.92, closingReading: 278490.47, pricePerLiter: 910, cashCollected: 327850, posAmount: 599372 },
+        { 
+          attendant: "Chidimma Cynthia", 
+          pumpId: "PMP-005-A", 
+          product: "PMS", 
+          openingReading: 1180576.58, 
+          closingReading: 1182674.01, 
+          pricePerLiter: 910, 
+          cashCollected: 123120, 
+          posAmount: 1767110, 
+          shortageResolutions: [
+            { type: "debt", amount: 18200, liters: 20, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { attendant: "Chidera", pumpId: "PMP-005-B", product: "PMS", openingReading: 744829.78, closingReading: 745532.74, pricePerLiter: 910, cashCollected: 39400, posAmount: 599454 },
+        { 
+          attendant: "Miriam", 
+          pumpId: "PMP-006-A", 
+          product: "PMS", 
+          openingReading: 712936.38, 
+          closingReading: 714110.96, 
+          pricePerLiter: 910, 
+          cashCollected: 342000, 
+          posAmount: 517783, 
+          shortageResolutions: [
+            { type: "debt", amount: 63700, liters: 70, debtor: "First patriot", reason: "MD approved" },
+            { type: "debt", amount: 146000, liters: 160.44, debtor: "Nwanyi nkwogwu", reason: "Precious" }
+          ] 
+        },
+        { 
+          attendant: "Chisom", 
+          pumpId: "PMP-006-B", 
+          product: "PMS", 
+          openingReading: 576830.13, 
+          closingReading: 577511.70, 
+          pricePerLiter: 910, 
+          cashCollected: 296300, 
+          posAmount: 232400, 
+          shortageResolutions: [
+            { type: "debt", amount: 91000, liters: 100, debtor: "First patriot", reason: "MD approved" }
+          ] 
+        },
+        { 
+          attendant: "Donald", 
+          pumpId: "AGO-001-A", 
+          product: "AGO", 
+          openingReading: 197180.21, 
+          closingReading: 197755.76, 
+          pricePerLiter: 1050, 
+          cashCollected: 0, 
+          posAmount: 93200, 
+          shortageResolutions: [
+            { type: "debt", amount: 511077, liters: 486.74, debtor: "Governor's brother", reason: "No idea" }
+          ] 
+        },
+        { 
+          attendant: "Donald", 
+          pumpId: "AGO-001-B", 
+          product: "AGO", 
+          openingReading: 458419.93, 
+          closingReading: 458503.93, 
+          pricePerLiter: 1050, 
+          cashCollected: 44450, 
+          posAmount: 0, 
+          shortageResolutions: [
+            { type: "debt", amount: 42800, liters: 40.76, debtor: "Nwoke mgbo", reason: "Donald" }
+          ] 
+        },
+      ]
+    },
+    bankDeposits: []
   }
 ];
