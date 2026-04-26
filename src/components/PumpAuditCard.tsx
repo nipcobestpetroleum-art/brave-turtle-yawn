@@ -80,6 +80,7 @@ const PumpAuditCard = ({
 
       <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch">
+          {/* Morning / Previous Shift Section */}
           <div className={cn("p-6 space-y-4", isNightSide ? "bg-slate-900 text-white" : "bg-white")}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -94,13 +95,15 @@ const PumpAuditCard = ({
             </div>
 
             {morning ? (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <div className={cn("flex justify-between text-[10px] font-bold uppercase", isNightSide ? "text-slate-500" : "text-slate-400")}>
-                    <span>Closing Reading</span>
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <span className={cn("text-[9px] font-bold uppercase", isNightSide ? "text-slate-500" : "text-slate-400")}>Opening</span>
+                    <p className="font-mono text-sm font-bold tabular-nums">{morning.openingReading.toFixed(2)}</p>
                   </div>
-                  <div className={cn("font-mono text-xl font-black tabular-nums", isNightSide ? "text-white" : "text-slate-900")}>
-                    {morning.closingReading.toFixed(2)}
+                  <div className="space-y-1">
+                    <span className={cn("text-[9px] font-bold uppercase", isNightSide ? "text-slate-500" : "text-slate-400")}>Closing</span>
+                    <p className="font-mono text-sm font-bold tabular-nums">{morning.closingReading.toFixed(2)}</p>
                   </div>
                 </div>
                 <div className={cn("pt-2 border-t", isNightSide ? "border-slate-800" : "border-slate-100")}>
@@ -108,12 +111,13 @@ const PumpAuditCard = ({
                 </div>
               </div>
             ) : (
-              <div className={cn("h-32 flex items-center justify-center italic text-xs border-2 border-dashed rounded-xl", isNightSide ? "border-slate-800 text-slate-700" : "border-slate-100 text-slate-300")}>
+              <div className={cn("h-24 flex items-center justify-center italic text-xs border-2 border-dashed rounded-xl", isNightSide ? "border-slate-800 text-slate-700" : "border-slate-100 text-slate-300")}>
                 No Previous Record
               </div>
             )}
           </div>
 
+          {/* Handover / Gap Section */}
           <div className="bg-slate-50 flex flex-col items-center justify-center px-4 py-8 md:py-0 border-y md:border-y-0 md:border-x border-slate-100 relative min-w-[140px]">
             <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-slate-200 hidden md:block" />
             <div className={cn(
@@ -137,6 +141,7 @@ const PumpAuditCard = ({
             )}
           </div>
 
+          {/* Afternoon / Current Shift Section */}
           <div className="p-6 space-y-4 bg-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -151,17 +156,20 @@ const PumpAuditCard = ({
             </div>
 
             {afternoon ? (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase">
-                    <span>Opening Reading</span>
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <span className="text-[9px] text-slate-400 font-bold uppercase">Opening</span>
+                    <p className={cn(
+                      "font-mono text-sm font-bold tabular-nums",
+                      category !== 'balanced' && category !== 'reset' && "text-rose-600 underline decoration-wavy decoration-rose-200"
+                    )}>
+                      {afternoon.openingReading.toFixed(2)}
+                    </p>
                   </div>
-                  <div className={cn(
-                    "font-mono text-xl font-black tabular-nums",
-                    category === 'balanced' ? "text-slate-900" : 
-                    category === 'reset' ? "text-slate-500" : "text-rose-600 underline decoration-wavy decoration-rose-200"
-                  )}>
-                    {afternoon.openingReading.toFixed(2)}
+                  <div className="space-y-1">
+                    <span className="text-[9px] text-slate-400 font-bold uppercase">Closing</span>
+                    <p className="font-mono text-sm font-bold tabular-nums">{afternoon.closingReading.toFixed(2)}</p>
                   </div>
                 </div>
                 <div className="pt-2 border-t border-slate-100">
@@ -169,7 +177,7 @@ const PumpAuditCard = ({
                 </div>
               </div>
             ) : (
-              <div className="h-32 flex items-center justify-center text-slate-300 italic text-xs border-2 border-dashed rounded-xl">
+              <div className="h-24 flex items-center justify-center text-slate-300 italic text-xs border-2 border-dashed rounded-xl">
                 Pending Report
               </div>
             )}
