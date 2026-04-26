@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { DailyReport } from "../types/sales";
-import { auditCrossDate, formatLiters } from "./auditLogic";
+import { DailyReport, PumpReport } from "../types/sales";
+import { auditCrossDate, formatLiters, AuditResult } from "./auditLogic";
 
 export const generateContinuityPDF = (allData: DailyReport[], startDate: string, endDate: string) => {
   const doc = new jsPDF();
@@ -22,7 +22,6 @@ export const generateContinuityPDF = (allData: DailyReport[], startDate: string,
   sortedDays.forEach(day => {
     const results = auditCrossDate(allData, day.date);
     results.forEach(res => {
-      // We only include rows where there is a previous record to compare against
       if (res.prevDate) {
         tableData.push([
           day.date,
@@ -61,4 +60,41 @@ export const generateContinuityPDF = (allData: DailyReport[], startDate: string,
   });
 
   doc.save(`NIPCO_Continuity_${startDate}_to_${endDate}.pdf`);
+};
+
+export const generateLossLogPDF = (records: AuditResult[]) => {
+  const doc = new jsPDF();
+  
+  // Header
+  doc.setFontSize(18);
+  doc.text("NIPCO Station Loss & Theft Log", 14, 22);
+  doc.setFontSize(11);
+  doc.setTextColor(100);
+  doc.text(`Total Incidents: ${records.length}`, 14, 30);
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 36);
+
+  const tableData = records.map(r => [
+    r.currDate || "N/A",
+    r.pumpId,
+    r.type === 'intraday' ? 'Handover' : 'Continuity',
+    r.morning?.attendant || "System",
+    r.morning?.closingReading.toFixed(2),
+    r.afternoon?.attendant || "System",
+    r.afternoon?.openingReading.toFixed(2),
+    formatLiters(r.diff)
+  ]);
+
+  autoTable(doc, {
+    startY: 45,
+    head: [['Date', 'Pump', 'Type', 'Prev Staff', 'Closing', 'Curr Staff', 'Opening', 'Loss Vol']],
+    body: tableData,
+    theme: 'grid',
+    headStyles: { fillColor: [225, 29, 72], fontSize: 8 },
+    bodyStyles: { fontSize: 7 },
+    columnStyles: {
+      7: { fontStyle: 'bold', textColor: [225, 29, 72] }
+    }
+  });
+
+  doc.save(`NIPCO_Loss_Log_${new Date().toISOString().split('T')[0]}.pdf`);
 };

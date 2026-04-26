@@ -2,8 +2,10 @@
 
 import React from "react";
 import { AuditResult, formatLiters } from "../utils/auditLogic";
+import { generateLossLogPDF } from "../utils/pdfGenerator";
 import { Card, CardContent } from "@/components/ui/card";
-import { ShieldAlert, Calendar, User, ArrowRight, Fuel } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ShieldAlert, Calendar, User, ArrowRight, Fuel, FileDown, RefreshCcw, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface UnrecordedSalesLogProps {
@@ -24,20 +26,33 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-2">
-        <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-          <ShieldAlert size={16} className="text-rose-500" />
-          Detailed Loss Log
-        </h3>
-        <span className="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">
-          {records.length} Incidents
-        </span>
+        <div className="space-y-1">
+          <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <ShieldAlert size={16} className="text-rose-500" />
+            Detailed Loss Log
+          </h3>
+          <p className="text-[10px] font-bold text-slate-400 uppercase">Audit of all unrecorded sold volumes</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">
+            {records.length} Incidents
+          </span>
+          <Button 
+            onClick={() => generateLossLogPDF(records)}
+            size="sm"
+            className="bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold gap-2 h-9"
+          >
+            <FileDown size={14} />
+            Export PDF
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         {records.map((record, idx) => (
           <Card key={`${record.pumpId}-${idx}`} className="border-2 border-rose-100 overflow-hidden hover:shadow-md transition-all">
             <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-[120px_1fr_200px] items-stretch">
+              <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_200px] items-stretch">
                 {/* Pump & Date */}
                 <div className="bg-rose-50/50 p-4 border-b md:border-b-0 md:border-r border-rose-100 flex flex-col items-center justify-center text-center gap-1">
                   <div className="bg-white p-2 rounded-lg shadow-sm border border-rose-100 mb-1">
@@ -47,6 +62,15 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
                   <span className="text-[10px] font-bold text-slate-400 uppercase">
                     {record.currDate ? new Date(record.currDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
                   </span>
+                  
+                  {/* Transition Type Badge */}
+                  <div className={cn(
+                    "mt-2 px-2 py-0.5 rounded-full text-[8px] font-black uppercase flex items-center gap-1 border",
+                    record.type === 'intraday' ? "bg-indigo-50 text-indigo-600 border-indigo-100" : "bg-slate-900 text-white border-slate-800"
+                  )}>
+                    {record.type === 'intraday' ? <RefreshCcw size={8} /> : <History size={8} />}
+                    {record.type === 'intraday' ? 'Handover' : 'Continuity'}
+                  </div>
                 </div>
 
                 {/* Transition Details */}

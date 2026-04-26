@@ -12,6 +12,7 @@ export interface AuditResult {
   categoryLabel: string;
   morning: PumpReport | null;
   afternoon: PumpReport | null;
+  type: "intraday" | "crossdate";
   prevDate?: string;
   currDate?: string;
   currShift?: "Morning" | "Afternoon";
@@ -65,7 +66,7 @@ export const calculateGrandTotals = (allData: DailyReport[]) => {
     auditIntraDay(day).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
-        theftRecords.push({ ...res, currDate: day.date });
+        theftRecords.push({ ...res, currDate: day.date, type: "intraday" });
       }
     });
 
@@ -73,7 +74,7 @@ export const calculateGrandTotals = (allData: DailyReport[]) => {
     auditCrossDate(allData, day.date).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
-        theftRecords.push({ ...res, currDate: day.date });
+        theftRecords.push({ ...res, currDate: day.date, type: "crossdate" });
       }
     });
   });
@@ -123,7 +124,8 @@ export const auditIntraDay = (report: DailyReport): AuditResult[] => {
       category, 
       categoryLabel: label,
       morning, 
-      afternoon 
+      afternoon,
+      type: "intraday"
     };
   });
 };
@@ -201,7 +203,8 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       currDate: targetDate,
       currShift: currShiftLabel,
       prevShift: prevShiftLabel,
-      timeGap
+      timeGap,
+      type: "crossdate"
     };
   });
 };
