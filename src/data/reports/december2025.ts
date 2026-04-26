@@ -1117,5 +1117,28 @@ export const december2025: DailyReport[] = [
       afternoon: []
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-12",
+    shifts: {
+      morning: [
+        { attendant: "Miracle", pumpId: "PMP-006-B", product: "PMS", openingReading: 579794.48, closingReading: 581166.07, pricePerLiter: 910, cashCollected: 631700, posAmount: 371312, shortageResolutions: [{ type: "debt", amount: 232050, liters: 255, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 8190, liters: 9, debtor: "Multipro company", reason: "MD approved" }] },
+        { attendant: "Chidimma", pumpId: "PMP-006-A", product: "PMS", openingReading: 716141.53, closingReading: 717363.76, pricePerLiter: 910, cashCollected: 268400, posAmount: 843500 },
+        { attendant: "Ogochukwu", pumpId: "PMP-003-B", product: "PMS", openingReading: 123004.49, closingReading: 124365.03, pricePerLiter: 910, cashCollected: 335950, posAmount: 901270 },
+        { attendant: "Amarachi", pumpId: "PMP-003-A", product: "PMS", openingReading: 281578.35, closingReading: 283273.59, pricePerLiter: 910, cashCollected: 493500, posAmount: 991702.30, shortageResolutions: [{ type: "debt", amount: 12740, liters: 14, debtor: "Multipro", reason: "MD approved" }, { type: "debt", amount: 44226, liters: 48.60, debtor: "Fidelity Bank", reason: "MD approved" }] },
+        { attendant: "Celestina", pumpId: "PMP-002-B", product: "PMS", openingReading: 2572414.18, closingReading: 2576423.59, pricePerLiter: 910, cashCollected: 227950, posAmount: 2790127, shortageResolutions: [{ type: "debt", amount: 630493.50, liters: 692.85, debtor: "Maco", reason: "MD approved" }] },
+        { attendant: "Esther", pumpId: "PMP-002-A", product: "PMS", openingReading: 2302744.68, closingReading: 2304170.49, pricePerLiter: 910, cashCollected: 301210, posAmount: 941070, shortageResolutions: [{ type: "debt", amount: 54600, liters: 60, debtor: "First patriot", reason: "MD approved" }] },
+      ],
+      afternoon: [
+        { attendant: "Miriam", pumpId: "PMP-002-A", product: "PMS", openingReading: 2304170.49, closingReading: 2306149.15, pricePerLiter: 910, cashCollected: 328000, posAmount: 1363143, shortageResolutions: [{ type: "debt", amount: 109200, liters: 120, debtor: "First patriot", reason: "MD approved" }] },
+        { attendant: "Chisom", pumpId: "PMP-002-B", product: "PMS", openingReading: 2576423.59, closingReading: 2578478.93, pricePerLiter: 910, cashCollected: 133400, posAmount: 1587556.10, shortageResolutions: [{ type: "debt", amount: 54600, liters: 60, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 91000, liters: 100, debtor: "Osinachi", reason: "MD" }, { type: "debt", amount: 4000, liters: 4.40, debtor: "Oga look man", reason: "MD approved" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-003-A", product: "PMS", openingReading: 283273.59, closingReading: 284927.23, pricePerLiter: 910, cashCollected: 388220, posAmount: 1070100, shortageResolutions: [{ type: "debt", amount: 45500, liters: 50, debtor: "MD and oga B", reason: "MD approved" }] },
+        { attendant: "Chukwuka", pumpId: "PMP-003-B", product: "PMS", openingReading: 124365.03, closingReading: 125486.13, pricePerLiter: 910, cashCollected: 657900, posAmount: 360804 },
+        { attendant: "Chidera", pumpId: "PMP-006-B", product: "PMS", openingReading: 581166.07, closingReading: 582536.60, pricePerLiter: 910, cashCollected: 368170, posAmount: 878200 },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 198365.96, closingReading: 199107.51, pricePerLiter: 1050, cashCollected: 73677.50, posAmount: 125850, shortageResolutions: [{ type: "debt", amount: 569100, liters: 542, debtor: "Governor's brother", reason: "MD approved" }, { type: "debt", amount: 10000, liters: 9.52, debtor: "Oga look man", reason: "MD approved" }] },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 458503.93, closingReading: 458578.93, pricePerLiter: 1050, cashCollected: 78722.50, posAmount: 0 },
+      ]
+    },
+    bankDeposits: []
   }
 ];
