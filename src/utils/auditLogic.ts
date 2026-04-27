@@ -110,39 +110,36 @@ export const calculateGeneratorLog = (allData: DailyReport[]) => {
 export const auditIntraDay = (report: DailyReport, product?: string): AuditResult[] => {
   const results: AuditResult[] = [];
   const allPumpReports = [
-    ...report.shifts.morning,
-    ...report.shifts.afternoon,
-    ...(report.shifts.night || [])
+    ...report.shifts.morning.map(p => ({ ...p, shift: "Morning" as ShiftType })),
+    ...report.shifts.afternoon.map(p => ({ ...p, shift: "Afternoon" as ShiftType })),
+    ...(report.shifts.night || []).map(p => ({ ...p, shift: "Night" as ShiftType }))
   ].filter(p => !product || p.product === product);
 
-  const pumpIds = new Set(allPumpReports.map(p => p.pumpId));
+  const pumpIds = Array.from(new Set(allPumpReports.map(p => p.pumpId)));
 
-  Array.from(pumpIds).forEach(pumpId => {
-    const morning = report.shifts.morning.find(p => p.pumpId === pumpId) || null;
-    const afternoon = report.shifts.afternoon.find(p => p.pumpId === pumpId) || null;
-    const night = report.shifts.night?.find(p => p.pumpId === pumpId) || null;
+  pumpIds.forEach(pumpId => {
+    const pumpSessions = allPumpReports
+      .filter(p => p.pumpId === pumpId)
+      .sort((a, b) => a.openingReading - b.openingReading);
 
-    if (morning || afternoon) {
-      const diff = (morning && afternoon) ? afternoon.openingReading - morning.closingReading : 0;
-      const { category, label } = (morning && afternoon) ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
-      const price = afternoon?.pricePerLiter || morning?.pricePerLiter || 0;
-      
-      results.push({ 
-        pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
-        morning, afternoon, type: "intraday", prevShift: "Morning", currShift: "Afternoon",
-        priceAtIncident: price,
-        valueLost: category === "theft" ? diff * price : 0
-      });
-    }
+    for (let i = 1; i < pumpSessions.length; i++) {
+      const prev = pumpSessions[i - 1];
+      const curr = pumpSessions[i];
+      const diff = curr.openingReading - prev.closingReading;
+      const { category, label } = classifyGap(diff);
+      const price = curr.pricePerLiter || prev.pricePerLiter || 0;
 
-    if (night) {
-      const diff = afternoon ? night.openingReading - afternoon.closingReading : 0;
-      const { category, label } = afternoon ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
-      const price = night.pricePerLiter || afternoon?.pricePerLiter || 0;
-
-      results.push({ 
-        pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
-        morning: afternoon, afternoon: night, type: "intraday", prevShift: "Afternoon", currShift: "Night",
+      results.push({
+        pumpId,
+        diff,
+        isBalanced: category === "balanced",
+        category,
+        categoryLabel: label,
+        morning: prev,
+        afternoon: curr,
+        type: "intraday",
+        prevShift: prev.shift,
+        currShift: curr.shift,
         priceAtIncident: price,
         valueLost: category === "theft" ? diff * price : 0
       });
@@ -167,31 +164,32 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string, produ
   const pumpIds = new Set(allCurrentPumps.map(p => p.pumpId));
 
   return Array.from(pumpIds).map(pumpId => {
-    const currMorning = currentDay.shifts.morning.find(p => p.pumpId === pumpId);
-    const currAfternoon = currentDay.shifts.afternoon.find(p => p.pumpId === pumpId);
-    const currNight = currentDay.shifts.night?.find(p => p.pumpId === pumpId);
+    const currSessions = [
+      ...currentDay.shifts.morning,
+      ...currentDay.shifts.afternoon,
+      ...(currentDay.shifts.night || [])
+    ].filter(p => p.pumpId === pumpId).sort((a, b) => a.openingReading - b.openingReading);
     
-    const currentReport = currMorning || currAfternoon || currNight || null;
-    const currShiftLabel: ShiftType = currMorning ? "Morning" : currAfternoon ? "Afternoon" : "Night";
+    const currentReport = currSessions[0] || null;
     const firstReading = currentReport?.openingReading || null;
 
     let lastReading = null;
     let prevDateFound = undefined;
     let prevReportFound = null;
-    let prevShiftLabel: ShiftType | undefined = undefined;
 
     for (let i = targetIndex - 1; i >= 0; i--) {
       const checkDay = sortedData[i];
-      const pNight = checkDay.shifts.night?.find(p => p.pumpId === pumpId);
-      const pAfternoon = checkDay.shifts.afternoon.find(p => p.pumpId === pumpId);
-      const pMorning = checkDay.shifts.morning.find(p => p.pumpId === pumpId);
+      const prevSessions = [
+        ...checkDay.shifts.morning,
+        ...checkDay.shifts.afternoon,
+        ...(checkDay.shifts.night || [])
+      ].filter(p => p.pumpId === pumpId).sort((a, b) => b.closingReading - a.closingReading);
 
-      const found = pNight || pAfternoon || pMorning;
+      const found = prevSessions[0];
       if (found) {
         lastReading = found.closingReading;
         prevDateFound = checkDay.date;
         prevReportFound = found;
-        prevShiftLabel = pNight ? "Night" : pAfternoon ? "Afternoon" : "Morning";
         break;
       }
     }
@@ -207,8 +205,7 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string, produ
     return { 
       pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
       morning: prevReportFound, afternoon: currentReport, prevDate: prevDateFound,
-      currDate: targetDate, currShift: currShiftLabel, prevShift: prevShiftLabel,
-      type: "crossdate",
+      currDate: targetDate, type: "crossdate",
       priceAtIncident: price,
       valueLost: category === "theft" ? diff * price : 0
     };
