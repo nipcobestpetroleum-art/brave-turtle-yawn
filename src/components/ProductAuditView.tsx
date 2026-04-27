@@ -9,8 +9,9 @@ import UnrecordedSalesLog from "./UnrecordedSalesLog";
 import IssueStaffList from "./IssueStaffList";
 import StaffLog from "./StaffLog";
 import PumpResetLog from "./PumpResetLog";
+import ForensicAuditReport from "./ForensicAuditReport";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshCcw, History, BarChart3, ShieldAlert, Users, ClipboardList, Package, TrendingUp, Zap } from "lucide-react";
+import { RefreshCcw, History, BarChart3, ShieldAlert, Users, ClipboardList, Package, TrendingUp, Zap, Scale } from "lucide-react";
 
 interface ProductAuditViewProps {
   product: "PMS" | "AGO";
@@ -24,7 +25,6 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
   const crossDateResults = useMemo(() => auditCrossDate(allData, selectedDate, product), [allData, selectedDate, product]);
   const totals = useMemo(() => calculateProductTotals(allData, product), [allData, product]);
 
-  // Calculate daily volume for current product
   const dailyVolume = useMemo(() => {
     return [...currentReport.shifts.morning, ...currentReport.shifts.afternoon, ...(currentReport.shifts.night || [])]
       .filter(p => p.product === product)
@@ -33,7 +33,6 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
 
   return (
     <div className="space-y-6">
-      {/* Product Summary Header */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white border-2 p-5 rounded-3xl shadow-sm flex items-center gap-4">
           <div className="bg-indigo-50 p-3 rounded-2xl text-indigo-600">
@@ -72,6 +71,9 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
           <TabsTrigger value="continuity" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-indigo-600 data-[state=active]:text-white flex items-center gap-2">
             <History size={14} /> Continuity
           </TabsTrigger>
+          <TabsTrigger value="forensic" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-slate-900 data-[state=active]:text-white flex items-center gap-2">
+            <Scale size={14} /> Forensic Audit
+          </TabsTrigger>
           <TabsTrigger value="analytics" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-indigo-600 data-[state=active]:text-white flex items-center gap-2">
             <BarChart3 size={14} /> Analytics
           </TabsTrigger>
@@ -79,7 +81,7 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
             <ShieldAlert size={14} /> Unrecorded
           </TabsTrigger>
           <TabsTrigger value="resets" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-indigo-900 data-[state=active]:text-white flex items-center gap-2">
-            <Zap size={14} /> Resets & Correlation
+            <Zap size={14} /> Resets
           </TabsTrigger>
           <TabsTrigger value="staff" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-rose-600 data-[state=active]:text-white flex items-center gap-2">
             <Users size={14} /> Accountability
@@ -98,6 +100,9 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {crossDateResults.map(res => <PumpAuditCard key={res.pumpId} {...res} type="crossdate" />)}
           </div>
+        </TabsContent>
+        <TabsContent value="forensic" className="mt-0">
+          <ForensicAuditReport allData={allData} />
         </TabsContent>
         <TabsContent value="analytics" className="mt-0">
           <StationAnalytics allData={allData} />

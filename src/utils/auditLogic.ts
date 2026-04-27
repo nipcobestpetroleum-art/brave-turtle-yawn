@@ -19,6 +19,9 @@ export interface AuditResult {
   prevShift?: ShiftType;
   priceAtIncident?: number;
   valueLost?: number;
+  expectedRevenue?: number;
+  actualReceived?: number;
+  shortage?: number;
   timeGap?: {
     days: number;
     hours: number;
@@ -214,3 +217,11 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string, produ
 
 export const formatCurrency = (amount: number) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
 export const formatLiters = (liters: number) => `${liters.toFixed(2)} L`;
+
+export const calculateSessionFinancials = (pump: PumpReport) => {
+  const litersSold = pump.closingReading - pump.openingReading;
+  const expectedRevenue = litersSold * pump.pricePerLiter;
+  const actualReceived = pump.cashCollected + pump.posAmount + (pump.shortageResolutions?.reduce((acc, curr) => acc + curr.amount, 0) || 0);
+  const shortage = expectedRevenue - actualReceived;
+  return { expectedRevenue, actualReceived, shortage };
+};
