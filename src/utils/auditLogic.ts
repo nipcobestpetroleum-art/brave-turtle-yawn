@@ -40,6 +40,7 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
   let totalLostLiters = 0;
   let totalLostValue = 0;
   const theftRecords: AuditResult[] = [];
+  const resetRecords: AuditResult[] = [];
 
   allData.forEach(day => {
     const allShifts = [...day.shifts.morning, ...day.shifts.afternoon, ...(day.shifts.night || [])];
@@ -58,6 +59,8 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
         totalLostLiters += res.diff;
         totalLostValue += (res.valueLost || 0);
         theftRecords.push({ ...res, currDate: day.date, type: "intraday" });
+      } else if (res.category === "reset") {
+        resetRecords.push({ ...res, currDate: day.date, type: "intraday" });
       }
     });
 
@@ -66,11 +69,13 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
         totalLostLiters += res.diff;
         totalLostValue += (res.valueLost || 0);
         theftRecords.push({ ...res, currDate: day.date, type: "crossdate" });
+      } else if (res.category === "reset") {
+        resetRecords.push({ ...res, currDate: day.date, type: "crossdate" });
       }
     });
   });
 
-  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, totalLostValue, theftRecords };
+  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, totalLostValue, theftRecords, resetRecords };
 };
 
 export const calculateGeneratorLog = (allData: DailyReport[]) => {

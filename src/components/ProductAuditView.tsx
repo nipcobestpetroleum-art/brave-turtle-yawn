@@ -8,8 +8,9 @@ import StationAnalytics from "./StationAnalytics";
 import UnrecordedSalesLog from "./UnrecordedSalesLog";
 import IssueStaffList from "./IssueStaffList";
 import StaffLog from "./StaffLog";
+import PumpResetLog from "./PumpResetLog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshCcw, History, BarChart3, ShieldAlert, Users, ClipboardList, Package, TrendingUp } from "lucide-react";
+import { RefreshCcw, History, BarChart3, ShieldAlert, Users, ClipboardList, Package, TrendingUp, Zap } from "lucide-react";
 
 interface ProductAuditViewProps {
   product: "PMS" | "AGO";
@@ -77,6 +78,9 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
           <TabsTrigger value="unrecorded" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-rose-600 data-[state=active]:text-white flex items-center gap-2">
             <ShieldAlert size={14} /> Unrecorded
           </TabsTrigger>
+          <TabsTrigger value="resets" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-indigo-900 data-[state=active]:text-white flex items-center gap-2">
+            <Zap size={14} /> Resets & Correlation
+          </TabsTrigger>
           <TabsTrigger value="staff" className="rounded-xl px-4 py-2 text-xs font-bold data-[state=active]:bg-rose-600 data-[state=active]:text-white flex items-center gap-2">
             <Users size={14} /> Accountability
           </TabsTrigger>
@@ -100,6 +104,9 @@ const ProductAuditView = ({ product, allData, selectedDate }: ProductAuditViewPr
         </TabsContent>
         <TabsContent value="unrecorded" className="mt-0">
           <UnrecordedSalesLog records={totals.theftRecords} />
+        </TabsContent>
+        <TabsContent value="resets" className="mt-0">
+          <PumpResetLog resets={totals.resetRecords} thefts={totals.theftRecords} />
         </TabsContent>
         <TabsContent value="staff" className="mt-0">
           <IssueStaffList results={crossDateResults} selectedDate={selectedDate} />
