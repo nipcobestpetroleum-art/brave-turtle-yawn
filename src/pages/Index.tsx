@@ -70,8 +70,10 @@ const Index = () => {
           totalPos={grandTotals.totalPos}
           pmsLostLiters={pmsTotals.totalLostLiters}
           pmsLostValue={pmsTotals.totalLostValue}
+          pmsFinancialShortage={pmsTotals.totalFinancialShortage}
           agoLostLiters={agoTotals.totalLostLiters}
           agoLostValue={agoTotals.totalLostValue}
+          agoFinancialShortage={agoTotals.totalFinancialShortage}
         />
         
         <Tabs defaultValue="pms" className="space-y-0">

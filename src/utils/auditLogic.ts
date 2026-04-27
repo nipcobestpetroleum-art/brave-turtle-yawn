@@ -35,6 +35,14 @@ export const classifyGap = (diff: number): { category: GapCategory; label: strin
   return { category: "minor", label: "Minor Discrepancy" };
 };
 
+export const calculateSessionFinancials = (pump: PumpReport) => {
+  const litersSold = Math.max(0, pump.closingReading - pump.openingReading);
+  const expectedRevenue = litersSold * pump.pricePerLiter;
+  const actualReceived = pump.cashCollected + pump.posAmount + (pump.shortageResolutions?.reduce((acc, curr) => acc + curr.amount, 0) || 0);
+  const shortage = expectedRevenue - actualReceived;
+  return { expectedRevenue, actualReceived, shortage };
+};
+
 export const calculateProductTotals = (allData: DailyReport[], product?: string) => {
   let totalSales = 0;
   let totalLiters = 0;
@@ -42,6 +50,7 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
   let totalPos = 0;
   let totalLostLiters = 0;
   let totalLostValue = 0;
+  let totalFinancialShortage = 0;
   const theftRecords: AuditResult[] = [];
   const resetRecords: AuditResult[] = [];
 
@@ -50,11 +59,18 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
     
     allShifts.forEach(pump => {
       if (product && pump.product !== product) return;
+      const { expectedRevenue, shortage } = calculateSessionFinancials(pump);
+      
       const litersSold = Math.max(0, pump.closingReading - pump.openingReading);
       totalLiters += litersSold;
-      totalSales += (litersSold * pump.pricePerLiter);
+      totalSales += expectedRevenue;
       totalCash += pump.cashCollected;
       totalPos += pump.posAmount;
+      
+      // Track financial shortages (cash/POS gaps)
+      if (shortage > 10) {
+        totalFinancialShortage += shortage;
+      }
     });
 
     auditIntraDay(day, product).forEach(res => {
@@ -78,7 +94,17 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
     });
   });
 
-  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, totalLostValue, theftRecords, resetRecords };
+  return { 
+    totalSales, 
+    totalLiters, 
+    totalCash, 
+    totalPos, 
+    totalLostLiters, 
+    totalLostValue, 
+    totalFinancialShortage,
+    theftRecords, 
+    resetRecords 
+  };
 };
 
 export const calculateGeneratorLog = (allData: DailyReport[]) => {
@@ -217,11 +243,3 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string, produ
 
 export const formatCurrency = (amount: number) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
 export const formatLiters = (liters: number) => `${liters.toFixed(2)} L`;
-
-export const calculateSessionFinancials = (pump: PumpReport) => {
-  const litersSold = pump.closingReading - pump.openingReading;
-  const expectedRevenue = litersSold * pump.pricePerLiter;
-  const actualReceived = pump.cashCollected + pump.posAmount + (pump.shortageResolutions?.reduce((acc, curr) => acc + curr.amount, 0) || 0);
-  const shortage = expectedRevenue - actualReceived;
-  return { expectedRevenue, actualReceived, shortage };
-};

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database, AlertCircle } from "lucide-react";
+import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database, AlertCircle, Scale } from "lucide-react";
 import ModernMetricCard from "./ModernMetricCard";
 import { formatCurrency, formatLiters } from "../utils/auditLogic";
 
@@ -11,8 +11,10 @@ interface GrandStationSummaryProps {
   totalPos: number;
   pmsLostLiters: number;
   pmsLostValue: number;
+  pmsFinancialShortage: number;
   agoLostLiters: number;
   agoLostValue: number;
+  agoFinancialShortage: number;
   onLossClick?: () => void;
 }
 
@@ -22,10 +24,14 @@ const GrandStationSummary = ({
   totalPos, 
   pmsLostLiters, 
   pmsLostValue,
+  pmsFinancialShortage,
   agoLostLiters, 
   agoLostValue,
+  agoFinancialShortage,
   onLossClick 
 }: GrandStationSummaryProps) => {
+  const totalCombinedLoss = pmsLostValue + agoLostValue + pmsFinancialShortage + agoFinancialShortage;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 px-2">
@@ -35,7 +41,7 @@ const GrandStationSummary = ({
         <h2 className="text-xs font-black text-slate-900 uppercase tracking-[0.25em]">Grand Station Metrics</h2>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <ModernMetricCard 
           label="Grand Total Sales" 
           value={formatCurrency(totalSales)} 
@@ -55,26 +61,27 @@ const GrandStationSummary = ({
           color="emerald" 
         />
         <ModernMetricCard 
-          label="Total Financial Loss" 
-          value={formatCurrency(pmsLostValue + agoLostValue)} 
-          icon={AlertCircle} 
+          label="Total Forensic Loss" 
+          value={formatCurrency(totalCombinedLoss)} 
+          subValue="Combined Audit"
+          icon={Scale} 
           color="rose" 
           onClick={onLossClick}
           isInteractive={true}
         />
         <ModernMetricCard 
-          label="PMS SECTION" 
+          label="PMS SECTION LOSS" 
           value={formatLiters(pmsLostLiters)} 
-          subValue={formatCurrency(pmsLostValue)}
+          subValue={formatCurrency(pmsLostValue + pmsFinancialShortage)}
           icon={ShieldAlert} 
           color="rose" 
           onClick={onLossClick}
           isInteractive={true}
         />
         <ModernMetricCard 
-          label="AGO SECTION" 
+          label="AGO SECTION LOSS" 
           value={formatLiters(agoLostLiters)} 
-          subValue={formatCurrency(agoLostValue)}
+          subValue={formatCurrency(agoLostValue + agoFinancialShortage)}
           icon={ShieldAlert} 
           color="slate" 
           onClick={onLossClick}
