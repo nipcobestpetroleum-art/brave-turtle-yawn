@@ -9,7 +9,7 @@ import GeneratorLog from "../components/GeneratorLog";
 import FinancialSummary from "../components/FinancialSummary";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, LayoutDashboard, Fuel, Zap } from "lucide-react";
+import { Calendar, LayoutDashboard, Fuel, Zap, ShieldCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
@@ -25,7 +25,7 @@ const Index = () => {
   const agoTotals = useMemo(() => calculateProductTotals(salesData, "AGO"), []);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] p-4 md:p-12 pb-24">
+    <div className="min-h-screen bg-[#f8fafc] p-4 md:p-12 pb-12">
       <div className="max-w-7xl mx-auto mb-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-2">
@@ -79,7 +79,6 @@ const Index = () => {
         <Tabs defaultValue="pms" className="space-y-0">
           <Card className="bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-2xl shadow-slate-200/60 overflow-hidden">
             <div className="p-8 md:p-10 space-y-10">
-              {/* Navigation Tabs at the top of the card - Full Width */}
               <div className="w-full">
                 <TabsList className="bg-slate-50 border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full flex">
                   <TabsTrigger value="pms" className="flex-1 rounded-[1.5rem] px-8 py-4 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center justify-center gap-3 text-xs">
@@ -94,12 +93,10 @@ const Index = () => {
                 </TabsList>
               </div>
 
-              {/* Daily Performance Metrics */}
               <div className="pt-2">
                 <FinancialSummary report={currentReport} />
               </div>
 
-              {/* Tab Content - Audit Views */}
               <div className="pt-10 border-t-2 border-slate-50">
                 <TabsContent value="pms" className="outline-none mt-0">
                   <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
@@ -118,7 +115,17 @@ const Index = () => {
         </Tabs>
       </div>
       
-      <MadeWithDyad />
+      {/* Legal Disclaimer Footer */}
+      <div className="max-w-4xl mx-auto mt-16 px-6 text-center space-y-4">
+        <div className="flex items-center justify-center gap-2 text-slate-400">
+          <ShieldCheck size={14} />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Data Integrity Notice</span>
+        </div>
+        <p className="text-[9px] leading-relaxed text-slate-400 font-medium uppercase tracking-wider">
+          LEGAL DISCLAIMER: These records are digital representations of station activities and are subject to a secondary phase of forensic scrutiny by senior officials of NIPCO Abakaliki Station to ensure maximum data integrity. The programmer/developer is hereby indemnified against any legal liabilities, claims, or damages arising from raw data entry errors, meter variances, or administrative discrepancies in a court of law. This system is an analytical tool and does not constitute a final certified financial statement.
+        </p>
+        <MadeWithDyad />
+      </div>
     </div>
   );
 };
