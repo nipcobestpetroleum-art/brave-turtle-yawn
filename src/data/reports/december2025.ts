@@ -213,5 +213,42 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-31",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Dogood", 
+          pumpId: "PMP-003-A", 
+          product: "PMS", 
+          openingReading: 333903.41, 
+          closingReading: 334885.25, 
+          pricePerLiter: 830, 
+          cashCollected: 136200, 
+          posAmount: 4345170, 
+          shortageResolutions: [
+            { type: "debt", amount: 224100, liters: 270, debtor: "First patriot", reason: "MD approved" },
+            { type: "official use", amount: 10001.50, liters: 12.05, purpose: "Driver's food", reason: "MD approved" },
+            { type: "debt", amount: 10000, liters: 12.05, debtor: "Chukwuma", reason: "No idea" }
+          ] 
+        },
+        { 
+          attendant: "Dogood", 
+          pumpId: "AGO-001-A", 
+          product: "AGO", 
+          openingReading: 208096.69, 
+          closingReading: 208348.93, 
+          pricePerLiter: 1050, 
+          cashCollected: 0, 
+          posAmount: 212352, 
+          shortageResolutions: [
+            { type: "official use", amount: 52500, liters: 50, purpose: "For truck", reason: "MD approved" }
+          ] 
+        },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
