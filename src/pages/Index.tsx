@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useMemo } from "react";
 import { salesData } from "../data/salesData";
-import { calculateProductTotals, calculateGeneratorLog } from "../utils/auditLogic";
+import { calculateProductTotals } from "../utils/auditLogic";
 import GrandStationSummary from "../components/GrandStationSummary";
 import ProductAuditView from "../components/ProductAuditView";
 import GeneratorLog from "../components/GeneratorLog";
@@ -18,6 +20,8 @@ const Index = () => {
   , [selectedDate]);
 
   const grandTotals = useMemo(() => calculateProductTotals(salesData), []);
+  const pmsTotals = useMemo(() => calculateProductTotals(salesData, "PMS"), []);
+  const agoTotals = useMemo(() => calculateProductTotals(salesData, "AGO"), []);
 
   return (
     <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 pb-20">
@@ -52,7 +56,13 @@ const Index = () => {
       </div>
 
       <div className="max-w-7xl mx-auto space-y-8">
-        <GrandStationSummary {...grandTotals} />
+        <GrandStationSummary 
+          totalSales={grandTotals.totalSales}
+          totalCash={grandTotals.totalCash}
+          totalPos={grandTotals.totalPos}
+          pmsLostLiters={pmsTotals.totalLostLiters}
+          agoLostLiters={agoTotals.totalLostLiters}
+        />
         
         <FinancialSummary report={currentReport} />
 

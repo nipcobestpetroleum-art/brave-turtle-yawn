@@ -9,21 +9,38 @@ interface GrandStationSummaryProps {
   totalSales: number;
   totalCash: number;
   totalPos: number;
-  totalLostLiters: number;
+  pmsLostLiters: number;
+  agoLostLiters: number;
   onLossClick?: () => void;
 }
 
-const GrandStationSummary = ({ totalSales, totalCash, totalPos, totalLostLiters, onLossClick }: GrandStationSummaryProps) => {
+const GrandStationSummary = ({ 
+  totalSales, 
+  totalCash, 
+  totalPos, 
+  pmsLostLiters, 
+  agoLostLiters, 
+  onLossClick 
+}: GrandStationSummaryProps) => {
   const stats = [
     { label: "Grand Total Sales", value: formatCurrency(totalSales), icon: TrendingUp, color: "text-indigo-600", bg: "bg-indigo-50" },
     { label: "Total Cash (Oct 25+)", value: formatCurrency(totalCash), icon: Wallet, color: "text-amber-600", bg: "bg-amber-50" },
     { label: "Total POS (Oct 25+)", value: formatCurrency(totalPos), icon: CreditCard, color: "text-emerald-600", bg: "bg-emerald-50" },
     { 
-      label: "Unrecorded Sold Vol.", 
-      value: formatLiters(totalLostLiters), 
+      label: "PMS Unrecorded Vol.", 
+      value: formatLiters(pmsLostLiters), 
       icon: ShieldAlert, 
       color: "text-rose-600", 
       bg: "bg-rose-50",
+      onClick: onLossClick,
+      isInteractive: true
+    },
+    { 
+      label: "AGO Unrecorded Vol.", 
+      value: formatLiters(agoLostLiters), 
+      icon: ShieldAlert, 
+      color: "text-slate-600", 
+      bg: "bg-slate-100",
       onClick: onLossClick,
       isInteractive: true
     },
@@ -36,7 +53,7 @@ const GrandStationSummary = ({ totalSales, totalCash, totalPos, totalLostLiters,
         <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Grand Station Metrics (Since Oct 25)</h2>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat) => (
           <div 
             key={stat.label} 
