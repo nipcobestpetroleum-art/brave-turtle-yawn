@@ -12,6 +12,11 @@ interface UnrecordedSalesLogProps {
   records: AuditResult[];
 }
 
+const formatDate = (dateStr?: string) => {
+  if (!dateStr) return "N/A";
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
 const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
   if (records.length === 0) {
     return (
@@ -53,17 +58,13 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
           <Card key={`${record.pumpId}-${idx}`} className="border-2 border-rose-100 overflow-hidden hover:shadow-md transition-all">
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_200px] items-stretch">
-                {/* Pump & Date */}
+                {/* Pump & Type */}
                 <div className="bg-rose-50/50 p-4 border-b md:border-b-0 md:border-r border-rose-100 flex flex-col items-center justify-center text-center gap-1">
                   <div className="bg-white p-2 rounded-lg shadow-sm border border-rose-100 mb-1">
                     <Fuel size={16} className="text-rose-500" />
                   </div>
                   <span className="text-sm font-black text-slate-900">{record.pumpId}</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase">
-                    {record.currDate ? new Date(record.currDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
-                  </span>
                   
-                  {/* Transition Type Badge */}
                   <div className={cn(
                     "mt-2 px-2 py-0.5 rounded-full text-[8px] font-black uppercase flex items-center gap-1 border",
                     record.type === 'intraday' ? "bg-indigo-50 text-indigo-600 border-indigo-100" : "bg-slate-900 text-white border-slate-800"
@@ -73,16 +74,22 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
                   </div>
                 </div>
 
-                {/* Transition Details */}
+                {/* Transition Details with Dates */}
                 <div className="p-6 flex flex-col sm:flex-row items-center justify-around gap-8">
-                  <div className="text-center sm:text-left">
-                    <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Previous Record</p>
-                    <div className="flex items-center gap-2 mb-1">
-                      <User size={12} className="text-slate-400" />
-                      <p className="font-black text-slate-700">{record.morning?.attendant || "System"}</p>
+                  <div className="text-center sm:text-left space-y-2">
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Closing Record</p>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Calendar size={12} className="text-rose-400" />
+                        <p className="text-[10px] font-bold text-slate-600">{formatDate(record.prevDate || record.currDate)}</p>
+                      </div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <User size={12} className="text-slate-400" />
+                        <p className="font-black text-slate-700 text-xs">{record.morning?.attendant || "System"}</p>
+                      </div>
                     </div>
-                    <p className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                      Closing: {record.morning?.closingReading.toFixed(2)}
+                    <p className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded inline-block">
+                      Reading: {record.morning?.closingReading.toFixed(2)}
                     </p>
                   </div>
 
@@ -90,14 +97,20 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
                     <ArrowRight size={16} className="text-rose-500" />
                   </div>
 
-                  <div className="text-center sm:text-right">
-                    <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Current Record</p>
-                    <div className="flex items-center gap-2 justify-center sm:justify-end mb-1">
-                      <p className="font-black text-indigo-600">{record.afternoon?.attendant || "System"}</p>
-                      <User size={12} className="text-indigo-400" />
+                  <div className="text-center sm:text-right space-y-2">
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Opening Record</p>
+                      <div className="flex items-center gap-2 justify-center sm:justify-end mb-1">
+                        <p className="text-[10px] font-bold text-indigo-600">{formatDate(record.currDate)}</p>
+                        <Calendar size={12} className="text-indigo-400" />
+                      </div>
+                      <div className="flex items-center gap-2 justify-center sm:justify-end mb-1">
+                        <p className="font-black text-indigo-600 text-xs">{record.afternoon?.attendant || "System"}</p>
+                        <User size={12} className="text-indigo-400" />
+                      </div>
                     </div>
-                    <p className="text-[11px] font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
-                      Opening: {record.afternoon?.openingReading.toFixed(2)}
+                    <p className="text-[11px] font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded inline-block">
+                      Reading: {record.afternoon?.openingReading.toFixed(2)}
                     </p>
                   </div>
                 </div>

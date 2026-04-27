@@ -94,7 +94,7 @@ export const generateLossLogPDF = (records: AuditResult[]) => {
   doc.text(records.length.toString(), 140, 53);
 
   const tableData = records.map(r => [
-    r.currDate ? new Date(r.currDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "N/A",
+    `${new Date(r.prevDate || r.currDate!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}\nto\n${new Date(r.currDate!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
     r.pumpId,
     r.type === 'intraday' ? 'Handover' : 'Continuity',
     `${r.morning?.attendant || "System"}\n(${r.morning?.closingReading.toFixed(2)})`,
@@ -104,7 +104,7 @@ export const generateLossLogPDF = (records: AuditResult[]) => {
 
   autoTable(doc, {
     startY: 70,
-    head: [['Date', 'Pump', 'Type', 'Previous Record', 'Current Record', 'Loss Vol']],
+    head: [['Date Range', 'Pump', 'Type', 'Previous Record', 'Current Record', 'Loss Vol']],
     body: tableData,
     theme: 'grid',
     headStyles: { 
@@ -119,6 +119,7 @@ export const generateLossLogPDF = (records: AuditResult[]) => {
       cellPadding: 4
     },
     columnStyles: {
+      0: { cellWidth: 25 },
       3: { halign: 'left' },
       4: { halign: 'left' },
       5: { fontStyle: 'bold', textColor: [225, 29, 72] }
