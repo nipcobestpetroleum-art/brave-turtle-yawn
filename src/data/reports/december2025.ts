@@ -154,6 +154,8 @@ export const december2025: DailyReport[] = [
       afternoon: [
         { attendant: "Donald", pumpId: "PMP-005-A", product: "PMS", openingReading: 1205866.15, closingReading: 1206073.63, pricePerLiter: 830, cashCollected: 82400, posAmount: 40000, shortageResolutions: [{ type: "debt", amount: 49800, liters: 60, debtor: "First patriot", reason: "MD approved" }] },
         { attendant: "Chukwuka", pumpId: "PMP-006-B", product: "PMS", openingReading: 601313.89, closingReading: 601969.81, pricePerLiter: 830, cashCollected: 374170, posAmount: 169426 },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 207375.23, closingReading: 207526.80, pricePerLiter: 1050, cashCollected: 33000, posAmount: 21000, shortageResolutions: [{ type: "official use", amount: 105000, liters: 100, purpose: "House", reason: "MD approved" }] },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 463086.58, closingReading: 463114.20, pricePerLiter: 1050, cashCollected: 21050, posAmount: 0 },
       ]
     },
     bankDeposits: []
