@@ -29,5 +29,29 @@ export const january2026: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2026-01-04",
+    shifts: {
+      morning: [
+        { 
+          attendant: "Miracle", 
+          pumpId: "PMP-003-A", 
+          product: "PMS", 
+          openingReading: 342820.99, 
+          closingReading: 345485.95, 
+          pricePerLiter: 830, 
+          cashCollected: 254750, 
+          posAmount: 1737879, 
+          shortageResolutions: [
+            { type: "debt", amount: 190900, liters: 230, debtor: "First patriot", reason: "MD approved" },
+            { type: "official use", amount: 20000.51, liters: 24.10, purpose: "Driver", reason: "MD approved" },
+            { type: "official use", amount: 8300, liters: 10, purpose: "House", reason: "MD" }
+          ] 
+        },
+      ],
+      afternoon: []
+    },
+    bankDeposits: []
   }
 ];
