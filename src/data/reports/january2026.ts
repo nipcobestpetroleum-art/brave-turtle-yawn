@@ -1,7 +1,7 @@
 import { DailyReport } from "../../types/sales";
 
 export const january2026: DailyReport[] = [
-  // ... (previous dates Jan 1st to Jan 9th unchanged)
+  // ... (previous dates Jan 1st to Jan 10th unchanged)
   {
     date: "2026-01-08",
     shifts: {
@@ -90,6 +90,20 @@ export const january2026: DailyReport[] = [
         { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 209937.56, closingReading: 210398.96, pricePerLiter: 1050, cashCollected: 0, posAmount: 484470 },
         { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 464319.68, closingReading: 464539.68, pricePerLiter: 1050, cashCollected: 120900, posAmount: 110130 },
       ]
+    },
+    bankDeposits: []
+  },
+  {
+    date: "2026-01-13",
+    shifts: {
+      morning: [
+        { attendant: "Miriam", pumpId: "PMP-002-A", product: "PMS", openingReading: 2411350.09, closingReading: 2412566.15, pricePerLiter: 820, cashCollected: 297750, posAmount: 697894 },
+        { attendant: "Chidera", pumpId: "PMP-005-A", product: "PMS", openingReading: 1221913.34, closingReading: 1224918.74, pricePerLiter: 820, cashCollected: 805850, posAmount: 1604021.40, shortageResolutions: [{ type: "debt", amount: 22348.60, liters: 27.25 }, { type: "debt", amount: 31747.40, liters: 38.72 }] },
+        { attendant: "Chukwuka", pumpId: "PMP-005-B", product: "PMS", openingReading: 768890.83, closingReading: 770239.45, pricePerLiter: 820, cashCollected: 606600, posAmount: 498295 },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-006-A", product: "PMS", openingReading: 756319.76, closingReading: 760762.89, pricePerLiter: 820, cashCollected: 1065150, posAmount: 2467495, shortageResolutions: [{ type: "debt", amount: 110000, liters: 134.15 }] },
+        { attendant: "Miracle", pumpId: "PMP-006-B", product: "PMS", openingReading: 613204.18, closingReading: 614637.18, pricePerLiter: 820, cashCollected: 427700, posAmount: 434100, shortageResolutions: [{ type: "debt", amount: 239546.60, liters: 292.13 }, { type: "debt", amount: 60680, liters: 74 }, { type: "official use", amount: 12300, liters: 15 }] },
+      ],
+      afternoon: []
     },
     bankDeposits: []
   }
