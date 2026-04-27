@@ -10,6 +10,7 @@ import FinancialSummary from "../components/FinancialSummary";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, LayoutDashboard, Fuel, Zap } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
@@ -29,6 +30,10 @@ const Index = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-[10px] font-black uppercase tracking-widest">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
               Live Station Audit
             </div>
             <h1 className="text-5xl font-black text-slate-900 tracking-tight">
@@ -58,7 +63,7 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto space-y-16">
+      <div className="max-w-7xl mx-auto space-y-12">
         <GrandStationSummary 
           totalSales={grandTotals.totalSales}
           totalCash={grandTotals.totalCash}
@@ -69,35 +74,46 @@ const Index = () => {
           agoLostValue={agoTotals.totalLostValue}
         />
         
-        <FinancialSummary report={currentReport} />
+        <Tabs defaultValue="pms" className="space-y-0">
+          <Card className="bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-2xl shadow-slate-200/60 overflow-hidden">
+            <div className="p-8 md:p-10 space-y-10">
+              {/* Navigation Tabs at the top of the card */}
+              <div className="flex justify-center md:justify-start">
+                <TabsList className="bg-slate-50 border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full md:w-auto">
+                  <TabsTrigger value="pms" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+                    <Fuel size={18} /> PMS SECTION
+                  </TabsTrigger>
+                  <TabsTrigger value="ago" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+                    <Fuel size={18} /> AGO SECTION
+                  </TabsTrigger>
+                  <TabsTrigger value="generator" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+                    <Zap size={18} /> GEN INVENTORY
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-        <div className="pt-8 border-t-2 border-slate-100">
-          <Tabs defaultValue="pms" className="space-y-8">
-            <TabsList className="bg-white border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full md:w-auto shadow-lg shadow-slate-200/40">
-              <TabsTrigger value="pms" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
-                <Fuel size={20} /> PMS SECTION
-              </TabsTrigger>
-              <TabsTrigger value="ago" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
-                <Fuel size={20} /> AGO SECTION
-              </TabsTrigger>
-              <TabsTrigger value="generator" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
-                <Zap size={20} /> GEN INVENTORY
-              </TabsTrigger>
-            </TabsList>
+              {/* Daily Performance Metrics - Always visible inside the card */}
+              <div className="pt-2">
+                <FinancialSummary report={currentReport} />
+              </div>
 
-            <TabsContent value="pms" className="outline-none">
-              <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
-            </TabsContent>
-            
-            <TabsContent value="ago" className="outline-none">
-              <ProductAuditView product="AGO" allData={salesData} selectedDate={selectedDate} />
-            </TabsContent>
+              {/* Tab Content - Audit Views */}
+              <div className="pt-10 border-t-2 border-slate-50">
+                <TabsContent value="pms" className="outline-none mt-0">
+                  <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
+                </TabsContent>
+                
+                <TabsContent value="ago" className="outline-none mt-0">
+                  <ProductAuditView product="AGO" allData={salesData} selectedDate={selectedDate} />
+                </TabsContent>
 
-            <TabsContent value="generator" className="outline-none">
-              <GeneratorLog allData={salesData} />
-            </TabsContent>
-          </Tabs>
-        </div>
+                <TabsContent value="generator" className="outline-none mt-0">
+                  <GeneratorLog allData={salesData} />
+                </TabsContent>
+              </div>
+            </div>
+          </Card>
+        </Tabs>
       </div>
       
       <MadeWithDyad />
