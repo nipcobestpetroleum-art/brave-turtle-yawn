@@ -24,20 +24,15 @@ export interface AuditResult {
 }
 
 export const classifyGap = (diff: number): { category: GapCategory; label: string } => {
-  if (Math.abs(diff) < TOLERANCE) {
-    return { category: "balanced", label: "Verified Balanced" };
-  }
-  if (diff < -TOLERANCE || diff > 6000) {
-    return { category: "reset", label: "Pump Reset (under enquiry)" };
-  }
-  if (diff >= 25 && diff <= 6000) {
-    return { category: "theft", label: "Unrecorded sales or theft" };
-  }
+  if (Math.abs(diff) < TOLERANCE) return { category: "balanced", label: "Verified Balanced" };
+  if (diff < -TOLERANCE || diff > 6000) return { category: "reset", label: "Pump Reset" };
+  if (diff >= 25 && diff <= 6000) return { category: "theft", label: "Unrecorded sales" };
   return { category: "minor", label: "Minor Discrepancy" };
 };
 
-export const calculateGrandTotals = (allData: DailyReport[]) => {
+export const calculateProductTotals = (allData: DailyReport[], product?: string) => {
   let totalSales = 0;
+  let totalLiters = 0;
   let totalCash = 0;
   let totalPos = 0;
   let totalLostLiters = 0;
@@ -47,20 +42,22 @@ export const calculateGrandTotals = (allData: DailyReport[]) => {
     const allShifts = [...day.shifts.morning, ...day.shifts.afternoon, ...(day.shifts.night || [])];
     
     allShifts.forEach(pump => {
+      if (product && pump.product !== product) return;
       const litersSold = Math.max(0, pump.closingReading - pump.openingReading);
+      totalLiters += litersSold;
       totalSales += (litersSold * pump.pricePerLiter);
       totalCash += pump.cashCollected;
       totalPos += pump.posAmount;
     });
 
-    auditIntraDay(day).forEach(res => {
+    auditIntraDay(day, product).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
         theftRecords.push({ ...res, currDate: day.date, type: "intraday" });
       }
     });
 
-    auditCrossDate(allData, day.date).forEach(res => {
+    auditCrossDate(allData, day.date, product).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
         theftRecords.push({ ...res, currDate: day.date, type: "crossdate" });
@@ -68,41 +65,53 @@ export const calculateGrandTotals = (allData: DailyReport[]) => {
     });
   });
 
-  return { totalSales, totalCash, totalPos, totalLostLiters, theftRecords };
+  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, theftRecords };
 };
 
-export const calculateGeneratorUsage = (allData: DailyReport[]) => {
+export const calculateGeneratorLog = (allData: DailyReport[]) => {
+  const log: any[] = [];
   let totalLiters = 0;
   let totalValue = 0;
+
   allData.forEach(day => {
     const allShifts = [...day.shifts.morning, ...day.shifts.afternoon, ...(day.shifts.night || [])];
     allShifts.forEach(pump => {
       pump.shortageResolutions?.forEach(res => {
-        const isGenerator = res.purpose?.toLowerCase().includes('generator') || res.reason?.toLowerCase().includes('generator');
-        if (res.type === 'official use' && isGenerator) {
+        const purpose = res.purpose?.toLowerCase() || "";
+        const reason = res.reason?.toLowerCase() || "";
+        if (res.type === 'official use' && (purpose.includes('generator') || reason.includes('generator'))) {
           totalLiters += res.liters;
           totalValue += res.amount;
+          log.push({
+            date: day.date,
+            attendant: pump.attendant,
+            pumpId: pump.pumpId,
+            liters: res.liters,
+            amount: res.amount,
+            reason: res.reason || res.purpose
+          });
         }
       });
     });
   });
-  return { totalLiters, totalValue };
+  return { log: log.reverse(), totalLiters, totalValue };
 };
 
-export const auditIntraDay = (report: DailyReport): AuditResult[] => {
+export const auditIntraDay = (report: DailyReport, product?: string): AuditResult[] => {
   const results: AuditResult[] = [];
-  const pumpIds = new Set([
-    ...report.shifts.morning.map(p => p.pumpId),
-    ...report.shifts.afternoon.map(p => p.pumpId),
-    ...(report.shifts.night || []).map(p => p.pumpId)
-  ]);
+  const allPumpReports = [
+    ...report.shifts.morning,
+    ...report.shifts.afternoon,
+    ...(report.shifts.night || [])
+  ].filter(p => !product || p.product === product);
+
+  const pumpIds = new Set(allPumpReports.map(p => p.pumpId));
 
   Array.from(pumpIds).forEach(pumpId => {
     const morning = report.shifts.morning.find(p => p.pumpId === pumpId) || null;
     const afternoon = report.shifts.afternoon.find(p => p.pumpId === pumpId) || null;
     const night = report.shifts.night?.find(p => p.pumpId === pumpId) || null;
 
-    // Morning -> Afternoon
     if (morning && afternoon) {
       const diff = afternoon.openingReading - morning.closingReading;
       const { category, label } = classifyGap(diff);
@@ -111,8 +120,6 @@ export const auditIntraDay = (report: DailyReport): AuditResult[] => {
         morning, afternoon, type: "intraday", prevShift: "Morning", currShift: "Afternoon"
       });
     }
-
-    // Afternoon -> Night
     if (afternoon && night) {
       const diff = night.openingReading - afternoon.closingReading;
       const { category, label } = classifyGap(diff);
@@ -126,17 +133,19 @@ export const auditIntraDay = (report: DailyReport): AuditResult[] => {
   return results;
 };
 
-export const auditCrossDate = (allData: DailyReport[], targetDate: string): AuditResult[] => {
+export const auditCrossDate = (allData: DailyReport[], targetDate: string, product?: string): AuditResult[] => {
   const sortedData = [...allData].sort((a, b) => a.date.localeCompare(b.date));
   const targetIndex = sortedData.findIndex(d => d.date === targetDate);
   if (targetIndex < 0) return [];
 
   const currentDay = sortedData[targetIndex];
-  const pumpIds = new Set([
-    ...currentDay.shifts.morning.map(p => p.pumpId),
-    ...currentDay.shifts.afternoon.map(p => p.pumpId),
-    ...(currentDay.shifts.night || []).map(p => p.pumpId)
-  ]);
+  const allCurrentPumps = [
+    ...currentDay.shifts.morning,
+    ...currentDay.shifts.afternoon,
+    ...(currentDay.shifts.night || [])
+  ].filter(p => !product || p.product === product);
+
+  const pumpIds = new Set(allCurrentPumps.map(p => p.pumpId));
 
   return Array.from(pumpIds).map(pumpId => {
     const currMorning = currentDay.shifts.morning.find(p => p.pumpId === pumpId);
@@ -158,55 +167,30 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string): Audi
       const pAfternoon = checkDay.shifts.afternoon.find(p => p.pumpId === pumpId);
       const pMorning = checkDay.shifts.morning.find(p => p.pumpId === pumpId);
 
-      if (pNight) {
-        lastReading = pNight.closingReading; prevDateFound = checkDay.date; prevReportFound = pNight; prevShiftLabel = "Night"; break;
-      } else if (pAfternoon) {
-        lastReading = pAfternoon.closingReading; prevDateFound = checkDay.date; prevReportFound = pAfternoon; prevShiftLabel = "Afternoon"; break;
-      } else if (pMorning) {
-        lastReading = pMorning.closingReading; prevDateFound = checkDay.date; prevReportFound = pMorning; prevShiftLabel = "Morning"; break;
+      const found = pNight || pAfternoon || pMorning;
+      if (found) {
+        lastReading = found.closingReading;
+        prevDateFound = checkDay.date;
+        prevReportFound = found;
+        prevShiftLabel = pNight ? "Night" : pAfternoon ? "Afternoon" : "Morning";
+        break;
       }
     }
 
     let diff = 0;
-    let timeGap = undefined;
-
     if (lastReading !== null && firstReading !== null && prevDateFound) {
       diff = firstReading - lastReading;
-      const start = new Date(prevDateFound);
-      if (prevShiftLabel === "Night") start.setHours(23, 59, 0);
-      else if (prevShiftLabel === "Afternoon") start.setHours(22, 0, 0);
-      else start.setHours(14, 0, 0);
-      
-      const end = new Date(targetDate);
-      if (currShiftLabel === "Morning") end.setHours(8, 0, 0);
-      else if (currShiftLabel === "Afternoon") end.setHours(14, 0, 0);
-      else end.setHours(22, 0, 0);
-
-      const msGap = Math.max(0, end.getTime() - start.getTime());
-      timeGap = {
-        days: Math.floor(msGap / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((msGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      };
     }
 
     const { category, label } = classifyGap(diff);
-
     return { 
       pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
       morning: prevReportFound, afternoon: currentReport, prevDate: prevDateFound,
       currDate: targetDate, currShift: currShiftLabel, prevShift: prevShiftLabel,
-      timeGap, type: "crossdate"
+      type: "crossdate"
     };
   });
 };
 
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
-  }).format(amount);
-};
-
-export const formatLiters = (liters: number) => {
-  return `${liters.toFixed(2)} L`;
-};
+export const formatCurrency = (amount: number) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
+export const formatLiters = (liters: number) => `${liters.toFixed(2)} L`;

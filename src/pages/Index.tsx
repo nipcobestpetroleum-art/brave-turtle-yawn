@@ -1,43 +1,23 @@
 import React, { useState, useMemo } from "react";
 import { salesData } from "../data/salesData";
-import { auditIntraDay, auditCrossDate, calculateGeneratorUsage, calculateGrandTotals } from "../utils/auditLogic";
-import PumpAuditCard from "../components/PumpAuditCard";
-import FinancialSummary from "../components/FinancialSummary";
-import IssueStaffList from "../components/IssueStaffList";
-import GeneratorUsageCard from "../components/GeneratorUsageCard";
+import { calculateProductTotals, calculateGeneratorLog } from "../utils/auditLogic";
 import GrandStationSummary from "../components/GrandStationSummary";
-import StaffLog from "../components/StaffLog";
-import ContinuityExport from "../components/ContinuityExport";
-import StationAnalytics from "../components/StationAnalytics";
-import UnrecordedSalesLog from "../components/UnrecordedSalesLog";
+import ProductAuditView from "../components/ProductAuditView";
+import GeneratorLog from "../components/GeneratorLog";
+import FinancialSummary from "../components/FinancialSummary";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, LayoutDashboard, RefreshCcw, History, Users, ClipboardList, BarChart3, ShieldAlert } from "lucide-react";
+import { Calendar, LayoutDashboard, Fuel, Zap } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
   const [selectedDate, setSelectedDate] = useState(salesData[salesData.length - 1].date);
-  const [activeTab, setActiveTab] = useState("handover");
-
+  
   const currentReport = useMemo(() => 
     salesData.find(d => d.date === selectedDate) || salesData[0]
   , [selectedDate]);
 
-  const intraDayResults = useMemo(() => 
-    auditIntraDay(currentReport)
-  , [currentReport]);
-
-  const crossDateResults = useMemo(() => 
-    auditCrossDate(salesData, selectedDate)
-  , [selectedDate]);
-
-  const generatorStats = useMemo(() => 
-    calculateGeneratorUsage(salesData)
-  , []);
-
-  const grandTotals = useMemo(() => 
-    calculateGrandTotals(salesData)
-  , []);
+  const grandTotals = useMemo(() => calculateProductTotals(salesData), []);
 
   return (
     <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 pb-20">
@@ -53,131 +33,52 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-bold text-gray-400 uppercase ml-1">Reporting Period</span>
-            <div className="flex items-center gap-3">
-              <div className="bg-white border-2 rounded-2xl p-1 shadow-sm flex items-center">
-                <div className="px-3 py-2 text-indigo-500">
-                  <Calendar size={18} />
-                </div>
-                <Select value={selectedDate} onValueChange={setSelectedDate}>
-                  <SelectTrigger className="border-none shadow-none focus:ring-0 w-[180px] font-bold">
-                    <SelectValue placeholder="Select date" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl border-2">
-                    {salesData.map((d) => (
-                      <SelectItem key={d.date} value={d.date} className="font-semibold">
-                        {new Date(d.date).toLocaleDateString('en-US', { 
-                          month: 'long', 
-                          day: 'numeric', 
-                          year: 'numeric' 
-                        })}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+          <div className="bg-white border-2 rounded-2xl p-1 shadow-sm flex items-center">
+            <div className="px-3 py-2 text-indigo-500"><Calendar size={18} /></div>
+            <Select value={selectedDate} onValueChange={setSelectedDate}>
+              <SelectTrigger className="border-none shadow-none focus:ring-0 w-[180px] font-bold">
+                <SelectValue placeholder="Select date" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl border-2">
+                {salesData.map((d) => (
+                  <SelectItem key={d.date} value={d.date} className="font-semibold">
+                    {new Date(d.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
-        <GrandStationSummary 
-          {...grandTotals} 
-          onLossClick={() => setActiveTab("unrecorded")}
-        />
-        
-        <GeneratorUsageCard 
-          totalLiters={generatorStats.totalLiters} 
-          totalValue={generatorStats.totalValue} 
-        />
+      <div className="max-w-7xl mx-auto space-y-8">
+        <GrandStationSummary {...grandTotals} />
         
         <FinancialSummary report={currentReport} />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <div className="flex justify-center md:justify-start overflow-x-auto pb-2">
-            <TabsList className="bg-white border-2 p-1 rounded-2xl h-auto gap-1">
-              <TabsTrigger value="handover" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <RefreshCcw size={16} />
-                Handover Audit
-              </TabsTrigger>
-              <TabsTrigger value="continuity" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <History size={16} />
-                Day-to-Day Continuity
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <BarChart3 size={16} />
-                Analytics
-              </TabsTrigger>
-              <TabsTrigger value="unrecorded" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <ShieldAlert size={16} />
-                Unrecorded Sales
-              </TabsTrigger>
-              <TabsTrigger value="staff" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-rose-600 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <Users size={16} />
-                Accountability Log
-              </TabsTrigger>
-              <TabsTrigger value="history" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-bold transition-all flex items-center gap-2 whitespace-nowrap">
-                <ClipboardList size={16} />
-                Staff History
-              </TabsTrigger>
-            </TabsList>
-          </div>
+        <Tabs defaultValue="pms" className="space-y-6">
+          <TabsList className="bg-white border-2 p-1 rounded-3xl h-auto gap-2 w-full md:w-auto">
+            <TabsTrigger value="pms" className="rounded-2xl px-12 py-3 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
+              <Fuel size={20} /> PMS SECTION
+            </TabsTrigger>
+            <TabsTrigger value="ago" className="rounded-2xl px-12 py-3 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
+              <Fuel size={20} /> AGO SECTION
+            </TabsTrigger>
+            <TabsTrigger value="generator" className="rounded-2xl px-12 py-3 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
+              <Zap size={20} /> GEN INVENTORY
+            </TabsTrigger>
+          </TabsList>
 
-          <TabsContent value="handover" className="mt-0 outline-none">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {intraDayResults.map((res) => (
-                <PumpAuditCard 
-                  key={res.pumpId} 
-                  {...res} 
-                  type="intraday"
-                />
-              ))}
-            </div>
+          <TabsContent value="pms" className="outline-none">
+            <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
+          </TabsContent>
+          
+          <TabsContent value="ago" className="outline-none">
+            <ProductAuditView product="AGO" allData={salesData} selectedDate={selectedDate} />
           </TabsContent>
 
-          <TabsContent value="continuity" className="mt-0 outline-none space-y-6">
-            <ContinuityExport allData={salesData} />
-            
-            {crossDateResults.some(r => r.prevDate) ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {crossDateResults.map((res) => (
-                  <PumpAuditCard 
-                    key={res.pumpId} 
-                    {...res} 
-                    type="crossdate"
-                    prevDate={res.prevDate}
-                    currDate={selectedDate}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="bg-white border-2 border-dashed rounded-3xl p-20 text-center flex flex-col items-center justify-center">
-                <History size={48} className="text-gray-200 mb-4" />
-                <h3 className="text-xl font-bold text-gray-400">No Historical Records Found</h3>
-                <p className="text-gray-400 max-w-sm">There are no previous usage records for the pumps active on this day.</p>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="analytics" className="mt-0 outline-none">
-            <StationAnalytics allData={salesData} />
-          </TabsContent>
-
-          <TabsContent value="unrecorded" className="mt-0 outline-none">
-            <UnrecordedSalesLog records={grandTotals.theftRecords} />
-          </TabsContent>
-
-          <TabsContent value="staff" className="mt-0 outline-none">
-            <IssueStaffList 
-              results={crossDateResults} 
-              selectedDate={selectedDate} 
-            />
-          </TabsContent>
-
-          <TabsContent value="history" className="mt-0 outline-none">
-            <StaffLog allData={salesData} />
+          <TabsContent value="generator" className="outline-none">
+            <GeneratorLog allData={salesData} />
           </TabsContent>
         </Tabs>
       </div>
