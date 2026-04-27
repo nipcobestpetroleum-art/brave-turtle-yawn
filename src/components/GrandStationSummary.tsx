@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database, AlertCircle, Scale } from "lucide-react";
+import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database, Scale } from "lucide-react";
 import ModernMetricCard from "./ModernMetricCard";
 import { formatCurrency, formatLiters } from "../utils/auditLogic";
 
@@ -63,7 +63,8 @@ const GrandStationSummary = ({
         <ModernMetricCard 
           label="Total Forensic Loss" 
           value={formatCurrency(totalCombinedLoss)} 
-          subValue="Combined Audit"
+          subValue="CA"
+          subValueTooltip="Combined Audit"
           icon={Scale} 
           color="rose" 
           onClick={onLossClick}

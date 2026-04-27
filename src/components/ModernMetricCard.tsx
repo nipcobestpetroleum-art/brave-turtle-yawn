@@ -3,11 +3,17 @@
 import React from "react";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ModernMetricCardProps {
   label: string;
   value: string;
   subValue?: string;
+  subValueTooltip?: string;
   icon: LucideIcon;
   color: "indigo" | "amber" | "emerald" | "rose" | "sky" | "slate";
   onClick?: () => void;
@@ -18,6 +24,7 @@ const ModernMetricCard = ({
   label, 
   value, 
   subValue,
+  subValueTooltip,
   icon: Icon, 
   color, 
   onClick, 
@@ -31,6 +38,13 @@ const ModernMetricCard = ({
     sky: "bg-sky-50 text-sky-600 border-sky-100",
     slate: "bg-slate-50 text-slate-600 border-slate-200",
   };
+
+  const SubValueContent = () => (
+    <div className="flex flex-col items-end">
+      <span className="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Value</span>
+      <p className="text-base md:text-lg font-black text-indigo-600 tabular-nums leading-none">{subValue}</p>
+    </div>
+  );
 
   return (
     <div 
@@ -72,10 +86,21 @@ const ModernMetricCard = ({
               <p className="text-base md:text-lg font-black text-slate-900 tabular-nums leading-none">{value}</p>
             </div>
             <div className="w-px h-6 bg-slate-100 mx-2" />
-            <div className="flex flex-col items-end">
-              <span className="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Value</span>
-              <p className="text-base md:text-lg font-black text-indigo-600 tabular-nums leading-none">{subValue}</p>
-            </div>
+            
+            {subValueTooltip ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <SubValueContent />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="bg-slate-900 text-white border-none rounded-lg font-bold text-[10px] uppercase tracking-wider">
+                  {subValueTooltip}
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <SubValueContent />
+            )}
           </div>
         ) : (
           <p className={cn(
