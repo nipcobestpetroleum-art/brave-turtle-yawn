@@ -195,5 +195,23 @@ export const december2025: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2025-12-30",
+    shifts: {
+      morning: [
+        { attendant: "Chukwuma", pumpId: "PMP-002-A", product: "PMS", openingReading: 2360403.89, closingReading: 2366274.99, pricePerLiter: 830, cashCollected: 1925270, posAmount: 2946242 },
+        { attendant: "Dogood", pumpId: "PMP-003-A", product: "PMS", openingReading: 330299.39, closingReading: 333903.41, pricePerLiter: 830, cashCollected: 143300, posAmount: 2756129, shortageResolutions: [{ type: "debt", amount: 33200, liters: 40, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 35700, liters: 43.01, debtor: "Customer" }] },
+        { attendant: "Sunday", pumpId: "PMP-003-B", product: "PMS", openingReading: 155338.49, closingReading: 155770.68, pricePerLiter: 830, cashCollected: 125200, posAmount: 230600 },
+        { attendant: "Maco oil", pumpId: "PMP-005-A", product: "PMS", openingReading: 1210186.67, closingReading: 1210976.10, pricePerLiter: 830, cashCollected: 645000, posAmount: 10200 },
+        { attendant: "Ogochukwu", pumpId: "PMP-005-B", product: "PMS", openingReading: 756452.47, closingReading: 759388.32, pricePerLiter: 830, cashCollected: 1151250, posAmount: 1110243, shortageResolutions: [{ type: "debt", amount: 157700, liters: 190, debtor: "First patriot", reason: "MD approved" }, { type: "official use", amount: 16600, liters: 20, purpose: "Red bus", reason: "MD approved" }] },
+        { attendant: "Dogood", pumpId: "AGO-001-A", product: "AGO", openingReading: 207843.61, closingReading: 208096.69, pricePerLiter: 1050, cashCollected: 207900, posAmount: 0, shortageResolutions: [{ type: "official use", amount: 57750, liters: 55, purpose: "Hilux", reason: "MD approved" }] },
+      ],
+      afternoon: [
+        { attendant: "Julie", pumpId: "PMP-003-B", product: "PMS", openingReading: 155770.68, closingReading: 156559.75, pricePerLiter: 830, cashCollected: 452300, posAmount: 201800 },
+        { attendant: "Julie", pumpId: "PMP-005-A", product: "PMS", openingReading: 1210972.10, closingReading: 1211926.77, pricePerLiter: 830, cashCollected: 109050, posAmount: 682425.55 },
+      ]
+    },
+    bankDeposits: []
   }
 ];
