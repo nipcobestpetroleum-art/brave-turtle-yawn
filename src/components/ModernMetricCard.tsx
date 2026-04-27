@@ -36,7 +36,7 @@ const ModernMetricCard = ({
     <div 
       onClick={onClick}
       className={cn(
-        "group relative flex items-center gap-5 p-5 bg-white border-2 rounded-[1.5rem] transition-all duration-500 ease-out overflow-hidden",
+        "group relative flex items-center gap-4 p-4 bg-white border-2 rounded-[1.25rem] transition-all duration-500 ease-out overflow-hidden",
         "hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] hover:-translate-y-1",
         isInteractive ? "cursor-pointer active:scale-95" : "cursor-default",
         color === 'rose' ? "hover:border-rose-200" : "hover:border-indigo-200"
@@ -54,27 +54,27 @@ const ModernMetricCard = ({
       )} />
 
       <div className={cn(
-        "shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm",
+        "shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm",
         colorStyles[color]
       )}>
-        <Icon size={22} strokeWidth={2.5} />
+        <Icon size={20} strokeWidth={2.5} />
       </div>
       
-      <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] leading-tight truncate mb-1">
+      <div className="min-w-0 flex-1 flex flex-col justify-center">
+        <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1.5">
           {label}
         </p>
         
         {subValue ? (
-          <div className="flex items-baseline gap-3">
+          <div className="flex items-center justify-between w-full pr-2">
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-slate-400 uppercase">Volume</span>
-              <p className="text-lg font-black text-slate-900 tabular-nums leading-none">{value}</p>
+              <span className="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Volume</span>
+              <p className="text-base md:text-lg font-black text-slate-900 tabular-nums leading-none">{value}</p>
             </div>
-            <div className="w-px h-8 bg-slate-100 self-center" />
-            <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-slate-400 uppercase">Value</span>
-              <p className="text-lg font-black text-indigo-600 tabular-nums leading-none">{subValue}</p>
+            <div className="w-px h-6 bg-slate-100 mx-2" />
+            <div className="flex flex-col items-end">
+              <span className="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Value</span>
+              <p className="text-base md:text-lg font-black text-indigo-600 tabular-nums leading-none">{subValue}</p>
             </div>
           </div>
         ) : (
