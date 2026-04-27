@@ -183,6 +183,7 @@ export const january2026: DailyReport[] = [
         { attendant: "Amarachi", pumpId: "PMP-002-A", product: "PMS", openingReading: 2422360.46, closingReading: 2425251.58, pricePerLiter: 800, cashCollected: 699400, posAmount: 1549086.58, shortageResolutions: [{ type: "debt", amount: 48000, liters: 60 }, { type: "official use", amount: 16000, liters: 20 }] },
         { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 211770.48, closingReading: 212251.24, pricePerLiter: 1050, cashCollected: 100300, posAmount: 247300, shortageResolutions: [{ type: "official use", amount: 105000, liters: 100 }, { type: "official use", amount: 52500, liters: 50 }] },
         { attendant: "Esther", pumpId: "PMP-003-A", product: "PMS", openingReading: 404687.86, closingReading: 408376.92, pricePerLiter: 800, cashCollected: 1029350, posAmount: 1695978, shortageResolutions: [{ type: "debt", amount: 225800, liters: 282.25 }] },
+        { attendant: "Miracle", pumpId: "PMP-002-B", product: "PMS", openingReading: 2653143.41, closingReading: 2655677.94, pricePerLiter: 800, cashCollected: 217900, posAmount: 1529820, shortageResolutions: [{ type: "debt", amount: 280000, liters: 350 }] },
       ]
     },
     bankDeposits: []
