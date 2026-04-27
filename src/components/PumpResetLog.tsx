@@ -3,7 +3,7 @@
 import React from "react";
 import { AuditResult, formatLiters, formatCurrency } from "../utils/auditLogic";
 import { Card, CardContent } from "@/components/ui/card";
-import { RefreshCw, AlertTriangle, Calendar, User, ArrowRight, ShieldAlert, Zap } from "lucide-react";
+import { RefreshCw, AlertTriangle, Calendar, User, ArrowRight, ShieldAlert, Zap, Droplets, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PumpResetLogProps {
@@ -37,7 +37,7 @@ const PumpResetLog = ({ resets, thefts }: PumpResetLogProps) => {
         <p className="text-[10px] font-bold text-slate-400 uppercase">Tracking abnormal reading jumps and nearby unrecorded sales</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-8">
         {resets.map((reset, idx) => {
           // Find thefts within 2 days of this reset
           const resetTime = new Date(reset.currDate!).getTime();
@@ -48,8 +48,8 @@ const PumpResetLog = ({ resets, thefts }: PumpResetLogProps) => {
           });
 
           return (
-            <div key={`${reset.pumpId}-${idx}`} className="space-y-3">
-              <Card className="border-2 border-indigo-100 overflow-hidden shadow-sm">
+            <div key={`${reset.pumpId}-${idx}`} className="space-y-4">
+              <Card className="border-2 border-indigo-100 overflow-hidden shadow-sm bg-white">
                 <CardContent className="p-0">
                   <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_240px] items-stretch">
                     {/* Pump Info */}
@@ -107,33 +107,61 @@ const PumpResetLog = ({ resets, thefts }: PumpResetLogProps) => {
 
               {/* Correlation Section */}
               {correlatedThefts.length > 0 ? (
-                <div className="ml-4 md:ml-12 border-l-4 border-rose-200 pl-4 space-y-2">
-                  <div className="flex items-center gap-2 text-rose-600">
-                    <AlertTriangle size={14} />
-                    <span className="text-[10px] font-black uppercase tracking-tighter">Correlated Unrecorded Sales Spotted</span>
+                <div className="ml-4 md:ml-12 space-y-3">
+                  <div className="flex items-center gap-2 text-rose-600 px-2">
+                    <AlertTriangle size={14} className="animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Correlated Unrecorded Sales Spotted</span>
                   </div>
-                  {correlatedThefts.map((theft, tIdx) => (
-                    <div key={tIdx} className="bg-rose-50 border border-rose-100 rounded-xl p-3 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="text-center">
-                          <p className="text-[8px] font-black text-rose-400 uppercase">Date</p>
-                          <p className="text-[10px] font-bold text-slate-700">{formatDate(theft.currDate)}</p>
-                        </div>
-                        <div className="w-px h-6 bg-rose-200" />
-                        <div>
-                          <p className="text-[8px] font-black text-rose-400 uppercase">Attendant</p>
-                          <p className="text-[10px] font-bold text-slate-700">{theft.afternoon?.attendant || "System"}</p>
+                  
+                  <div className="grid grid-cols-1 gap-2">
+                    {correlatedThefts.map((theft, tIdx) => (
+                      <div key={tIdx} className="relative group">
+                        <div className="absolute inset-0 bg-rose-600 rounded-2xl translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
+                        <div className="relative bg-slate-900 border-2 border-rose-500 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <div className="flex items-center gap-6">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-rose-400 uppercase mb-1">Incident Date</span>
+                              <div className="flex items-center gap-2 text-white">
+                                <Calendar size={12} className="text-rose-500" />
+                                <span className="text-xs font-black">{formatDate(theft.currDate)}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="w-px h-8 bg-slate-800" />
+                            
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-rose-400 uppercase mb-1">Attendant</span>
+                              <div className="flex items-center gap-2 text-white">
+                                <User size={12} className="text-rose-500" />
+                                <span className="text-xs font-black">{theft.afternoon?.attendant || "System"}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-8">
+                            <div className="text-center sm:text-right">
+                              <span className="text-[8px] font-black text-rose-400 uppercase mb-1 block">Volume Lost</span>
+                              <div className="flex items-center gap-2 justify-center sm:justify-end">
+                                <Droplets size={14} className="text-rose-500" />
+                                <span className="text-lg font-black text-white tabular-nums">{formatLiters(theft.diff)}</span>
+                              </div>
+                            </div>
+
+                            <div className="text-center sm:text-right">
+                              <span className="text-[8px] font-black text-rose-400 uppercase mb-1 block">Financial Impact</span>
+                              <div className="flex items-center gap-2 justify-center sm:justify-end">
+                                <TrendingDown size={14} className="text-rose-500" />
+                                <span className="text-lg font-black text-rose-500 tabular-nums">{formatCurrency(theft.valueLost || 0)}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-[8px] font-black text-rose-400 uppercase">Loss Impact</p>
-                        <p className="text-xs font-black text-rose-600">{formatCurrency(theft.valueLost || 0)}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : (
-                <div className="ml-4 md:ml-12 border-l-4 border-emerald-100 pl-4">
+                <div className="ml-4 md:ml-12 border-l-4 border-emerald-100 pl-4 py-1">
                   <div className="flex items-center gap-2 text-emerald-500">
                     <ShieldAlert size={14} />
                     <span className="text-[10px] font-black uppercase tracking-tighter">No correlated theft within 48h window</span>
