@@ -24,28 +24,35 @@ const Index = () => {
   const agoTotals = useMemo(() => calculateProductTotals(salesData, "AGO"), []);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 pb-20">
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h1 className="text-4xl font-black text-gray-900 tracking-tight mb-2">
+    <div className="min-h-screen bg-[#f8fafc] p-4 md:p-12 pb-24">
+      <div className="max-w-7xl mx-auto mb-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-[10px] font-black uppercase tracking-widest">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
+              Live Station Audit
+            </div>
+            <h1 className="text-5xl font-black text-slate-900 tracking-tight">
               NIPCO <span className="text-indigo-600">AUDIT</span>
             </h1>
-            <p className="text-gray-500 font-medium flex items-center gap-2 uppercase tracking-widest text-xs">
+            <p className="text-slate-400 font-bold flex items-center gap-2 uppercase tracking-[0.2em] text-[10px]">
               <LayoutDashboard size={14} className="text-indigo-400" />
               Abakaliki Station Report Center
             </p>
           </div>
 
-          <div className="bg-white border-2 rounded-2xl p-1 shadow-sm flex items-center">
-            <div className="px-3 py-2 text-indigo-500"><Calendar size={18} /></div>
+          <div className="bg-white border-2 border-slate-100 rounded-[1.5rem] p-1.5 shadow-xl shadow-slate-200/50 flex items-center">
+            <div className="px-4 py-2 text-indigo-500"><Calendar size={20} strokeWidth={2.5} /></div>
             <Select value={selectedDate} onValueChange={setSelectedDate}>
-              <SelectTrigger className="border-none shadow-none focus:ring-0 w-[180px] font-bold">
+              <SelectTrigger className="border-none shadow-none focus:ring-0 w-[220px] font-black text-slate-700 text-base">
                 <SelectValue placeholder="Select date" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2">
+              <SelectContent className="rounded-2xl border-2 border-slate-100 shadow-2xl">
                 {salesData.map((d) => (
-                  <SelectItem key={d.date} value={d.date} className="font-semibold">
+                  <SelectItem key={d.date} value={d.date} className="font-bold py-3 focus:bg-indigo-50 focus:text-indigo-600">
                     {new Date(d.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </SelectItem>
                 ))}
@@ -55,7 +62,7 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-16">
         <GrandStationSummary 
           totalSales={grandTotals.totalSales}
           totalCash={grandTotals.totalCash}
@@ -66,31 +73,33 @@ const Index = () => {
         
         <FinancialSummary report={currentReport} />
 
-        <Tabs defaultValue="pms" className="space-y-6">
-          <TabsList className="bg-white border-2 p-1 rounded-3xl h-auto gap-2 w-full md:w-auto">
-            <TabsTrigger value="pms" className="rounded-2xl px-12 py-3 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
-              <Fuel size={20} /> PMS SECTION
-            </TabsTrigger>
-            <TabsTrigger value="ago" className="rounded-2xl px-12 py-3 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
-              <Fuel size={20} /> AGO SECTION
-            </TabsTrigger>
-            <TabsTrigger value="generator" className="rounded-2xl px-12 py-3 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3">
-              <Zap size={20} /> GEN INVENTORY
-            </TabsTrigger>
-          </TabsList>
+        <div className="pt-8 border-t-2 border-slate-100">
+          <Tabs defaultValue="pms" className="space-y-8">
+            <TabsList className="bg-white border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full md:w-auto shadow-lg shadow-slate-200/40">
+              <TabsTrigger value="pms" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
+                <Fuel size={20} /> PMS SECTION
+              </TabsTrigger>
+              <TabsTrigger value="ago" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
+                <Fuel size={20} /> AGO SECTION
+              </TabsTrigger>
+              <TabsTrigger value="generator" className="rounded-[1.5rem] px-10 py-4 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-sm">
+                <Zap size={20} /> GEN INVENTORY
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="pms" className="outline-none">
-            <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
-          </TabsContent>
-          
-          <TabsContent value="ago" className="outline-none">
-            <ProductAuditView product="AGO" allData={salesData} selectedDate={selectedDate} />
-          </TabsContent>
+            <TabsContent value="pms" className="outline-none">
+              <ProductAuditView product="PMS" allData={salesData} selectedDate={selectedDate} />
+            </TabsContent>
+            
+            <TabsContent value="ago" className="outline-none">
+              <ProductAuditView product="AGO" allData={salesData} selectedDate={selectedDate} />
+            </TabsContent>
 
-          <TabsContent value="generator" className="outline-none">
-            <GeneratorLog allData={salesData} />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="generator" className="outline-none">
+              <GeneratorLog allData={salesData} />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
       
       <MadeWithDyad />
