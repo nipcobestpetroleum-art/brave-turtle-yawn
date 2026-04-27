@@ -187,5 +187,31 @@ export const january2026: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2026-01-19",
+    shifts: {
+      morning: [
+        { attendant: "Chidimma Okoro", pumpId: "PMP-002-A", product: "PMS", openingReading: 2425251.61, closingReading: 2426947.88, pricePerLiter: 800, cashCollected: 375650, posAmount: 713544, shortageResolutions: [{ type: "debt", amount: 167352, liters: 209.19 }, { type: "debt", amount: 100000, liters: 125 }] },
+        { attendant: "Celestina", pumpId: "PMP-003-A", product: "PMS", openingReading: 408377.25, closingReading: 412485.56, pricePerLiter: 800, cashCollected: 396700, posAmount: 2810006, shortageResolutions: [{ type: "debt", amount: 80000, liters: 100 }] },
+        { attendant: "Amarachi", pumpId: "PMP-003-B", product: "PMS", openingReading: 178513.96, closingReading: 180169.16, pricePerLiter: 800, cashCollected: 763750, posAmount: 391436, shortageResolutions: [{ type: "debt", amount: 112000, liters: 140 }, { type: "debt", amount: 56000, liters: 70 }] },
+        { attendant: "Celestina", pumpId: "PMP-005-A", product: "PMS", openingReading: 1234699.92, closingReading: 1235858.99, pricePerLiter: 800, cashCollected: 8950, posAmount: 917900 },
+        { attendant: "Ogochukwu", pumpId: "PMP-005-B", product: "PMS", openingReading: 773153.79, closingReading: 773934.47, pricePerLiter: 800, cashCollected: 394900, posAmount: 229344 },
+        { attendant: "Esther", pumpId: "PMP-006-A", product: "PMS", openingReading: 763465.18, closingReading: 765742.64, pricePerLiter: 800, cashCollected: 341700, posAmount: 1430408, shortageResolutions: [{ type: "debt", amount: 49600, liters: 62 }] },
+        { attendant: "Amarachi", pumpId: "PMP-006-B", product: "PMS", openingReading: 618399.63, closingReading: 618646.33, pricePerLiter: 800, cashCollected: 114600, posAmount: 82600 },
+        { attendant: "Ogochukwu", pumpId: "PMP-006-B", product: "PMS", openingReading: 618646.33, closingReading: 619939.48, pricePerLiter: 800, cashCollected: 600750, posAmount: 433100 },
+      ],
+      afternoon: [
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-002-A", product: "PMS", openingReading: 2426947.88, closingReading: 2430121.41, pricePerLiter: 800, cashCollected: 293550, posAmount: 2243788 },
+        { attendant: "Miriam", pumpId: "PMP-002-B", product: "PMS", openingReading: 2655677.94, closingReading: 2660984.30, pricePerLiter: 800, cashCollected: 816700, posAmount: 2626234, shortageResolutions: [{ type: "debt", amount: 627704, liters: 784.63 }, { type: "debt", amount: 174400, liters: 218 }] },
+        { attendant: "Chukwuka", pumpId: "PMP-003-A", product: "PMS", openingReading: 412485.56, closingReading: 414302.28, pricePerLiter: 800, cashCollected: 130600, posAmount: 1267248, shortageResolutions: [{ type: "debt", amount: 47856, liters: 59.82 }, { type: "debt", amount: 7200, liters: 9 }] },
+        { attendant: "Goodness", pumpId: "PMP-003-B", product: "PMS", openingReading: 180169.16, closingReading: 181130.40, pricePerLiter: 800, cashCollected: 517800, posAmount: 251464 },
+        { attendant: "Chidera", pumpId: "PMP-006-A", product: "PMS", openingReading: 765742.64, closingReading: 767200.21, pricePerLiter: 800, cashCollected: 312700, posAmount: 812924, shortageResolutions: [{ type: "debt", amount: 40000, liters: 50 }] },
+        { attendant: "Miracle", pumpId: "PMP-006-B", product: "PMS", openingReading: 619939.48, closingReading: 621168.91, pricePerLiter: 800, cashCollected: 445700, posAmount: 311500, shortageResolutions: [{ type: "debt", amount: 216000, liters: 270 }, { type: "debt", amount: 9600, liters: 12 }] },
+        { attendant: "Donald", pumpId: "AGO-001-A", product: "AGO", openingReading: 212251.24, closingReading: 212646.56, pricePerLiter: 1050, cashCollected: 292250, posAmount: 0, shortageResolutions: [{ type: "official use", amount: 52500, liters: 50 }, { type: "official use", amount: 52500, liters: 50 }, { type: "debt", amount: 17850, liters: 17 }] },
+        { attendant: "Donald", pumpId: "AGO-001-B", product: "AGO", openingReading: 467567.79, closingReading: 467612.79, pricePerLiter: 1050, cashCollected: 700, posAmount: 0, shortageResolutions: [{ type: "debt", amount: 46550, liters: 44.33 }] },
+      ]
+    },
+    bankDeposits: []
   }
 ];
