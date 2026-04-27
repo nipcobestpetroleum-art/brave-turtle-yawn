@@ -10,7 +10,7 @@ import FinancialSummary from "../components/FinancialSummary";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, LayoutDashboard, Fuel, Zap } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
@@ -77,22 +77,22 @@ const Index = () => {
         <Tabs defaultValue="pms" className="space-y-0">
           <Card className="bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-2xl shadow-slate-200/60 overflow-hidden">
             <div className="p-8 md:p-10 space-y-10">
-              {/* Navigation Tabs at the top of the card */}
-              <div className="flex justify-center md:justify-start">
-                <TabsList className="bg-slate-50 border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full md:w-auto">
-                  <TabsTrigger value="pms" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+              {/* Navigation Tabs at the top of the card - Full Width */}
+              <div className="w-full">
+                <TabsList className="bg-slate-50 border-2 border-slate-100 p-1.5 rounded-[2rem] h-auto gap-2 w-full flex">
+                  <TabsTrigger value="pms" className="flex-1 rounded-[1.5rem] px-8 py-4 data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-black transition-all flex items-center justify-center gap-3 text-xs">
                     <Fuel size={18} /> PMS SECTION
                   </TabsTrigger>
-                  <TabsTrigger value="ago" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+                  <TabsTrigger value="ago" className="flex-1 rounded-[1.5rem] px-8 py-4 data-[state=active]:bg-slate-900 data-[state=active]:text-white font-black transition-all flex items-center justify-center gap-3 text-xs">
                     <Fuel size={18} /> AGO SECTION
                   </TabsTrigger>
-                  <TabsTrigger value="generator" className="rounded-[1.5rem] px-8 py-3 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center gap-3 text-xs">
+                  <TabsTrigger value="generator" className="flex-1 rounded-[1.5rem] px-8 py-4 data-[state=active]:bg-amber-600 data-[state=active]:text-white font-black transition-all flex items-center justify-center gap-3 text-xs">
                     <Zap size={18} /> GEN INVENTORY
                   </TabsTrigger>
                 </TabsList>
               </div>
 
-              {/* Daily Performance Metrics - Always visible inside the card */}
+              {/* Daily Performance Metrics */}
               <div className="pt-2">
                 <FinancialSummary report={currentReport} />
               </div>

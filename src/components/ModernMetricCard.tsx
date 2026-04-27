@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 interface ModernMetricCardProps {
   label: string;
   value: string;
+  subValue?: string;
   icon: LucideIcon;
   color: "indigo" | "amber" | "emerald" | "rose" | "sky" | "slate";
   onClick?: () => void;
@@ -16,6 +17,7 @@ interface ModernMetricCardProps {
 const ModernMetricCard = ({ 
   label, 
   value, 
+  subValue,
   icon: Icon, 
   color, 
   onClick, 
@@ -58,16 +60,31 @@ const ModernMetricCard = ({
         <Icon size={22} strokeWidth={2.5} />
       </div>
       
-      <div className="min-w-0 flex-1 space-y-0.5">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] leading-tight truncate">
+      <div className="min-w-0 flex-1">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] leading-tight truncate mb-1">
           {label}
         </p>
-        <p className={cn(
-          "text-xl md:text-2xl font-black tracking-tighter tabular-nums leading-none transition-colors duration-300",
-          "text-slate-900 group-hover:text-black"
-        )}>
-          {value}
-        </p>
+        
+        {subValue ? (
+          <div className="flex items-baseline gap-3">
+            <div className="flex flex-col">
+              <span className="text-[9px] font-bold text-slate-400 uppercase">Volume</span>
+              <p className="text-lg font-black text-slate-900 tabular-nums leading-none">{value}</p>
+            </div>
+            <div className="w-px h-8 bg-slate-100 self-center" />
+            <div className="flex flex-col">
+              <span className="text-[9px] font-bold text-slate-400 uppercase">Value</span>
+              <p className="text-lg font-black text-indigo-600 tabular-nums leading-none">{subValue}</p>
+            </div>
+          </div>
+        ) : (
+          <p className={cn(
+            "text-xl md:text-2xl font-black tracking-tighter tabular-nums leading-none transition-colors duration-300",
+            "text-slate-900 group-hover:text-black"
+          )}>
+            {value}
+          </p>
+        )}
       </div>
     </div>
   );

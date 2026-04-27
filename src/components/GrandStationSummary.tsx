@@ -64,7 +64,8 @@ const GrandStationSummary = ({
         />
         <ModernMetricCard 
           label="PMS SECTION" 
-          value={`${formatLiters(pmsLostLiters)} (${formatCurrency(pmsLostValue)})`} 
+          value={formatLiters(pmsLostLiters)} 
+          subValue={formatCurrency(pmsLostValue)}
           icon={ShieldAlert} 
           color="rose" 
           onClick={onLossClick}
@@ -72,7 +73,8 @@ const GrandStationSummary = ({
         />
         <ModernMetricCard 
           label="AGO SECTION" 
-          value={`${formatLiters(agoLostLiters)} (${formatCurrency(agoLostValue)})`} 
+          value={formatLiters(agoLostLiters)} 
+          subValue={formatCurrency(agoLostValue)}
           icon={ShieldAlert} 
           color="slate" 
           onClick={onLossClick}
