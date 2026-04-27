@@ -116,5 +116,25 @@ export const january2026: DailyReport[] = [
       ]
     },
     bankDeposits: []
+  },
+  {
+    date: "2026-01-08",
+    shifts: {
+      morning: [
+        { attendant: "Donald", pumpId: "PMP-002-A", product: "PMS", openingReading: 2390409.21, closingReading: 2392507.90, pricePerLiter: 830, cashCollected: 370800, posAmount: 1258346, shortageResolutions: [{ type: "debt", amount: 83000, liters: 100, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 29880, liters: 36, debtor: "Multipro company", reason: "MD approved" }] },
+        { attendant: "Chidimma Okoro", pumpId: "PMP-003-A", product: "PMS", openingReading: 364136.10, closingReading: 367882.14, pricePerLiter: 830, cashCollected: 718180, posAmount: 2308778, shortageResolutions: [{ type: "debt", amount: 83000, liters: 100, debtor: "Osinachi", reason: "MD approved" }] },
+        { attendant: "Miracle", pumpId: "PMP-003-B", product: "PMS", openingReading: 162655.35, closingReading: 163965.08, pricePerLiter: 830, cashCollected: 548400, posAmount: 401522, shortageResolutions: [{ type: "debt", amount: 124500, liters: 150, debtor: "First patriot", reason: "MD approved" }, { type: "debt", amount: 7470, liters: 9, debtor: "Multipro company", reason: "MD approved" }, { type: "return to tank", amount: 4150, liters: 5, reason: "MD approved" }] },
+        { attendant: "Amarachi", pumpId: "PMP-005-B", product: "PMS", openingReading: 763455.39, closingReading: 764636.99, pricePerLiter: 830, cashCollected: 362570, posAmount: 609711.50, shortageResolutions: [{ type: "debt", amount: 7470, liters: 9, debtor: "Multipro", reason: "MD approved" }] },
+        { attendant: "Amarachi", pumpId: "PMP-006-A", product: "PMS", openingReading: 608130.57, closingReading: 608437.62, pricePerLiter: 830, cashCollected: 162770, posAmount: 91982.70 },
+      ],
+      afternoon: [
+        { attendant: "TEST", pumpId: "PMP-001-A", product: "PMS", openingReading: 20000.00, closingReading: 39000.00, pricePerLiter: 830, cashCollected: 10000000, posAmount: 5770000 },
+        { attendant: "test", pumpId: "PMP-001-A", product: "PMS", openingReading: 7890.00, closingReading: 8000.00, pricePerLiter: 830, cashCollected: 90000, posAmount: 1300 },
+      ]
+    },
+    bankDeposits: [
+      { amount: 15770000, reference: "Test Deposit", date: "2026-01-08" },
+      { amount: 913000, reference: "test deposit", date: "2026-01-08" }
+    ]
   }
 ];
