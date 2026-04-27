@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { AuditResult, formatLiters } from "../utils/auditLogic";
+import { AuditResult, formatLiters, formatCurrency } from "../utils/auditLogic";
 import { generateLossLogPDF } from "../utils/pdfGenerator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShieldAlert, Calendar, User, ArrowRight, Fuel, FileDown, RefreshCcw, History } from "lucide-react";
+import { ShieldAlert, Calendar, User, ArrowRight, Fuel, FileDown, RefreshCcw, History, Banknote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface UnrecordedSalesLogProps {
@@ -36,7 +36,7 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
             <ShieldAlert size={16} className="text-rose-500" />
             Detailed Loss Log
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase">Audit of all unrecorded sold volumes</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase">Audit of all unrecorded sold volumes with financial impact</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">
@@ -57,7 +57,7 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
         {records.map((record, idx) => (
           <Card key={`${record.pumpId}-${idx}`} className="border-2 border-rose-100 overflow-hidden hover:shadow-md transition-all">
             <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_200px] items-stretch">
+              <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_240px] items-stretch">
                 {/* Pump & Type */}
                 <div className="bg-rose-50/50 p-4 border-b md:border-b-0 md:border-r border-rose-100 flex flex-col items-center justify-center text-center gap-1">
                   <div className="bg-white p-2 rounded-lg shadow-sm border border-rose-100 mb-1">
@@ -74,7 +74,7 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
                   </div>
                 </div>
 
-                {/* Transition Details with Dates */}
+                {/* Transition Details */}
                 <div className="p-6 flex flex-col sm:flex-row items-center justify-around gap-8">
                   <div className="text-center sm:text-left space-y-2">
                     <div>
@@ -117,11 +117,17 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
 
                 {/* Discrepancy Result */}
                 <div className="bg-rose-50 p-4 border-t md:border-t-0 md:border-l border-rose-100 flex flex-col justify-center items-center md:items-end text-center md:text-right">
-                  <p className="text-[10px] font-black text-rose-400 uppercase mb-1">Unrecorded Volume</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Banknote size={12} className="text-rose-400" />
+                    <p className="text-[10px] font-black text-rose-400 uppercase">Financial Impact</p>
+                  </div>
                   <p className="text-2xl font-black text-rose-600 tabular-nums">
-                    {formatLiters(record.diff)}
+                    {formatCurrency(record.valueLost || 0)}
                   </p>
-                  <p className="text-[9px] font-bold text-rose-400/70 uppercase mt-1">Theft Category Gap</p>
+                  <div className="mt-1 space-y-0.5">
+                    <p className="text-[10px] font-bold text-slate-600">{formatLiters(record.diff)} lost</p>
+                    <p className="text-[9px] font-bold text-rose-400/70 uppercase">@ {formatCurrency(record.priceAtIncident || 0)} / L</p>
+                  </div>
                 </div>
               </div>
             </CardContent>

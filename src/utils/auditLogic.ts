@@ -17,6 +17,8 @@ export interface AuditResult {
   currDate?: string;
   currShift?: ShiftType;
   prevShift?: ShiftType;
+  priceAtIncident?: number;
+  valueLost?: number;
   timeGap?: {
     days: number;
     hours: number;
@@ -36,6 +38,7 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
   let totalCash = 0;
   let totalPos = 0;
   let totalLostLiters = 0;
+  let totalLostValue = 0;
   const theftRecords: AuditResult[] = [];
 
   allData.forEach(day => {
@@ -53,6 +56,7 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
     auditIntraDay(day, product).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
+        totalLostValue += (res.valueLost || 0);
         theftRecords.push({ ...res, currDate: day.date, type: "intraday" });
       }
     });
@@ -60,12 +64,13 @@ export const calculateProductTotals = (allData: DailyReport[], product?: string)
     auditCrossDate(allData, day.date, product).forEach(res => {
       if (res.category === "theft") {
         totalLostLiters += res.diff;
+        totalLostValue += (res.valueLost || 0);
         theftRecords.push({ ...res, currDate: day.date, type: "crossdate" });
       }
     });
   });
 
-  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, theftRecords };
+  return { totalSales, totalLiters, totalCash, totalPos, totalLostLiters, totalLostValue, theftRecords };
 };
 
 export const calculateGeneratorLog = (allData: DailyReport[]) => {
@@ -112,23 +117,29 @@ export const auditIntraDay = (report: DailyReport, product?: string): AuditResul
     const afternoon = report.shifts.afternoon.find(p => p.pumpId === pumpId) || null;
     const night = report.shifts.night?.find(p => p.pumpId === pumpId) || null;
 
-    // Show Morning -> Afternoon handover if either exists
     if (morning || afternoon) {
       const diff = (morning && afternoon) ? afternoon.openingReading - morning.closingReading : 0;
       const { category, label } = (morning && afternoon) ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
+      const price = afternoon?.pricePerLiter || morning?.pricePerLiter || 0;
+      
       results.push({ 
         pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
-        morning, afternoon, type: "intraday", prevShift: "Morning", currShift: "Afternoon"
+        morning, afternoon, type: "intraday", prevShift: "Morning", currShift: "Afternoon",
+        priceAtIncident: price,
+        valueLost: category === "theft" ? diff * price : 0
       });
     }
 
-    // Show Afternoon -> Night handover if Night exists
     if (night) {
       const diff = afternoon ? night.openingReading - afternoon.closingReading : 0;
       const { category, label } = afternoon ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
+      const price = night.pricePerLiter || afternoon?.pricePerLiter || 0;
+
       results.push({ 
         pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
-        morning: afternoon, afternoon: night, type: "intraday", prevShift: "Afternoon", currShift: "Night"
+        morning: afternoon, afternoon: night, type: "intraday", prevShift: "Afternoon", currShift: "Night",
+        priceAtIncident: price,
+        valueLost: category === "theft" ? diff * price : 0
       });
     }
   });
@@ -186,11 +197,15 @@ export const auditCrossDate = (allData: DailyReport[], targetDate: string, produ
     }
 
     const { category, label } = classifyGap(diff);
+    const price = currentReport?.pricePerLiter || 0;
+
     return { 
       pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
       morning: prevReportFound, afternoon: currentReport, prevDate: prevDateFound,
       currDate: targetDate, currShift: currShiftLabel, prevShift: prevShiftLabel,
-      type: "crossdate"
+      type: "crossdate",
+      priceAtIncident: price,
+      valueLost: category === "theft" ? diff * price : 0
     };
   });
 };

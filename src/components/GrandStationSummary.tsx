@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database } from "lucide-react";
+import { TrendingUp, Wallet, CreditCard, ShieldAlert, Database, AlertCircle } from "lucide-react";
 import ModernMetricCard from "./ModernMetricCard";
 import { formatCurrency, formatLiters } from "../utils/auditLogic";
 
@@ -10,7 +10,9 @@ interface GrandStationSummaryProps {
   totalCash: number;
   totalPos: number;
   pmsLostLiters: number;
+  pmsLostValue: number;
   agoLostLiters: number;
+  agoLostValue: number;
   onLossClick?: () => void;
 }
 
@@ -19,7 +21,9 @@ const GrandStationSummary = ({
   totalCash, 
   totalPos, 
   pmsLostLiters, 
+  pmsLostValue,
   agoLostLiters, 
+  agoLostValue,
   onLossClick 
 }: GrandStationSummaryProps) => {
   return (
@@ -52,7 +56,7 @@ const GrandStationSummary = ({
         />
         <ModernMetricCard 
           label="PMS Unrecorded Vol." 
-          value={formatLiters(pmsLostLiters)} 
+          value={`${formatLiters(pmsLostLiters)} (${formatCurrency(pmsLostValue)})`} 
           icon={ShieldAlert} 
           color="rose" 
           onClick={onLossClick}
@@ -60,9 +64,17 @@ const GrandStationSummary = ({
         />
         <ModernMetricCard 
           label="AGO Unrecorded Vol." 
-          value={formatLiters(agoLostLiters)} 
+          value={`${formatLiters(agoLostLiters)} (${formatCurrency(agoLostValue)})`} 
           icon={ShieldAlert} 
           color="slate" 
+          onClick={onLossClick}
+          isInteractive={true}
+        />
+        <ModernMetricCard 
+          label="Total Financial Loss" 
+          value={formatCurrency(pmsLostValue + agoLostValue)} 
+          icon={AlertCircle} 
+          color="rose" 
           onClick={onLossClick}
           isInteractive={true}
         />
