@@ -35,7 +35,7 @@ const GrandStationSummary = ({
         <h2 className="text-xs font-black text-slate-900 uppercase tracking-[0.25em]">Grand Station Metrics</h2>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ModernMetricCard 
           label="Grand Total Sales" 
           value={formatCurrency(totalSales)} 
@@ -55,7 +55,15 @@ const GrandStationSummary = ({
           color="emerald" 
         />
         <ModernMetricCard 
-          label="PMS Unrecorded Vol." 
+          label="Total Financial Loss" 
+          value={formatCurrency(pmsLostValue + agoLostValue)} 
+          icon={AlertCircle} 
+          color="rose" 
+          onClick={onLossClick}
+          isInteractive={true}
+        />
+        <ModernMetricCard 
+          label="PMS SECTION" 
           value={`${formatLiters(pmsLostLiters)} (${formatCurrency(pmsLostValue)})`} 
           icon={ShieldAlert} 
           color="rose" 
@@ -63,18 +71,10 @@ const GrandStationSummary = ({
           isInteractive={true}
         />
         <ModernMetricCard 
-          label="AGO Unrecorded Vol." 
+          label="AGO SECTION" 
           value={`${formatLiters(agoLostLiters)} (${formatCurrency(agoLostValue)})`} 
           icon={ShieldAlert} 
           color="slate" 
-          onClick={onLossClick}
-          isInteractive={true}
-        />
-        <ModernMetricCard 
-          label="Total Financial Loss" 
-          value={formatCurrency(pmsLostValue + agoLostValue)} 
-          icon={AlertCircle} 
-          color="rose" 
           onClick={onLossClick}
           isInteractive={true}
         />
