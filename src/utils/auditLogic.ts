@@ -112,17 +112,20 @@ export const auditIntraDay = (report: DailyReport, product?: string): AuditResul
     const afternoon = report.shifts.afternoon.find(p => p.pumpId === pumpId) || null;
     const night = report.shifts.night?.find(p => p.pumpId === pumpId) || null;
 
-    if (morning && afternoon) {
-      const diff = afternoon.openingReading - morning.closingReading;
-      const { category, label } = classifyGap(diff);
+    // Show Morning -> Afternoon handover if either exists
+    if (morning || afternoon) {
+      const diff = (morning && afternoon) ? afternoon.openingReading - morning.closingReading : 0;
+      const { category, label } = (morning && afternoon) ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
       results.push({ 
         pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
         morning, afternoon, type: "intraday", prevShift: "Morning", currShift: "Afternoon"
       });
     }
-    if (afternoon && night) {
-      const diff = night.openingReading - afternoon.closingReading;
-      const { category, label } = classifyGap(diff);
+
+    // Show Afternoon -> Night handover if Night exists
+    if (night) {
+      const diff = afternoon ? night.openingReading - afternoon.closingReading : 0;
+      const { category, label } = afternoon ? classifyGap(diff) : { category: "balanced" as GapCategory, label: "Single Shift Record" };
       results.push({ 
         pumpId, diff, isBalanced: category === "balanced", category, categoryLabel: label,
         morning: afternoon, afternoon: night, type: "intraday", prevShift: "Afternoon", currShift: "Night"
