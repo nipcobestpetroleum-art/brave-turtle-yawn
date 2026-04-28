@@ -6,6 +6,7 @@ import { february2026 } from "./reports/february2026";
 import { february2026b } from "./reports/february2026b";
 import { february2026c } from "./reports/february2026c";
 import { february2026d } from "./reports/february2026d";
+import { march2026 } from "./reports/march2026";
 import { DailyReport } from "../types/sales";
 
 export const salesData: DailyReport[] = [
@@ -17,4 +18,5 @@ export const salesData: DailyReport[] = [
   ...february2026b,
   ...february2026c,
   ...february2026d,
+  ...march2026,
 ];
