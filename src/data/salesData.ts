@@ -7,6 +7,10 @@ import { february2026b } from "./reports/february2026b";
 import { february2026c } from "./reports/february2026c";
 import { february2026d } from "./reports/february2026d";
 import { march2026 } from "./reports/march2026";
+import { march2026b } from "./reports/march2026b";
+import { march2026c } from "./reports/march2026c";
+import { march2026d } from "./reports/march2026d";
+import { march2026e } from "./reports/march2026e";
 import { DailyReport } from "../types/sales";
 
 export const salesData: DailyReport[] = [
@@ -19,4 +23,8 @@ export const salesData: DailyReport[] = [
   ...february2026c,
   ...february2026d,
   ...march2026,
+  ...march2026b,
+  ...march2026c,
+  ...march2026d,
+  ...march2026e,
 ];
