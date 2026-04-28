@@ -22,7 +22,7 @@ export const march2026e: DailyReport[] = [
     shifts: {
       morning: [
         { attendant: "Esther", pumpId: "PMP-002-A", product: "PMS", openingReading: 2620055.51, closingReading: 2621592.27, pricePerLiter: 1350, cashCollected: 448000, posAmount: 1301626.50, shortageResolutions: [{ type: "debt", amount: 316372.50, liters: 234.35, debtor: "Unknown", reason: "Debt" }, { type: "debt", amount: 8100, liters: 6, debtor: "Unknown", reason: "Debt" }] },
-        { attendant{ attendant: "Joy", pumpId: "PMP-003-B", product: "PMS", openingReading: 247926.21, closingReading: 248424.73, pricePerLiter: 1350, cashCollected: 559610, posAmount: 113000 },
+        { attendant: "Joy", pumpId: "PMP-003-B", product: "PMS", openingReading: 247926.21, closingReading: 248424.73, pricePerLiter: 1350, cashCollected: 559610, posAmount: 113000 },
         { attendant: "Joy", pumpId: "PMP-004-B", product: "PMS", openingReading: 27419.56, closingReading: 27506.13, pricePerLiter: 1350, cashCollected: 0, posAmount: 60719, shortageResolutions: [{ type: "debt", amount: 40500, liters: 30, debtor: "Unknown", reason: "Debt" }, { type: "return to tank", amount: 12690, liters: 9.40, reason: "Priming" }] },
         { attendant: "Goodness", pumpId: "PMP-005-A", product: "PMS", openingReading: 1336396.64, closingReading: 1338566.96, pricePerLiter: 1350, cashCollected: 712250, posAmount: 1758728, shortageResolutions: [{ type: "debt", amount: 459000, liters: 340, debtor: "Unknown", reason: "Debt" }] },
         { attendant: "Chukwuka", pumpId: "PMP-006-B", product: "PMS", openingReading: 686385.92, closingReading: 687147.02, pricePerLiter: 1350, cashCollected: 659300, posAmount: 367850 },
