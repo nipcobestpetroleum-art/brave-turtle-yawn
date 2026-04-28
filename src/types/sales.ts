@@ -21,6 +21,20 @@ export interface PumpReport {
   shortageResolutions?: ShortageResolution[];
 }
 
+export interface BankDeposit {
+  amount: number;
+  reference: string;
+  date: string;
+}
+
+export interface TankDipping {
+  tankNumber: number;
+  product: string;
+  reading: number;
+  recordedBy: string;
+  time: string;
+}
+
 export interface DailyReport {
   date: string;
   shifts: {
@@ -28,9 +42,6 @@ export interface DailyReport {
     afternoon: PumpReport[];
     night?: PumpReport[];
   };
-  bankDeposits: {
-    amount: number;
-    reference: string;
-    date: string;
-  }[];
+  bankDeposits: BankDeposit[];
+  tankDippings?: TankDipping[];
 }
