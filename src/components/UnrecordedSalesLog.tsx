@@ -1,16 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { AuditResult, formatLiters, formatCurrency } from "../utils/auditLogic";
 import { generateLossLogPDF } from "../utils/pdfGenerator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShieldAlert, Calendar, User, ArrowRight, Fuel, FileDown, RefreshCcw, History, Banknote } from "lucide-react";
+import { ShieldAlert, Calendar, User, ArrowRight, Fuel, FileDown, RefreshCcw, History, Banknote, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface UnrecordedSalesLogProps {
   records: AuditResult[];
 }
+
+const ITEMS_PER_PAGE = 8;
 
 const formatDate = (dateStr?: string) => {
   if (!dateStr) return "N/A";
@@ -18,6 +20,8 @@ const formatDate = (dateStr?: string) => {
 };
 
 const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   if (records.length === 0) {
     return (
       <div className="bg-white border-2 border-dashed rounded-3xl p-20 text-center flex flex-col items-center justify-center">
@@ -28,9 +32,15 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
     );
   }
 
+  const totalPages = Math.ceil(records.length / ITEMS_PER_PAGE);
+  const paginatedRecords = records.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between px-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
         <div className="space-y-1">
           <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
             <ShieldAlert size={16} className="text-rose-500" />
@@ -48,13 +58,13 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
             className="bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold gap-2 h-9"
           >
             <FileDown size={14} />
-            Export PDF
+            Export Full PDF
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {records.map((record, idx) => (
+        {paginatedRecords.map((record, idx) => (
           <Card key={`${record.pumpId}-${idx}`} className="border-2 border-rose-100 overflow-hidden hover:shadow-md transition-all">
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_240px] items-stretch">
@@ -134,6 +144,35 @@ const UnrecordedSalesLog = ({ records }: UnrecordedSalesLogProps) => {
           </Card>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between bg-white p-4 rounded-2xl border-2 shadow-sm border-rose-100">
+          <p className="text-xs font-bold text-slate-400">
+            Showing Page <span className="text-rose-600">{currentPage}</span> of {totalPages}
+          </p>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => p - 1)}
+              className="rounded-xl border-2 font-bold hover:bg-rose-50 hover:text-rose-600"
+            >
+              <ChevronLeft size={16} className="mr-1" /> Prev
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => p + 1)}
+              className="rounded-xl border-2 font-bold hover:bg-rose-50 hover:text-rose-600"
+            >
+              Next <ChevronRight size={16} className="ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
