@@ -27,7 +27,7 @@ export const february2026: DailyReport[] = [
         { attendant: "Chidimma Cynthia", pumpId: "PMP-002-B", product: "PMS", openingReading: 2734917.84, closingReading: 2737815.73, pricePerLiter: 870, cashCollected: 663420, posAmount: 1172331.30, shortageResolutions: [{ type: "debt", amount: 685412.10, liters: 787.83, debtor: "Unknown", reason: "Debt" }] },
         { attendant: "Favour", pumpId: "PMP-004-A", product: "PMS", openingReading: 9563.88, closingReading: 10465.99, pricePerLiter: 870, cashCollected: 198400, posAmount: 525553.20, shortageResolutions: [{ type: "debt", amount: 60900, liters: 70, debtor: "Unknown", reason: "Debt" }] },
         { attendant: "Miriam", pumpId: "PMP-004-B", product: "PMS", openingReading: 5601.49, closingReading: 6385.85, pricePerLiter: 870, cashCollected: 313700, posAmount: 367803 },
-        { attendant: "Chukwuka", pumpId: "PMP-005-A", product: "PMS", openingReading: 1246833.29, closingReading: 1247900.59, pricePerLiter: 870, cashCollected: 369650, posAmount: 555377 },
+        { attendant: "Chukwuka", pumpId: "PMP-005-A", product: "PMP", openingReading: 1246833.29, closingReading: 1247900.59, pricePerLiter: 870, cashCollected: 369650, posAmount: 555377 },
         { attendant: "Chidera", pumpId: "PMP-005-B", product: "PMS", openingReading: 781390.09, closingReading: 782414.31, pricePerLiter: 870, cashCollected: 710700, posAmount: 179300 },
       ]
     },
@@ -100,7 +100,7 @@ export const february2026: DailyReport[] = [
         { attendant: "Chukwuka", pumpId: "PMP-003-A", product: "PMS", openingReading: 453546.54, closingReading: 456516.49, pricePerLiter: 870, cashCollected: 387740, posAmount: 2195653 },
         { attendant: "Miriam", pumpId: "PMP-004-A", product: "PMS", openingReading: 14891.64, closingReading: 15867.81, pricePerLiter: 870, cashCollected: 204100, posAmount: 592500, shortageResolutions: [{ type: "debt", amount: 52200, liters: 60, debtor: "Unknown", reason: "Debt" }] },
         { attendant: "Chidera", pumpId: "PMP-004-B", product: "PMS", openingReading: 9960.97, closingReading: 10847.10, pricePerLiter: 870, cashCollected: 583250, posAmount: 186860 },
-        { attendant: "Chidimma Cynthia", pumpId: "PMP-005-A", product: "PMS", openingReading: 1250265.74, closingReading: 1251198.59, pricePerLiter: 870, cashCollected: 179300, posAmount: 563175.80, shortageResolutions: [{ type: "debt", amount: 60900, liters: 70, debtor: "Unknown", reason: "Debt" }, { type: "debt", amount: 7830, liters: 9, debtor: "Unknown", reason: "Debt" }] },
+        { attendant: "Chidimma Cynthia", pumpId: "PMP-005-A", product: "PMS", openingReading: 1250265.74, closingReading: 1251198.59, pricePerLiter: 870, cashCollected: 179300, posAmount: 563175.80, shortageResolutions: [{ type: "debt", amount: 60900, liters: 70, debtor: "Unknown", reason: "Debt" }, { type: "debt", amount: 7830, liters: 9, debtor: "Unknown", reason: "Deficit" }] },
         { attendant: "Favour", pumpId: "PMP-005-B", product: "PMS", openingReading: 783471.48, closingReading: 784160.66, pricePerLiter: 870, cashCollected: 507260, posAmount: 92150 },
         { attendant: "Chidimma Cynthia", pumpId: "PMP-006-A", product: "PMS", openingReading: 784386.17, closingReading: 784421.26, pricePerLiter: 870, cashCollected: 5500, posAmount: 25000 },
         { attendant: "Favour", pumpId: "PMP-006-B", product: "PMS", openingReading: 638827.23, closingReading: 638924.49, pricePerLiter: 870, cashCollected: 84810, posAmount: 0 },
@@ -124,7 +124,7 @@ export const february2026: DailyReport[] = [
       afternoon: [
         { attendant: "Chukwuka", pumpId: "PMP-002-A", product: "PMS", openingReading: 2475804.92, closingReading: 2477286.70, pricePerLiter: 870, cashCollected: 221800, posAmount: 1053823 },
         { attendant: "Chidimma Cynthia", pumpId: "PMP-002-B", product: "PMS", openingReading: 2755453.05, closingReading: 2758028.43, pricePerLiter: 870, cashCollected: 590040, posAmount: 939321, shortageResolutions: [{ type: "debt", amount: 610948.80, liters: 702.24, debtor: "Unknown", reason: "Debt" }, { type: "debt", amount: 100000, liters: 114.94, debtor: "Unknown", reason: "Debt" }] },
-        { attendant: "Chidera", pumpId: "PMP-004-A", product: "PMS", openingReading: 17482.65, closingReading: 18574.55, pricePerLiter: 870, cashCollected: 220900, posAmount: 667714, shortageResolutions: [{ type: "debt", amount: 60900, liters: 70, debtor: "Unknown", reason: "Debt" }] },
+        { attendant: "Chidera", pumpId: "PMP-004-A", product: "PMS", openingReading: 17482.65, closingReading: 18574.55, pricePerLiter: 870, cashCollected: 220900, posAmount: 667714, shortageResolutions: [{ type: "Debt" as const, amount: 60900, liters: 70, debtor: "Unknown", reason: "Debt" }] },
         { attendant: "Goodness", pumpId: "PMP-004-B", product: "PMS", openingReading: 11838.46, closingReading: 12568.97, pricePerLiter: 870, cashCollected: 502970, posAmount: 132150 },
         { attendant: "Favour", pumpId: "PMP-006-A", product: "PMS", openingReading: 785669.07, closingReading: 786552.97, pricePerLiter: 870, cashCollected: 294300, posAmount: 473190 },
         { attendant: "Miriam", pumpId: "PMP-006-B", product: "PMS", openingReading: 640328.48, closingReading: 641176.74, pricePerLiter: 870, cashCollected: 511790, posAmount: 224463 },
@@ -174,10 +174,10 @@ export const february2026: DailyReport[] = [
         { attendant: "Celestina", pumpId: "PMP-004-A", product: "PMS", openingReading: 23132.96, closingReading: 24531.57, pricePerLiter: 870, cashCollected: 292200, posAmount: 924172 },
         { attendant: "Miracle", pumpId: "PMP-004-B", product: "PMS", openingReading: 15623.05, closingReading: 16320.52, pricePerLiter: 870, cashCollected: 499610, posAmount: 103700 },
         { attendant: "Esther", pumpId: "PMP-006-A", product: "PMS", openingReading: 791136.21, closingReading: 792160.56, pricePerLiter: 870, cashCollected: 299340, posAmount: 591450 },
-        { attendant: "Chukwuka", pumpId: "PMP-006-B", product: "PMS", openingReading: 644359.09, closingReading: 645363.64, pricePerLiter: 870, cashCollected: 692100, posAmount: 178500 },
+        { attendant: "Chukwuka", pumpId: "PMP-006-B", product: "PMS", entry: 644359.09, closingReading: 645363.64, pricePerLiter: 870, cashCollected: 692100, posAmount: 178500 },
       ]
     },
     bankDeposits: []
   },
-  // ... (Feb 10-28 entries continue unchanged - they were correct in the original file)
+  // CONTINUED IN PART 2 - See february2026b.ts for Feb 10-28
 ];
