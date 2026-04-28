@@ -11,6 +11,7 @@ import { march2026b } from "./reports/march2026b";
 import { march2026c } from "./reports/march2026c";
 import { march2026d } from "./reports/march2026d";
 import { march2026e } from "./reports/march2026e";
+import { april2026 } from "./reports/april2026";
 import { DailyReport } from "../types/sales";
 
 export const salesData: DailyReport[] = [
@@ -27,4 +28,5 @@ export const salesData: DailyReport[] = [
   ...march2026c,
   ...march2026d,
   ...march2026e,
+  ...april2026,
 ];
